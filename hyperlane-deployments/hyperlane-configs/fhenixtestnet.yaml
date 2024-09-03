@@ -1,8 +1,8 @@
-name: fhenixtestnet
-displayName: Fhenix Helium Testnet
+displayName: Fhenix Helium
 chainId: 8008135
-domainId: 8008135
+name: fhenixtestnet
 protocol: ethereum
+domainId: 8008135
 rpcUrls:
   - http: https://api.helium.fhenix.zone
 nativeToken:

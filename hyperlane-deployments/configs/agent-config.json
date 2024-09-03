@@ -1,0 +1,159 @@
+{
+  "chains": {
+    "arbitrumsepolia": {
+      "blockExplorers": [
+        {
+          "apiUrl": "https://api-sepolia.arbiscan.io/api",
+          "family": "etherscan",
+          "name": "Arbiscan",
+          "url": "https://sepolia.arbiscan.io"
+        }
+      ],
+      "blocks": {
+        "confirmations": 1,
+        "estimateBlockTime": 3,
+        "reorgPeriod": 0
+      },
+      "chainId": 421614,
+      "deployer": {
+        "name": "Abacus Works",
+        "url": "https://www.hyperlane.xyz"
+      },
+      "displayName": "Arbitrum Sepolia",
+      "domainId": 421614,
+      "index": {
+        "from": 49690504
+      },
+      "isTestnet": true,
+      "name": "arbitrumsepolia",
+      "nativeToken": {
+        "decimals": 18,
+        "name": "Ether",
+        "symbol": "ETH"
+      },
+      "protocol": "ethereum",
+      "rpcUrls": [
+        {
+          "http": "https://arbitrum-sepolia.blockpi.network/v1/rpc/public"
+        },
+        {
+          "http": "https://sepolia-rollup.arbitrum.io/rpc"
+        }
+      ],
+      "technicalStack": "arbitrumnitro",
+      "aggregationHook": "0xD2670EedcD21116c6F0B331Ce391eA4B3Bf1aB19",
+      "domainRoutingIsm": "0xaCA2f65aFDa2cbC8BF28DdE096eCF83aCd121c0b",
+      "domainRoutingIsmFactory": "0xECd90D8E3CB8e3bf38F0ceA5E7908C5d60D2619B",
+      "fallbackRoutingHook": "0xAb9B273366D794B7F80B4378bc8Aaca75C6178E2",
+      "interchainGasPaymaster": "0xc756cFc1b7d0d4646589EDf10eD54b201237F5e8",
+      "interchainSecurityModule": "0x29cEAFEE1F76B9CE271750f86B2bD12C23F9dDb6",
+      "mailbox": "0x2aD400c7ff52F2dd4F14961CF2E310D3bcE34048",
+      "merkleTreeHook": "0x2374a83e6d6a60ca401459e3d4a7dcd1efea74ad",
+      "pausableHook": "0x86fb9F1c124fB20ff130C41a79a432F770f67AFD",
+      "pausableIsm": "0x54ba950390670f27892AFFC670Ba6ed598E5B8Df",
+      "protocolFee": "0x75f3E2a4f424401195A5E176246Ecc9f7e7680ff",
+      "proxyAdmin": "0x0D037Cce28490064d2f909014bF0746B958dCA0F",
+      "staticAggregationHookFactory": "0x713610678fF4a8A57a96Fda7B7FFDa904E311f39",
+      "staticAggregationIsm": "0x29cEAFEE1F76B9CE271750f86B2bD12C23F9dDb6",
+      "staticAggregationIsmFactory": "0x52f6A5047de84E55AcE99e90F3d85E9d2d845Ab4",
+      "staticMerkleRootMultisigIsmFactory": "0xF2aACC8982966f1edBc2351e0f399b04e028c96B",
+      "staticMessageIdMultisigIsmFactory": "0xB1c860DfB4C300203f029f68AccE39548Fcf69d2",
+      "storageGasOracle": "0xddf4C3e791caCaFd26D7fb275549739B38ae6e75",
+      "testRecipient": "0x67AC691C7B916c1ff6f704f8f4686bD7168D75cf",
+      "validatorAnnounce": "0xf8179814BE9793a79e43c9bbe0feC001b23e2d74",
+      "interchainAccountIsm": "0x9CFf54892D803e08123ba17f90AD78E398646218",
+      "interchainAccountRouter": "0xB29067d2f5C2e020B93a7881438d2D5b7dDF92CD"
+    },
+    "chilizspicy": {
+      "blockExplorers": [
+        {
+          "apiKey": "routescan",
+          "apiUrl": "https://api.routescan.io/v2/network/testnet/evm/88882/etherscan",
+          "family": "routescan",
+          "name": "Chiliz Spicy Explorer",
+          "url": "https://testnet.chiliscan.com"
+        }
+      ],
+      "chainId": 88882,
+      "displayName": "Chiliz Spicy Testnet",
+      "domainId": 88882,
+      "isTestnet": true,
+      "name": "chilizspicy",
+      "nativeToken": {
+        "decimals": 18,
+        "name": "Chiliz",
+        "symbol": "CHZ"
+      },
+      "protocol": "ethereum",
+      "rpcUrls": [
+        {
+          "http": "https://spicy-rpc.chiliz.com"
+        }
+      ],
+      "domainRoutingIsmFactory": "0x9D3B17D4b46C6841E08fe1EfF50854E340f71808",
+      "interchainAccountIsm": "0x321D625f5D9f81ad9Ff5B07Ef9E560E05f01a971",
+      "interchainAccountRouter": "0x431a58962102dc0E8187E465Da7E953A3861F941",
+      "mailbox": "0xDc59057716677afE37755e8aA256c8d852D62f64",
+      "proxyAdmin": "0x1f8d9883C91a8210F43aA13BE5C9f576986EA027",
+      "staticAggregationHookFactory": "0xd6eE404C086FC2B4702432EE32c5f36Ca3121c83",
+      "staticAggregationIsmFactory": "0x2E1d57866202eF3f34F8471b7060cd44c0517e94",
+      "staticMerkleRootMultisigIsmFactory": "0x3Ee9106fe2315bAe14e95ec969F2c9E54a9AbbD7",
+      "staticMessageIdMultisigIsmFactory": "0x11feDEF3a24F3030147C6755497F775FE283e0cA",
+      "testRecipient": "0xe92C2510fd0d1B3bA3ee57F16C1CFD572CBBEC58",
+      "validatorAnnounce": "0xa093D45A061DefAEf156218d364C7620b43FFA92",
+      "merkleTreeHook": "0xC4ea37c11904cD260e9887B11Af7eD89aFc86BF9",
+      "interchainGasPaymaster": "0x0000000000000000000000000000000000000000",
+      "index": {
+        "from": 17002545
+      }
+    },
+    "fhenixtestnet": {
+      "blockExplorers": [
+        {
+          "apiUrl": "https://api.helium.fhenix.zone",
+          "family": "blockscout",
+          "name": "Fhenix Helium Testnet Explorer",
+          "url": "https://explorer.helium.fhenix.zone"
+        }
+      ],
+      "chainId": 8008135,
+      "deployer": {
+        "name": "d0x471b",
+        "url": "https://t.me/d0x471b"
+      },
+      "displayName": "Fhenix Helium Testnet",
+      "domainId": 8008135,
+      "index": {
+        "from": 140556
+      },
+      "isTestnet": true,
+      "name": "fhenixtestnet",
+      "nativeToken": {
+        "decimals": 18,
+        "name": "Testnet Fhenix",
+        "symbol": "tFHE"
+      },
+      "protocol": "ethereum",
+      "rpcUrls": [
+        {
+          "http": "https://api.helium.fhenix.zone"
+        }
+      ],
+      "technicalStack": "arbitrumnitro",
+      "domainRoutingIsmFactory": "0xd6eE404C086FC2B4702432EE32c5f36Ca3121c83",
+      "interchainAccountIsm": "0xd2F63d4449ACc92801709643198706dfc93D8b97",
+      "interchainAccountRouter": "0xbB55c616954f8d0bD350188e0f9bA0279F44c0a0",
+      "mailbox": "0x43f19362e0074E1c4e65254Be8E82fDB876B4fee",
+      "proxyAdmin": "0x9D3B17D4b46C6841E08fe1EfF50854E340f71808",
+      "staticAggregationHookFactory": "0x2E1d57866202eF3f34F8471b7060cd44c0517e94",
+      "staticAggregationIsmFactory": "0x11feDEF3a24F3030147C6755497F775FE283e0cA",
+      "staticMerkleRootMultisigIsmFactory": "0x42Fd9Fa04446f8Fd98946bACdE3182647f623e5a",
+      "staticMessageIdMultisigIsmFactory": "0x3Ee9106fe2315bAe14e95ec969F2c9E54a9AbbD7",
+      "testRecipient": "0xa093D45A061DefAEf156218d364C7620b43FFA92",
+      "validatorAnnounce": "0x431a58962102dc0E8187E465Da7E953A3861F941",
+      "merkleTreeHook": "0xd8d18FAE63AdeF41d28f4b8D17e962bDAC0f48e9",
+      "interchainGasPaymaster": "0x0000000000000000000000000000000000000000"
+    }
+  },
+  "defaultRpcConsensusType": "fallback"
+}
