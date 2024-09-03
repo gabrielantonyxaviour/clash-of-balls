@@ -2,6 +2,10 @@
 
 Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chilizspicy**. To deploy on your chain, reach out to me and I will add it to the registry.
 
+# Install Hyperlane CLI
+
+`npm i -g @hyperlane-xyz/cli`
+
 ## Set env
 
 1. Run this command before running relayer and sending test message.
