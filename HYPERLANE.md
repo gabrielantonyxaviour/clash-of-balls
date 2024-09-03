@@ -1,6 +1,6 @@
 # Hyperlane Relayer template
 
-Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **fhenixtestnet**, to deploy your chain reach out to me and I will add it in my registry
+Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chilizspicy**, to deploy your chain reach out to me and I will add it in my registry
 
 ## Set env
 
