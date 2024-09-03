@@ -2,6 +2,10 @@
 
 Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chilizspicy**. To deploy on your chain, reach out to me and I will add it to the registry.
 
+## Install Hyperlane CLI
+
+`npm i -g @hyperlane-xyz/cli`
+
 ## Set env
 
 1. Run this command before running relayer and sending test message.
@@ -15,6 +19,7 @@ Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chiliz
 3. Set the chains you need to listen to.
 4. Run command below
 
+Example: <br/>
 `hyperlane relayer --chains fhenixtestnet,arbitrumsepolia,chilizspicy --registry https://github.com/gabrielantonyxaviour/clash-of-balls`
 
 ## Test send message
@@ -24,4 +29,5 @@ Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chiliz
 3. Set the origin and destination
 4. Run command below
 
+Example: <br/>
 `hyperlane send message --origin fhenixtestnet --destination chilizspicy --registry https://github.com/gabrielantonyxaviour/clash-of-balls`
