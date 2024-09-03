@@ -3,8 +3,9 @@
 1. Fhenix logic compute testing
 2. Chainlink compute testing (PENDING)
 3. Chiliz logic tesing
-4. Hyperlane mocking testing
-5. Hyperlane integration
+4. Hyperlane relayer deployment (DONE)
+5. Hyperlane mocking testing
+6. Hyperlane integration
 
 ## Jasmine
 
