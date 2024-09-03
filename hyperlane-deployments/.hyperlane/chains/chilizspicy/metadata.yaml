@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../schema.json
+blockExplorers:
+  - apiKey: routescan
+    apiUrl: https://api.routescan.io/v2/network/testnet/evm/88882/etherscan
+    family: routescan
+    name: Chiliz Spicy Explorer
+    url: https://testnet.chiliscan.com
+chainId: 88882
+displayName: Chiliz Spicy Testnet
+domainId: 88882
+isTestnet: true
+name: chilizspicy
+nativeToken:
+  decimals: 18
+  name: Chiliz
+  symbol: CHZ
+protocol: ethereum
+rpcUrls:
+  - http: https://spicy-rpc.chiliz.com
