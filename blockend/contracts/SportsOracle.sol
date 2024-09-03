@@ -20,16 +20,6 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         address router
     ) FunctionsClient(router) ConfirmedOwner(msg.sender) {}
 
-    /**
-     * @notice Send a simple request
-     * @param source JavaScript source code
-     * @param encryptedSecretsUrls Encrypted URLs where to fetch user secrets
-     * @param donHostedSecretsSlotID Don hosted secrets slotId
-     * @param donHostedSecretsVersion Don hosted secrets version
-     * @param args List of arguments accessible from within the source code
-     * @param bytesArgs Array of bytes arguments, represented as hex strings
-     * @param subscriptionId Billing ID
-     */
     function sendRequest(
         string memory source,
         bytes memory encryptedSecretsUrls,
@@ -62,14 +52,6 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         return s_lastRequestId;
     }
 
-    /**
-     * @notice Send a pre-encoded CBOR request
-     * @param request CBOR-encoded request data
-     * @param subscriptionId Billing ID
-     * @param gasLimit The maximum amount of gas the request can consume
-     * @param donID ID of the job to be invoked
-     * @return requestId The ID of the sent request
-     */
     function sendRequestCBOR(
         bytes memory request,
         uint64 subscriptionId,
@@ -85,13 +67,6 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         return s_lastRequestId;
     }
 
-    /**
-     * @notice Store latest result/error
-     * @param requestId The request ID, returned by sendRequest()
-     * @param response Aggregated response from the user code
-     * @param err Aggregated error from the user code or from the execution pipeline
-     * Either response or error parameter will be set, but never both
-     */
     function fulfillRequest(
         bytes32 requestId,
         bytes memory response,
