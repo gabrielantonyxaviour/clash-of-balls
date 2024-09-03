@@ -19,6 +19,7 @@ Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chiliz
 3. Set the chains you need to listen to.
 4. Run command below
 
+Example: 
 `hyperlane relayer --chains fhenixtestnet,arbitrumsepolia,chilizspicy --registry https://github.com/gabrielantonyxaviour/clash-of-balls`
 
 ## Test send message
@@ -28,4 +29,5 @@ Note that I have deployed on **fhenixtestnet**, **arbitrumsepolia** and **chiliz
 3. Set the origin and destination
 4. Run command below
 
+Example:
 `hyperlane send message --origin fhenixtestnet --destination chilizspicy --registry https://github.com/gabrielantonyxaviour/clash-of-balls`
