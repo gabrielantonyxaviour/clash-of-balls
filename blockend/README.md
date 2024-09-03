@@ -1,54 +1,71 @@
-# Dropify Contracts
+# ClashOfBalls Contracts
 
-Contracts for Dropify.
+Contracts for ClashOfBalls.
 
 ## Tech
 
-1. Chainlink and Hyperlane
+1. Hyperlane
    a. Cross Chain Transactions
-2. EAS
-   a. On-chain verifiable attestations.
-3. Worldcoin
-   a. Proof of humaness
-4. Optimism, Base, Metal L2, Ethereum, Arbitrum, Avalanche, Polygon
-   a. Deployments
-5. Goldsky
-   a. Indexing
-6. Farcaster
-   a. Social verification
+2. Chiliz
+   a. Game logic
+   b. Fan token integration
+3. Arbtirum and Chainlink
+   a. Decentralized Compute
+4. Fhenix
+   a. Confidential Compute
+5. XMTP
+   a. In app messaging
+6. Web3Auth
+   a. Wallet provider
+7. Farcaster
    b. Composer Actions
    c. Frames
 
-## Contract Specification
+## ClashOfBallsCore Contract Specification ( Deployed on Chiliz )
 
-1. Create airdrop (should be done on the respective chain)
-   1. Send native value to our EOA to sponsor gas
-   2. Transfer tokens of the airdrop (needs to verify if the tokens are already approved)
-   3. Tasks (These are structured data stored in IPFS)
-      1. Own Token (NFT or ERC20)
-      2. Follow Farcaster account
-      3. Have minimum Farcaster followers criteria
-   4. Send crosschain transaction to base (only for chains other than base)
-   5. Send funds to a vault
-2. Claim airdrop (give required signatures, and world id proof)
-   1. Verify world id proof
-   2. Make other verifications off-chain and allow call to this function only by an authorized EOA
-   3. Makes on chain attestation
-   4. If cross chain, send a cross chain transaction
+1. Create challenge (Direct call)
+   1. Sends CHZ bet amount. (The fan tokens owned for the respective games are automatically detected for the fixture)
+   2. Sends encrypted prediction data on chain and stored in Chiliz.
+   3. Waits for someone to agree to the challenge
+2. Modify Challenge (Direct call)
+   1. Sends counter CHZ bet (After discussing in the XMTP chat)
+   2. Sets the modifier of the challenge. Only some other address can accept the challenge.
+   3. User can either increase or decrease the bet or can modify the encrypted predictions.
+3. Accept Challenge (Direct call)
+   1. User needs to send the correct amount of CHZ required by the bet. (The fan tokens owned for the respective games are automatically detected for the fixture)
+   2. Find who owns higher amount of fan tokens and return the discount back
+   3. Sends encrypted prediction data on chain and stored in Chiliz.
+4. Receive Results (Crosschain call from Arbitrum)
+   1. Receives game results from Chainlink Functions and stores it in Chiliz.
+5. Find winner (Direct call and sends crosschain call to Fhenix)
+   1. Sends the encrypted predictions and the game results from Chainlink to Fhenix and wait for results.
+6. Reward Winner (Crosschain call from Fhenix)
+   1. It returns the decrypted predictions and points of the players.
+   2. Declares the winner and releases the rewards in CHZ.
+
+## ClashOfBallsOracle Contract Specification ( Deployed on Arbitrum )
+
+1. Trigger Oracle (Direct call and sends crosschain transaction to Chiliz)
+   1. Gets the game id as input and triggers Chainlink Functions to get all the game statistics.
+   2. Once the game statistics are fetched, it sends a cross chain transaction to Chiliz.
+
+## ClashOfBallsCompute Contract Specification ( Deployed on Fhenix )
+
+1. Compute points (Crosschain call from Chiliz)
+   1. Decrypt the encrypted predictions and the game results fetched from Chainlink and return back the points scored by each and the winner
 
 ## Deploy Order
 
-1. Deploy Vault Implementation on all chains
-2. Deploy Crosschain contracts on all chains (except base)
-3. Deploy Core (on base)
-4. Initialize Core with crosschain contracts
+1. Deploy ClashOfBallsCore on Chiliz
+2. Deploy ClashOfBallsOracle on Arbitrum
+3. Deploy ClashOfBallsCompute (on Fhenix)
+4. Initialize ClashOfBallsCore
 
 ## Deployments
 
-1. Vault Implementation (Base) - 0xf3Dfb114CFAe91FC391e3E76f208eBbF595dCA82
-2. Vault Implementation (Arbitrum) - 0x81692a7278869Bb5bf98A1adD937fdB7EEfFe09c
-3. Core Mock (Base) - 0xB08aDb11A45284b96155F63009758014b1eb698C
-4. Crosschain Mock (Arbitrum) - 0x4a0DC91781A116e83770A17AD09b63fa3E50d7Ce
+1. ClashOfBallsCore (Chiliz) -
+2. ClashOfBallsOracle (Arbitrum) -
+3. ClashOfBallsCompute (Fhenix) -
 
 ## Contributors
 
