@@ -19,7 +19,7 @@ const networks = {
     chainId: 88882,
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "CHZ",
-    mailbox: "",
+    mailbox: "0xa8ec309E062b0B986284c19a7A14AE2F1f4D4D0F",
   },
   fhenixTestnet: {
     url: "https://api.helium.fhenix.zone",
@@ -30,7 +30,7 @@ const networks = {
     chainId: 8008135,
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "tFHE",
-    mailbox: "",
+    mailbox: "0x1eA99e28e7Be6317977961A0b0Ab65C256285e7D",
   },
   arbitrumSepolia: {
     url:
@@ -43,7 +43,7 @@ const networks = {
     chainId: 421614,
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "ETH",
-    mailbox: "",
+    mailbox: "0x48ca4C272Ed60751aA0E4d9835BCa1Bb1a91f749",
   },
 };
 

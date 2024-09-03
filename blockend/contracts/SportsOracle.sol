@@ -8,7 +8,6 @@ import {FunctionsRequest} from "@chainlink/contracts/src/v0.8/functions/v1_0_0/l
 contract SportsOracle is FunctionsClient, ConfirmedOwner{
     using FunctionsRequest for FunctionsRequest.Request;
 
-
     bytes32 public s_lastRequestId;
     bytes public s_lastResponse;
     bytes public s_lastError;
@@ -105,8 +104,6 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         s_lastError = err;
         emit Response(requestId, s_lastResponse, s_lastError);
     }
-
-
     
     // Triggered to compute the metrics of the challenge using Chainlink Functions and send to Fhenix testnet for confidential compute.
     function computeChallengeMetrics(uint256 _challengeId) public returns (uint256){
