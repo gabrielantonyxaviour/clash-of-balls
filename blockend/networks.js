@@ -8,7 +8,6 @@ const accounts = [];
 if (PRIVATE_KEY) {
   accounts.push(PRIVATE_KEY);
 }
-
 const networks = {
   chilizSpicy: {
     url: "https://spicy-rpc.chiliz.com",
@@ -44,6 +43,11 @@ const networks = {
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "ETH",
     mailbox: "0x48ca4C272Ed60751aA0E4d9835BCa1Bb1a91f749",
+    functionsRouter: "0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C",
+    subId: "170",
+    donId: "fun-arbitrum-sepolia-1",
+    linkTokenAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
+    sportsOracle: "0xd5a9B921E90F82b01d75EAeA2dDf7Ad4d7adAf84",
   },
 };
 

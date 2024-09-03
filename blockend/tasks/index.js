@@ -1,2 +1,2 @@
 exports.deploy = require("./deploy");
-exports.testOracle = require("./test-oracle");
+// exports.testOracle = require("./test-oracle");
