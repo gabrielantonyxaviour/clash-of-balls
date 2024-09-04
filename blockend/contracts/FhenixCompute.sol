@@ -2,15 +2,9 @@
 pragma solidity ^0.8.10;
 
 import "@fhenixprotocol/contracts/FHE.sol";
+import "./interface/Structs.sol";
 
-contract FhenixCompute{
-
-    struct Action{
-        uint8 basePoints;
-        uint16 multiplierStepsInBps;
-        string metadata;
-    }
-
+contract FhenixCompute is IClashOfBalls{
     struct PlayerPrediction{
         address player;
         euint8[5] selectedActionIds;
@@ -19,7 +13,7 @@ contract FhenixCompute{
         euint8[8] predictionValues;
     }
 
-    struct Challenge{
+    struct ComputeChallenge{
         PlayerPrediction playerOne;
         PlayerPrediction playerTwo;
         uint32 fixtureId;
@@ -27,29 +21,14 @@ contract FhenixCompute{
         uint16 playerTwoPoints;     
         uint8 winner;
         uint256 gameEnds;
-        bool challengeAccepted;
         bool isCompleted;
-    }
-
-    struct DecryptedPrediction{
-        address player;
-        uint8[5] selectedActionIds;
-        uint16[2] predictionKeyPlayers;
-        bool[3] predictionKeyTeams;
-        uint8[8] predictionValues;
-    }
-
-    struct DecryptedChallenge{
-        uint32 fixtureId;
-        DecryptedPrediction playerOne;
-        DecryptedPrediction playerTwo;
     }
 
     address public owner;
     address public router;
     address public core;
     mapping(uint8 => Action) public actions;
-    mapping(uint256 => Challenge) public challenges;
+    mapping(uint256 => ComputeChallenge) public challenges;
     mapping(uint256 => DecryptedChallenge) public decryptedChallenges;
 
     uint256 public challengeId;
@@ -66,8 +45,8 @@ contract FhenixCompute{
     event ActionsConfigured(uint8[10] basePoints, uint16[10] multiplierStepsInBps, string[10] metadata);
     event ChallengeCreated(uint256 indexed challengeId, uint256 indexed fixtureId, address indexed playerOne);
     event ChallengeAccepted(uint256 indexed challengeId, address indexed playerTwo);
-    event PredictionsDecrypted(uint256 indexed challengeId, DecryptedChallenge decryptedChallenge);
     event ChallengeCompleted(uint256 indexed challengeId, address indexed winner, uint16 playerOnePoints, uint16 playerTwoPoints);
+    event PredictionsDecrypted(uint256 indexed challengeId, DecryptedChallenge decryptedChallenge);
 
     modifier onlyOwner {
         require(msg.sender == owner, "Only owner can call this function");
@@ -80,14 +59,15 @@ contract FhenixCompute{
 
     }
 
-    function createChallenge(uint32 fixtureId, address player, bytes[5] memory selectedActionIds, bytes[2] memory predictionKeyPlayers, bytes[3] memory predictionKeyTeams, bytes[8] memory predictionValues, uint256 gameEndsIn) public {
-        Challenge storage challenge = challenges[challengeId];
-        PlayerPrediction memory playerOne;
 
-        for(uint8 i=0; i<5; i++) playerOne.selectedActionIds[i] = FHE.asEuint8(selectedActionIds[i]);
-        for(uint8 i=0; i<2; i++) playerOne.predictionKeyPlayers[i] = FHE.asEuint16(predictionKeyPlayers[i]);
-        for(uint8 i=0; i<3; i++) playerOne.predictionKeyTeams[i] = FHE.asEbool(predictionKeyTeams[i]);
-        for(uint8 i=0; i<8; i++) playerOne.predictionValues[i] = FHE.asEuint8(predictionValues[i]);
+    // Receive cross chain transaction from Chiliz
+    function createChallenge(uint32 fixtureId, address player, EncryptedPredictionInput[2] memory players, uint256 gameEndsIn) public {
+        ComputeChallenge storage challenge = challenges[challengeId];
+        PlayerPrediction memory playerOne;
+        challenge.isCompleted = false;
+
+        challenge.playerOne=formatEncryptedPredictions(players[0]);
+        challenge.playerTwo=formatEncryptedPredictions(players[1]);
 
         challenge.gameEnds = block.timestamp + gameEndsIn;
         challenge.fixtureId = fixtureId;
@@ -96,21 +76,17 @@ contract FhenixCompute{
         emit ChallengeCreated(challengeId, fixtureId, player);
         challengeId += 1;
     }
-    
-    function acceptChallenge(uint256 _challengeId, address player, bytes[5] memory selectedActionIds, bytes[2] memory predictionKeyPlayers, bytes[3] memory predictionKeyTeams, bytes[8] memory predictionValues) public {
-        Challenge storage challenge = challenges[_challengeId];
-        PlayerPrediction memory playerTwo;
-        
-        for(uint8 i=0; i<5; i++) playerTwo.selectedActionIds[i] = FHE.asEuint8(selectedActionIds[i]);
-        for(uint8 i=0; i<2; i++) playerTwo.predictionKeyPlayers[i] = FHE.asEuint16(predictionKeyPlayers[i]);
-        for(uint8 i=0; i<3; i++) playerTwo.predictionKeyTeams[i] = FHE.asEbool(predictionKeyTeams[i]);
-        for(uint8 i=0; i<8; i++) playerTwo.predictionValues[i] = FHE.asEuint8(predictionValues[i]);
 
-        challenge.playerTwo = playerTwo;
-        challenge.challengeAccepted = true;
-        emit ChallengeAccepted(_challengeId, player);
+    // Internal
+    function formatEncryptedPredictions(EncryptedPredictionInput memory encryptedPrediction) public pure returns (PlayerPrediction memory prediction){
+        prediction.player = encryptedPrediction.player;
+        for(uint8 i=0; i<5; i++) prediction.selectedActionIds[i] = FHE.asEuint8(encryptedPrediction.encryptedActionIds[i]);
+        for(uint8 i=0; i<2; i++) prediction.predictionKeyPlayers[i] = FHE.asEuint16(encryptedPrediction.encryptedPlayerIds[i]);
+        for(uint8 i=0; i<3; i++) prediction.predictionKeyTeams[i] = FHE.asEbool(encryptedPrediction.encryptedTeams[i]);
+        for(uint8 i=0; i<8; i++) prediction.predictionValues[i] = FHE.asEuint8(encryptedPrediction.encryptedPredictionValues[i]);
     }
-
+    
+    // Send cross chain tx to Arbitrum
     function triggerResults(uint256 _challengeId) public {
         DecryptedChallenge storage decryptedChallenge = decryptedChallenges[_challengeId];
         decryptedChallenge.fixtureId = challenges[_challengeId].fixtureId;
@@ -123,11 +99,14 @@ contract FhenixCompute{
         emit PredictionsDecrypted(_challengeId, decryptedChallenge);
     }
 
+    // Internal
     function resolvePredictions(PlayerPrediction memory predictionOne, PlayerPrediction memory predictionTwo) public pure returns (DecryptedPrediction memory playerOne, DecryptedPrediction memory playerTwo){
         playerOne = decryptPrediction(predictionOne);
         playerTwo = decryptPrediction(predictionTwo);
     }
 
+
+    // Internal
     function decryptPrediction(PlayerPrediction memory prediction) public pure returns (DecryptedPrediction memory decryptedPrediction){
         decryptedPrediction.player = prediction.player;
         decryptedPrediction.selectedActionIds = [FHE.decrypt(prediction.selectedActionIds[0]), FHE.decrypt(prediction.selectedActionIds[1]), FHE.decrypt(prediction.selectedActionIds[2]), FHE.decrypt(prediction.selectedActionIds[3]), FHE.decrypt(prediction.selectedActionIds[4])];
@@ -136,9 +115,10 @@ contract FhenixCompute{
         decryptedPrediction.predictionValues = [FHE.decrypt(prediction.predictionValues[0]), FHE.decrypt(prediction.predictionValues[1]), FHE.decrypt(prediction.predictionValues[2]), FHE.decrypt(prediction.predictionValues[3]), FHE.decrypt(prediction.predictionValues[4]), FHE.decrypt(prediction.predictionValues[5]), FHE.decrypt(prediction.predictionValues[6]), FHE.decrypt(prediction.predictionValues[7])];
     }
 
+    // Receive cross chain transaction from Arbitrum
     function revealWinner(uint256 _challengeId, uint128 results) public {
         DecryptedChallenge storage decryptedChallenge = decryptedChallenges[_challengeId];
-        Challenge storage challenge = challenges[_challengeId];
+        ComputeChallenge storage challenge = challenges[_challengeId];
         uint8[14] memory unpackedResults = [getTeamAHalfTimeGoal(results), getTeamBHalfTimeGoal(results), getTeamAFullTimeGoal(results), getTeamBFullTimeGoal(results), getTotalPenalties(results), getTotalCorners(results), getPlayerGoal(results, 0), getPlayerGoal(results, 1), getPlayerGoal(results, 2), getPlayerGoal(results, 3), getPlayerYellowCard(results, 0), getPlayerYellowCard(results, 1), getPlayerYellowCard(results, 2), getPlayerYellowCard(results, 3)];
         (uint16 playerOnePoints, uint16 playerTwoPoints)=resolvePoints(decryptedChallenge.playerOne, decryptedChallenge.playerTwo, unpackedResults);
         challenge.playerOnePoints = playerOnePoints;
@@ -157,11 +137,13 @@ contract FhenixCompute{
         challenge.isCompleted=true;
     }
 
+    // Internal
     function resolvePoints(DecryptedPrediction memory predictionOne, DecryptedPrediction memory predictionTwo, uint8[14] memory results) public view returns (uint16 playerOnePoints, uint16 playerTwoPoints){
         playerOnePoints = calculatePoints(predictionOne, results, true);
         playerTwoPoints = calculatePoints(predictionTwo, results, false);
     }
 
+    // Internal
     function calculatePoints(DecryptedPrediction memory prediction, uint8[14] memory results, bool isPlayerOne) public view returns (uint16 points){
         uint8 predictionValuesIndex = 0;
         uint8 predictionKeyPlayersIndex = 0;
