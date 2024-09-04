@@ -242,38 +242,38 @@ contract FhenixCompute{
         }
     }
 
-function getTeamAHalfTimeGoal(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 120) & 0xFF);
-}
+    function getTeamAHalfTimeGoal(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 120) & 0xFF);
+    }
 
-function getTeamBHalfTimeGoal(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 112) & 0xFF);
-}
+    function getTeamBHalfTimeGoal(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 112) & 0xFF);
+    }
 
-function getTeamAFullTimeGoal(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 104) & 0xFF);
-}
+    function getTeamAFullTimeGoal(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 104) & 0xFF);
+    }
 
-function getTeamBFullTimeGoal(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 96) & 0xFF);
-}
+    function getTeamBFullTimeGoal(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 96) & 0xFF);
+    }
 
-function getTotalPenalties(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 88) & 0xFF);
-}
+    function getTotalPenalties(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 88) & 0xFF);
+    }
 
-function getTotalCorners(uint128 packedData) public pure returns (uint8) {
-    return uint8((packedData >> 80) & 0xFF);
-}
+    function getTotalCorners(uint128 packedData) public pure returns (uint8) {
+        return uint8((packedData >> 80) & 0xFF);
+    }
 
-function getPlayerGoal(uint128 packedData, uint8 index) public pure returns (uint8) {
-    require(index < 4, "Index out of bounds");
-    return uint8((packedData >> (72 - index * 8)) & 0xFF);
-}
+    function getPlayerGoal(uint128 packedData, uint8 index) public pure returns (uint8) {
+        require(index < 4, "Index out of bounds");
+        return uint8((packedData >> (72 - index * 8)) & 0xFF);
+    }
 
-function getPlayerYellowCard(uint128 packedData, uint8 index) public pure returns (uint8) {
-    require(index < 4, "Index out of bounds");
-    return uint8((packedData >> (40 - index * 8)) & 0xFF);
-}
+    function getPlayerYellowCard(uint128 packedData, uint8 index) public pure returns (uint8) {
+        require(index < 4, "Index out of bounds");
+        return uint8((packedData >> (40 - index * 8)) & 0xFF);
+    }
 
 }
