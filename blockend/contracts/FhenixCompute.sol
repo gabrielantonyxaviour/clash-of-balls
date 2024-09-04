@@ -3,7 +3,28 @@
 pragma solidity ^0.8.10;
 
 
-contract FhenixContract{
+import "@fhenixprotocol/contracts/FHE.sol";
+
+contract FhenixCompute{
+
+    struct Action{
+        uint8 actionId;
+        uint8 basePoints;
+        uint16 multiplierInBps;
+    }
+
+    struct PlayerPrediction{
+        address player;
+        
+    }
+
+    struct Challenge{
+        bytes32 challengeId;
+        uint32 fixtureId;
+        PlayerPrediction playerOne;
+        PlayerPrediction playerTwo;
+        bool isCompleted;
+    }
 
     // Stake fan tokens in Chiliz and receive the encrypted predictions in Fhenix testnet.
     function createChallenge(uint256 _amount, uint256 _duration, uint256 _reward, string memory _description) public returns (uint256){
