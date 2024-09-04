@@ -52,29 +52,35 @@ When creating a challenge, users can choose 5 + 1 predictions from the following
 
 | **Prediction**                                    | **Base Points** | **Multiplier** |
 | ------------------------------------------------- | --------------- | -------------- |
+| **Match ends in draw (YES/NO)**                   | 3               | 1.0            |
+| **Both teams score goals (YES/NO)**               | 2               | 1.0            |
+| **Both teams' goals from 1 to N or more**         | 3               | 1.2            |
+| **Penalties in a match from 1 to N or more**      | 3               | 1.8            |
+| **Corners in a match from 1 to N or more**        | 1.5             | 1.1            |
 | **Team wins by goals from 1 to N or more**        | 3               | 1.2            |
 | **Team scores in first half from 1 to N or more** | 2               | 1.2            |
 | **Team scores goals from 1 to N or more**         | 2               | 1.1            |
 | **Player scores goals from 1 to N or more**       | 3               | 1.4            |
 | **Player gets booked from 1 to 2**                | 3               | 2.0            |
-| **Match ends in draw (YES/NO)**                   | 3               | 1.0            |
-| **Both teams score goals (YES/NO)**               | 2               | 1.0            |
-| **Both teams' goals from 1 to N or more**         | 3               | 1.2            |
-| **Penalties in a match from 1 to N or more**      | 3               | 1.8            |
-| **Corners in a match from 1 to N or more**        | 2               | 1.1            |
-
-Team wins by goals from 1 to N | N or more
-Team scores in first half from 1 to N | N or more
-Team scores goals from 1 to N | N or more
-Player scores goals from 1 to N | N or more
-Player gets booked from 1 to 2| 1 or 2
-Match ends in draw YES/NO
-Both teams score goals YES/NO
-Both teams goals from 1 to N | N or more
-Penalties in a match from 1 to N | N or more
-Corners in a match from 1 to N | N or more
 
 These predictions allow users to engage with the game in a strategic way, choosing outcomes they believe are likely while balancing the potential points they can earn.
+
+## Send data from Chainlink to Fhenix
+
+uint128; 16 bytes capacity
+Team A Half time Goal - uint8 (1 byte)
+Team B Half time Goal - uint8 (1 byte)
+Team A Full time Goal - uint8 (1 byte)
+Team B Full time Goal - uint8 (1 byte)
+Total Penalties - uint8 (1 byte)
+Total Corners - uint8 (1 byte)
+Player goals - uint8 (1 byte each. 4 byte max; 0 bytes min)
+Player Yellow Cards - uint8 (1 byte each. 4 byte max; 0 bytes min)
+
+Min: 6 bytes
+Max: 14 bytes
+
+## Create Prediction Param
 
 ## Technology Stack
 
