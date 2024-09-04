@@ -1,41 +1,26 @@
-const coinMarketCapCoinId = args[0];
-const currencyCode = args[1];
+const fixtureId = args[0];
 
 if (!secrets.apiKey) {
-  throw Error(
-    "COINMARKETCAP_API_KEY environment variable not set for CoinMarketCap API.  Get a free key from https://coinmarketcap.com/api/"
-  );
+  throw Error("RAPID_API_KEY environment variable not set for Sports API.");
 }
 
-const coinMarketCapRequest = Functions.makeHttpRequest({
-  url: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`,
-  // Get a free API key from https://coinmarketcap.com/api/
+const rapidApiRequest = Functions.makeHttpRequest({
+  url: `https://api-football-v1.p.rapidapi.com/v3/fixtures?id=${fixtureId}`,
   headers: {
-    "Content-Type": "application/json",
-    "X-CMC_PRO_API_KEY": secrets.apiKey,
-  },
-  params: {
-    convert: currencyCode,
-    id: coinMarketCapCoinId,
+    "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+    "x-rapidapi-key": secrets.apiKey,
   },
 });
 
-// Make the HTTP request
-const coinMarketCapResponse = await coinMarketCapRequest;
+const rapidApiResponse = await rapidApiRequest;
 
-if (coinMarketCapResponse.error) {
-  throw new Error("CoinMarketCap Error");
+if (rapidApiResponse.errors.length > 0) {
+  throw new Error("Sports API Error");
 }
 
-// fetch the price
-const price =
-  coinMarketCapResponse.data.data[coinMarketCapCoinId]["quote"][currencyCode][
-    "price"
-  ];
+const fixture = rapidApiResponse.data.response[0].fixture;
 
-console.log(`Price: ${price.toFixed(2)} ${currencyCode}`);
+return Functions.encodeUint256(2);
 
-// price * 100 to move by 2 decimals (Solidity doesn't support decimals)
-// Math.round() to round to the nearest integer
-// Functions.encodeUint256() helper function to encode the result from uint256 to bytes
-return Functions.encodeUint256(Math.round(price * 100));
+// Send half time score
+// Send full time score
