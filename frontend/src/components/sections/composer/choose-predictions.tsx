@@ -13,13 +13,14 @@ export default function ChoosePredictions({
 }) {
   const [openChoosePrediction, setOpenChoosePrediction] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { predictions } = useEnvironmentContext();
+  const { predictions, setPredictions } = useEnvironmentContext();
   return (
     <div>
       <ChoosePredictionDrawer
         openDrawer={openChoosePrediction}
         setOpenDrawer={setOpenChoosePrediction}
         selectedIndex={selectedIndex}
+        selectedPredictions={predictions.map((pred) => pred.index)}
       />
       <div className="flex justify-between relative pt-6">
         <Button
@@ -52,12 +53,17 @@ export default function ChoosePredictions({
             <div
               className="w-full border bg-accent rounded-lg h-[65px] flex justify-between space-x-4 items-center cursor-pointer px-4"
               onClick={() => {
-                setOpenChoosePrediction(true);
-                setSelectedIndex(index);
+                setPredictions((prev) =>
+                  prev.map((p) =>
+                    p.index == pred.index
+                      ? { index: -1, params: [], resultantDesc: "" }
+                      : p
+                  )
+                );
               }}
             >
               <p className="text-md font-semibold">{pred.resultantDesc}</p>
-              <Button size={"sm"}>Change</Button>
+              <Button size={"sm"}>Remove</Button>
             </div>
           )
         )}

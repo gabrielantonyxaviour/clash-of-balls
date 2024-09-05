@@ -5,15 +5,19 @@ import TypeThree from "./type-three";
 import { useEnvironmentContext } from "@/components/sections/context";
 import { predictions } from "@/lib/constants";
 import { Prediction, PredictionInput } from "@/lib/type";
+import { useEffect } from "react";
 
 export default function Mapping({
   selectedIndex,
   setOpenDrawer,
+  selectedPredictions,
 }: {
   selectedIndex: number;
   setOpenDrawer: (open: boolean) => void;
+  selectedPredictions: number[];
 }) {
   const { setPredictions } = useEnvironmentContext();
+
   return (
     <>
       {predictions.map((pred, index) => {
@@ -21,6 +25,7 @@ export default function Mapping({
           <TypeZero
             index={index}
             pred={pred}
+            disabled={selectedPredictions.includes(index)}
             setPrediction={(ip: PredictionInput) => {
               setPredictions((prevPredictions) =>
                 prevPredictions.map((prediction, i) =>
@@ -34,6 +39,7 @@ export default function Mapping({
           <TypeOne
             index={index}
             pred={pred}
+            disabled={selectedPredictions.includes(index)}
             setPrediction={(ip: PredictionInput) => {
               setPredictions((prevPredictions) =>
                 prevPredictions.map((prediction, i) =>
@@ -47,6 +53,7 @@ export default function Mapping({
           <TypeTwo
             index={index}
             pred={pred}
+            disabled={selectedPredictions.includes(index)}
             setPrediction={(ip: PredictionInput) => {
               setPredictions((prevPredictions) =>
                 prevPredictions.map((prediction, i) =>
@@ -60,6 +67,7 @@ export default function Mapping({
           <TypeThree
             index={index}
             pred={pred}
+            disabled={selectedPredictions.includes(index)}
             setPrediction={(ip: PredictionInput) => {
               setPredictions((prevPredictions) =>
                 prevPredictions.map((prediction, i) =>

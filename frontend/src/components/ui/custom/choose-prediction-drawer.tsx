@@ -7,15 +7,18 @@ import {
 } from "@/components/ui/carousel";
 
 import Mapping from "./predictions/mapping";
+import { useEffect } from "react";
 
 export default function ChoosePredictionDrawer({
   openDrawer,
   setOpenDrawer,
   selectedIndex,
+  selectedPredictions,
 }: {
   openDrawer: boolean;
   setOpenDrawer: (open: boolean) => void;
   selectedIndex: number;
+  selectedPredictions: number[];
 }) {
   return (
     <>
@@ -31,6 +34,7 @@ export default function ChoosePredictionDrawer({
               <Mapping
                 selectedIndex={selectedIndex}
                 setOpenDrawer={setOpenDrawer}
+                selectedPredictions={selectedPredictions}
               />
             </CarouselContent>
             <CarouselPrevious />

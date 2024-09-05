@@ -9,15 +9,19 @@ export default function TypeZero({
   index,
   pred,
   setPrediction,
+  disabled,
 }: {
   index: number;
   pred: Prediction;
   setPrediction: (ip: PredictionInput) => void;
+  disabled: boolean;
 }) {
   return (
     <CarouselItem
       key={index}
-      className="pl-1 basis-1/2 md:basis-1/4 lg:basis-1/6"
+      className={`pl-1 basis-1/2 md:basis-1/4 lg:basis-1/6 ${
+        disabled ? "opacity-50" : ""
+      }`}
     >
       <div className="p-1">
         <Card className="bg-accent ">
@@ -50,6 +54,7 @@ export default function TypeZero({
               </Popover>
               <Button
                 size={"sm"}
+                disabled={disabled}
                 onClick={() => {
                   setPrediction({
                     index: index,
