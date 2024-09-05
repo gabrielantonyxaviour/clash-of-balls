@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface BalanceContextType {
   predictions: PredictionInput[];
-  setPredictions: (prediction: PredictionInput[]) => void;
+  setPredictions: React.Dispatch<React.SetStateAction<PredictionInput[]>>;
   gameId: number;
   setGameId: (gameId: number) => void;
 }
@@ -24,22 +24,27 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const [predictions, setPredictions] = useState<PredictionInput[]>([
     {
       index: -1,
+      resultantDesc: "",
       params: [],
     },
     {
       index: -1,
+      resultantDesc: "",
       params: [],
     },
     {
       index: -1,
+      resultantDesc: "",
       params: [],
     },
     {
       index: -1,
+      resultantDesc: "",
       params: [],
     },
     {
       index: -1,
+      resultantDesc: "",
       params: [],
     },
   ]);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../input";
 import { CarouselItem } from "../../carousel";
-import { Prediction } from "@/lib/type";
+import { Prediction, PredictionInput } from "@/lib/type";
 import { Card, CardContent } from "../../card";
 import { Separator } from "../../separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
@@ -18,9 +18,11 @@ import { Badge } from "../../badge";
 export default function TypeTwo({
   index,
   pred,
+  setPrediction,
 }: {
   index: number;
   pred: Prediction;
+  setPrediction: (ip: PredictionInput) => void;
 }) {
   const [inputAmount, setInputAmount] = useState("0");
   const [open, setOpen] = useState(false);
@@ -122,6 +124,20 @@ export default function TypeTwo({
                 disabled={
                   inputAmount == "" || inputAmount == "0" || inputTeam == null
                 }
+                onClick={() => {
+                  setPrediction({
+                    index: index,
+                    resultantDesc:
+                      predParts[0] +
+                      (inputTeam == false
+                        ? games[gameId].home.name
+                        : games[gameId].away.name) +
+                      predParts[1] +
+                      inputAmount +
+                      predParts[2],
+                    params: [inputTeam == false ? "home" : "away", inputAmount],
+                  });
+                }}
               >
                 Select
               </Button>

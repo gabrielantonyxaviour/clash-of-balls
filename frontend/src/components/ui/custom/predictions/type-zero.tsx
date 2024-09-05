@@ -1,5 +1,5 @@
 import { CarouselItem } from "../../carousel";
-import { Prediction } from "@/lib/type";
+import { Prediction, PredictionInput } from "@/lib/type";
 import { Card, CardContent } from "../../card";
 import { Separator } from "../../separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
@@ -8,9 +8,11 @@ import { Button } from "../../button";
 export default function TypeZero({
   index,
   pred,
+  setPrediction,
 }: {
   index: number;
   pred: Prediction;
+  setPrediction: (ip: PredictionInput) => void;
 }) {
   return (
     <CarouselItem
@@ -46,7 +48,18 @@ export default function TypeZero({
                   </div>
                 </PopoverContent>
               </Popover>
-              <Button size={"sm"}>Select</Button>
+              <Button
+                size={"sm"}
+                onClick={() => {
+                  setPrediction({
+                    index: index,
+                    resultantDesc: pred.desc,
+                    params: [],
+                  });
+                }}
+              >
+                Select
+              </Button>
             </div>
           </CardContent>
         </Card>

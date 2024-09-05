@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "../../input";
 import { CarouselItem } from "../../carousel";
-import { Prediction } from "@/lib/type";
+import { Prediction, PredictionInput } from "@/lib/type";
 import { Card, CardContent } from "../../card";
 import { Separator } from "../../separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
@@ -11,21 +11,22 @@ import { games } from "@/lib/constants";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "../../badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PlayerCard from "./player-card";
 import { ScrollArea } from "../../scroll-area";
 export default function TypeThree({
   index,
   pred,
+  setPrediction,
 }: {
   index: number;
   pred: Prediction;
+  setPrediction: (ip: PredictionInput) => void;
 }) {
   const [inputAmount, setInputAmount] = useState("0");
   const [open, setOpen] = useState(false);
@@ -165,6 +166,19 @@ export default function TypeThree({
                   inputAmount == "0" ||
                   inputPlayerId == null
                 }
+                onClick={() => {
+                  setPrediction({
+                    index: index,
+                    resultantDesc:
+                      predParts[0] +
+                      games[gameId][!selectedPlayerTeam ? "home" : "away"]
+                        .players[inputPlayerId || 0].player.name +
+                      predParts[1] +
+                      inputAmount +
+                      predParts[2],
+                    params: [(inputPlayerId || 0).toString(), inputAmount],
+                  });
+                }}
               >
                 Select
               </Button>

@@ -37,5 +37,6 @@ export interface Prediction {
 
 export interface PredictionInput {
   index: number;
+  resultantDesc: string;
   params: string[];
 }

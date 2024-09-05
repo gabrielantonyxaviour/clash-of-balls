@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../input";
 import { CarouselItem } from "../../carousel";
-import { Prediction } from "@/lib/type";
+import { Prediction, PredictionInput } from "@/lib/type";
 import { Card, CardContent } from "../../card";
 import { Separator } from "../../separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
@@ -10,9 +10,11 @@ import { Button } from "../../button";
 export default function TypeOne({
   index,
   pred,
+  setPrediction,
 }: {
   index: number;
   pred: Prediction;
+  setPrediction: (ip: PredictionInput) => void;
 }) {
   const [inputAmount, setInputAmount] = useState("0");
   useEffect(() => {}, [inputAmount]);
@@ -77,6 +79,13 @@ export default function TypeOne({
               <Button
                 size={"sm"}
                 disabled={inputAmount == "0" || inputAmount == ""}
+                onClick={() => {
+                  setPrediction({
+                    index: index,
+                    resultantDesc: predParts[0] + inputAmount + predParts[1],
+                    params: [inputAmount],
+                  });
+                }}
               >
                 Select
               </Button>

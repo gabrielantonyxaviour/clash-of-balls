@@ -1594,7 +1594,7 @@ export const predictions: Prediction[] = [
     multiplier: 1.4,
   },
   {
-    desc: "_ wlil get _ yellow card(s) or more",
+    desc: "_ will get _ yellow card(s) or more",
     type: 3,
     basePoints: 3,
     multiplier: 2,
