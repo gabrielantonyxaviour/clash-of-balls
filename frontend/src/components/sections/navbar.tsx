@@ -71,7 +71,7 @@ export default function Navbar({ fid }: { fid: string }) {
   }, [data, loading, queryError]);
   return (
     <div className="flex justify-between w-full px-4 pt-4">
-      <Image src={"/logo-alt.png"} width={50} height={100} alt="logo" />
+      <Image src={"/logo.png"} width={50} height={100} alt="logo" />
 
       <div className="flex items-end space-x-4 my-auto">
         {localFid != "-1" && (
