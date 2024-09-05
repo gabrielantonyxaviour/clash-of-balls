@@ -6,7 +6,7 @@ export default function Steps({ step }: { step: number }) {
           className={`w-[30%] h-[8px] ${
             index < step
               ? "bg-primary"
-              : "bg-transparent border-2 border-destructive"
+              : "bg-transparent border-2 border-accent"
           }     rounded-b-lg`}
         ></div>
       ))}

@@ -11,9 +11,21 @@ import { Game } from "@/lib/type";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-export default function GameCard({ game }: { game: Game }) {
+export default function GameCard({
+  id,
+  game,
+  onClick,
+}: {
+  id: number;
+  game: Game;
+  onClick: any;
+}) {
   return (
-    <Card className="bg-accent cursor-pointer hover:-translate-y-1 hover:scale-105 hover:bg-primary duration-300 transition ease-in-out delay-120 group">
+    <Card
+      key={id}
+      className="bg-accent cursor-pointer hover:-translate-y-1 hover:scale-105 hover:bg-primary duration-300 transition ease-in-out delay-120 group"
+      onClick={onClick}
+    >
       <CardContent className="pb-0">
         <div className="flex justify-center pt-3">
           <Image
