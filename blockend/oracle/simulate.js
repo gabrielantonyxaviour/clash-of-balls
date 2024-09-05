@@ -24,8 +24,8 @@ const linkTokenAddress = networks.arbitrumSepolia.linkTokenAddress;
 const simulate = async () => {
   const source = fs.readFileSync("./oracle/source.js").toString();
 
-  const args = ["1", "USD"];
-  const secrets = { apiKey: process.env.COINMARKETCAP_API_KEY };
+  const args = ["152913"];
+  const secrets = { apiKey: process.env.RAPID_API_KEY };
   const gasLimit = 300000;
 
   const privateKey = process.env.TEST_PRIVATE_KEY;
