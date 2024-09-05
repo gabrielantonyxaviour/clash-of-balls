@@ -32,7 +32,7 @@ export default function RootLayout({
           <head />
           <body
             className={cn(
-              "h-screen bg-primary font-sans antialiased",
+              "h-screen bg-accent font-sans antialiased",
               fontSans.variable
             )}
           >
