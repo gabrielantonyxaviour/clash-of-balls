@@ -1,6 +1,6 @@
 import { arbitrumSepolia } from "viem/chains";
 import { chilizSpicy, fhenixHelium } from "./config";
-import { Game, League, Team } from "./type";
+import { Game, League, Prediction, Team } from "./type";
 
 export const COINMARKETCAP_IDS: Record<string, number> = {
   eth: 1027,
@@ -101,6 +101,69 @@ export const games: Game[] = [
     away: teams.nap,
     league: leagues.ucl,
     formattedDate: "17 Sep, 2024",
+  },
+];
+
+export const predictions: Prediction[] = [
+  {
+    desc: "Match will end in a draw",
+    type: 0,
+    basePoints: 3,
+    multiplier: 1,
+  },
+  {
+    desc: "Both teams will score in the match",
+    type: 0,
+    basePoints: 2,
+    multiplier: 1,
+  },
+  {
+    desc: "Total goal(s) in the match will be _ or more",
+    type: 1,
+    basePoints: 3,
+    multiplier: 1.2,
+  },
+  {
+    desc: "Total penalties in the match will be _ or more",
+    type: 1,
+    basePoints: 3,
+    multiplier: 1.8,
+  },
+  {
+    desc: "Total corners in the match will be _ or more",
+    type: 1,
+    basePoints: 1.5,
+    multiplier: 1.1,
+  },
+  {
+    desc: "In the match, _ will win by _ goal difference or more",
+    type: 2,
+    basePoints: 3,
+    multiplier: 1.2,
+  },
+  {
+    desc: "In the first half, _ will score _ goal(s) or more",
+    type: 2,
+    basePoints: 2,
+    multiplier: 1.2,
+  },
+  {
+    desc: "In the match, _ will score _ goal(s) or more",
+    type: 2,
+    basePoints: 2,
+    multiplier: 1.1,
+  },
+  {
+    desc: "_ will score _ goal(s) or more",
+    type: 3,
+    basePoints: 3,
+    multiplier: 1.4,
+  },
+  {
+    desc: "_ wlil get _ yellow card(s) or more",
+    type: 3,
+    basePoints: 3,
+    multiplier: 2,
   },
 ];
 

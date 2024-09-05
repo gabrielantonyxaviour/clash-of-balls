@@ -9,14 +9,14 @@ export default function SelectGame({
   setSteps: (index: number) => void;
 }) {
   return (
-    <div className="flex-1 flex flex-col justify-center">
-      <p className="text-center text-2xl font-semibold text-foreground">
+    <div className="flex-1 flex flex-col pt-4">
+      <p className="text-center text-xl font-semibold text-foreground">
         Upcoming Fixtures
       </p>
       <p className="text-center text-sm pt-1 text-muted-foreground">
         Choose a game to post a 1v1 challenge in Farcaster
       </p>
-      <div className="grid grid-cols-2 gap-4 px-8 pt-12">
+      <div className="grid grid-cols-2 gap-4 px-8 pt-8">
         {games.map((game, index) => (
           <GameCard
             id={index}

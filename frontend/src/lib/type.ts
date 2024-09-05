@@ -16,3 +16,15 @@ export interface Game {
   league: League;
   formattedDate: string;
 }
+
+export interface Prediction {
+  desc: string;
+  type: number;
+  basePoints: number;
+  multiplier: number;
+}
+
+export interface PredictionInput {
+  index: number;
+  params: string[];
+}
