@@ -74,7 +74,12 @@ export default function TypeOne({
                   </div>
                 </PopoverContent>
               </Popover>
-              <Button size={"sm"}>Select</Button>
+              <Button
+                size={"sm"}
+                disabled={inputAmount == "0" || inputAmount == ""}
+              >
+                Select
+              </Button>
             </div>
           </CardContent>
         </Card>

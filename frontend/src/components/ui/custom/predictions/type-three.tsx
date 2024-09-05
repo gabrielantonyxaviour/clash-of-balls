@@ -9,13 +9,18 @@ import { Button } from "../../button";
 import { useEnvironmentContext } from "@/components/sections/context";
 import { games } from "@/lib/constants";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Badge } from "../../badge";
-export default function TypeTwo({
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PlayerCard from "./player-card";
+import { ScrollArea } from "../../scroll-area";
+export default function TypeThree({
   index,
   pred,
 }: {
@@ -24,9 +29,11 @@ export default function TypeTwo({
 }) {
   const [inputAmount, setInputAmount] = useState("0");
   const [open, setOpen] = useState(false);
-  const [inputTeam, setInputTeam] = useState<boolean | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [inputPlayerId, setInputPlayerId] = useState<number | null>(null);
+  const [selectedPlayerTeam, setSelectedPlayerTeam] = useState<boolean>(false);
   const predParts = pred.desc.split("_");
-  const { gameId, setGameId } = useEnvironmentContext();
+  const { gameId } = useEnvironmentContext();
 
   return (
     <CarouselItem
@@ -39,35 +46,69 @@ export default function TypeTwo({
             <p className="text-center my-auto text-sm px-4">
               {predParts[0]}
               <span className="cursor-pointer" onClick={() => setOpen(!open)}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    {inputTeam == null ? (
+                <Dialog
+                  open={openDialog}
+                  onOpenChange={(op) => setOpenDialog(op)}
+                >
+                  <DialogTrigger>
+                    {inputPlayerId == null ? (
                       <Badge className="bg-card">Choose</Badge>
-                    ) : inputTeam == false ? (
-                      <Badge>{games[gameId].home.name}</Badge>
                     ) : (
-                      <Badge>{games[gameId].away.name}</Badge>
+                      <Badge>
+                        {
+                          games[gameId][!selectedPlayerTeam ? "home" : "away"]
+                            .players[inputPlayerId].player.name
+                        }
+                      </Badge>
                     )}
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem
-                      className="text-xs font-semibold"
-                      onClick={() => {
-                        setInputTeam(false);
-                      }}
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-left">
+                        Choose Player
+                      </DialogTitle>
+                    </DialogHeader>
+                    <Tabs
+                      defaultValue={selectedPlayerTeam.toString()}
+                      className="w-full"
                     >
-                      {games[gameId].home.name}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-xs font-semibold"
-                      onClick={() => {
-                        setInputTeam(true);
-                      }}
-                    >
-                      {games[gameId].away.name}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger
+                          value={"false"}
+                          onClick={() => {
+                            setSelectedPlayerTeam(false);
+                          }}
+                        >
+                          {games[gameId].home.name}
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value={"true"}
+                          onClick={() => {
+                            setSelectedPlayerTeam(true);
+                          }}
+                        >
+                          {games[gameId].away.name}
+                        </TabsTrigger>
+                      </TabsList>
+                      <ScrollArea className="h-[250px] pr-2">
+                        <div className=" grid grid-cols-2 gap-2 mx-2 pt-4">
+                          {games[gameId][
+                            !selectedPlayerTeam ? "home" : "away"
+                          ].players.map((player, index) => (
+                            <PlayerCard
+                              key={index}
+                              player={player}
+                              onClick={() => {
+                                setInputPlayerId(index);
+                                setOpenDialog(false);
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </Tabs>
+                  </DialogContent>
+                </Dialog>
               </span>
               {predParts[1]}
               <span>
@@ -120,7 +161,9 @@ export default function TypeTwo({
               <Button
                 size={"sm"}
                 disabled={
-                  inputAmount == "" || inputAmount == "0" || inputTeam == null
+                  inputAmount == "" ||
+                  inputAmount == "0" ||
+                  inputPlayerId == null
                 }
               >
                 Select
