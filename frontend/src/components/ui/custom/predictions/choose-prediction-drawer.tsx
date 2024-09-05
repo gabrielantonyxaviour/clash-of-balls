@@ -6,7 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import Mapping from "./predictions/mapping";
+import Mapping from "./mapping";
 import { useEffect } from "react";
 
 export default function ChoosePredictionDrawer({

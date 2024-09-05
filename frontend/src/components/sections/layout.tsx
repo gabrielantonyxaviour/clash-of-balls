@@ -12,6 +12,7 @@ import Steps from "./create/Steps";
 import SelectGame from "./composer/select-game";
 import ChoosePredictions from "./composer/choose-predictions";
 import { useEnvironmentContext } from "./context";
+import ConfirmChallenge from "./composer/confirm-challenge";
 
 export default function Layout({ children }: LayoutProps) {
   const [steps, setSteps] = useState(0);
@@ -23,8 +24,12 @@ export default function Layout({ children }: LayoutProps) {
         <NavbarComponent />
         {steps === 0 ? (
           <SelectGame setGameIndex={setGameId} setSteps={setSteps} />
-        ) : (
+        ) : steps == 1 ? (
           <ChoosePredictions setStep={setSteps} />
+        ) : steps == 2 ? (
+          <ConfirmChallenge setStep={setSteps} />
+        ) : (
+          <div></div>
         )}
       </div>
     </Suspense>

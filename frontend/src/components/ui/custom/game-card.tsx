@@ -1,15 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { LOGOS } from "@/lib/constants";
+import { Card, CardContent } from "@/components/ui/card";
 import { Game } from "@/lib/type";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 export default function GameCard({
   id,

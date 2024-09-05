@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import ChoosePredictionDrawer from "@/components/ui/custom/choose-prediction-drawer";
+import ChoosePredictionDrawer from "@/components/ui/custom/predictions/choose-prediction-drawer";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { useState } from "react";
 import { useEnvironmentContext } from "../context";
@@ -32,14 +32,12 @@ export default function ChoosePredictions({
         >
           <ArrowLeft height={15} className="pr-1" /> Back
         </Button>
-        <p className="pt-2 text-lg">Choose Predictions</p>
+        <p className="pt-2 text-lg font-semibold">Choose Predictions</p>
         <Button
           variant={"ghost"}
           size={"sm"}
           onClick={() => {
-            console.log(predictions);
-            console.log(predictions.every((pred) => pred.index != -1));
-            setStep(0);
+            setStep(2);
           }}
           disabled={!predictions.every((pred) => pred.index != -1)}
         >
