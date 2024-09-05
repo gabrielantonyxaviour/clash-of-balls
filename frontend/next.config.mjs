@@ -22,6 +22,11 @@ const nextConfig = {
         hostname: "imagedelivery.net",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "media.api-sports.io",
+        port: "",
+      },
     ],
   },
 };

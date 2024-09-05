@@ -100,3 +100,18 @@
     @apply px-4;
   }
 }
+
+/* Add this to your global CSS file */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+::selection {
+  background-color: #ffffff; /* Change this to your desired background color */
+  color: red; /* Change this to your desired text color */
+}
