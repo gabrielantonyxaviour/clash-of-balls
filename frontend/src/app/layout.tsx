@@ -11,13 +11,15 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "@/lib/config";
 import { BalanceProvider } from "@/components/sections/context";
+import { AirstackProvider } from "@airstack/airstack-react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-const queryClient = new QueryClient();
+const airstackApiKey = process.env.NEXT_PUBLIC_AIRSTACK_API_KEY ?? "";
 
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,17 +32,19 @@ export default function RootLayout({
           <head />
           <body
             className={cn(
-              "h-screen bg-background font-sans antialiased",
+              "h-screen bg-primary font-sans antialiased",
               fontSans.variable
             )}
           >
             <ThemeProvider attribute="class" defaultTheme="dark">
               <BalanceProvider>
-                <Layout>
-                  {children}
-                  <ThemeSwitcher />
-                  <Toaster />
-                </Layout>
+                <AirstackProvider apiKey={airstackApiKey}>
+                  <Layout>
+                    {children}
+                    <ThemeSwitcher />
+                    <Toaster />
+                  </Layout>
+                </AirstackProvider>
               </BalanceProvider>
             </ThemeProvider>
           </body>

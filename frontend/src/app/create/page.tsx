@@ -6,5 +6,9 @@ export const metadata = {
 };
 
 export default function CreatePage() {
-  return <Create />;
+  return (
+    <div className="h-screen bg-white">
+      <p className="text-white">HELLOoooooooo</p>
+    </div>
+  );
 }

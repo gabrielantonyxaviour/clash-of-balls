@@ -7,6 +7,21 @@ const nextConfig = {
         hostname: "noun-api.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "i.seadn.io",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "imagedelivery.net",
+        port: "",
+      },
     ],
   },
 };
