@@ -1,5 +1,5 @@
 "use client";
-import GameCard from "../ui/custom/game-card";
+import GameCard from "../../ui/custom/game-card";
 import { games } from "@/lib/constants";
 export default function SelectGame({
   setGameIndex,

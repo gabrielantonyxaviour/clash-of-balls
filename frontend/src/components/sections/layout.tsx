@@ -9,7 +9,8 @@ import Navbar from "./navbar";
 import { useState } from "react";
 import Steps from "./create/Steps";
 
-import SelectGame from "./select-game";
+import SelectGame from "./composer/select-game";
+import ChoosePredictions from "./composer/choose-predictions";
 
 export default function Layout({ children }: LayoutProps) {
   const [steps, setSteps] = useState(0);
@@ -22,7 +23,7 @@ export default function Layout({ children }: LayoutProps) {
         {steps === 0 ? (
           <SelectGame setGameIndex={setGameIndex} setSteps={setSteps} />
         ) : (
-          <div>{children}</div>
+          <ChoosePredictions setStep={setSteps} />
         )}
       </div>
     </Suspense>
