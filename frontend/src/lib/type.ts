@@ -2,8 +2,18 @@ export interface Team {
   name: string;
   abb: string;
   logo: string;
+  players: PlayerStruct[];
 }
-
+export interface PlayerStruct {
+  player: Player;
+}
+export interface Player {
+  id: number;
+  name: string;
+  number: number;
+  pos: string;
+  grid: string | null;
+}
 export interface League {
   name: string;
   logo: string;
@@ -15,6 +25,7 @@ export interface Game {
   away: Team;
   league: League;
   formattedDate: string;
+  fixtureId: number;
 }
 
 export interface Prediction {
