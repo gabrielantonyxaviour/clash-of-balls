@@ -6,7 +6,17 @@ import { Card, CardContent } from "../../card";
 import { Separator } from "../../separator";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
 import { Button } from "../../button";
-
+import { useEnvironmentContext } from "@/components/sections/context";
+import { games } from "@/lib/constants";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "../../badge";
 export default function TypeTwo({
   index,
   pred,
@@ -15,8 +25,10 @@ export default function TypeTwo({
   pred: Prediction;
 }) {
   const [inputAmount, setInputAmount] = useState("0");
-  const [inputTeam, setInputTeam] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [inputTeam, setInputTeam] = useState<boolean | null>(null);
   const predParts = pred.desc.split("_");
+  const { gameId, setGameId } = useEnvironmentContext();
 
   return (
     <CarouselItem
@@ -28,7 +40,37 @@ export default function TypeTwo({
           <CardContent className="flex flex-col h-[200px] items-center justify-between p-0 pb-3">
             <p className="text-center my-auto text-sm px-4">
               {predParts[0]}
-              <span></span>
+              <span className="cursor-pointer" onClick={() => setOpen(!open)}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    {inputTeam == null ? (
+                      <Badge className="bg-card">Choose</Badge>
+                    ) : inputTeam == false ? (
+                      <Badge>{games[gameId].home.name}</Badge>
+                    ) : (
+                      <Badge>{games[gameId].away.name}</Badge>
+                    )}
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      className="text-xs font-semibold"
+                      onClick={() => {
+                        setInputTeam(false);
+                      }}
+                    >
+                      {games[gameId].home.name}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-xs font-semibold"
+                      onClick={() => {
+                        setInputTeam(true);
+                      }}
+                    >
+                      {games[gameId].away.name}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </span>
               {predParts[1]}
               <span>
                 <Input
