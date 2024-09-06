@@ -54,6 +54,13 @@ Contracts for ClashOfBalls.
 1. Compute points (Crosschain call from Chiliz)
    1. Decrypt the encrypted predictions and the game results fetched from Chainlink and return back the points scored by each and the winner
 
+## Tasks
+
+1. Test Hyperlane + Chainlink
+2. Test Chiliz Basic Logic + Hyperlane
+3. Integrate Fhenix in frontend
+4. Test Fhenix in contracts
+
 ## Deploy Order
 
 1. Deploy ClashOfBallsCore on Chiliz
