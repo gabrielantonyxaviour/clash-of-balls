@@ -125,18 +125,18 @@ contract ClashOfBalls is IClashOfBalls{
 
     function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
         (uint256 _challengeId, uint16 playerOnePoints, uint16 playerTwoPoints)=abi.decode(_data, (uint256, uint16, uint16));
-        Challenge memory _challenge=challenges[_challengeId];
+        // Challenge memory _challenge=challenges[_challengeId];
 
-        uint256 reward = _challenge.amount * 3 / 2;
-        if(playerOnePoints < playerTwoPoints){
-            _challenge.playerTwo.player.call{value: reward}("");
-            emit ChallengeCompleted(_challengeId, _challenge.playerTwo.player, reward, 1);
-        }else if(playerOnePoints > playerTwoPoints){
-            _challenge.playerOne.player.call{value: reward}("");
-            emit ChallengeCompleted(_challengeId, _challenge.playerOne.player, reward, 0);
-        }else{
-            emit ChallengeCompleted(_challengeId, address(0), reward, 2);
-        }
+        // uint256 reward = _challenge.amount * 3 / 2;
+        // if(playerOnePoints < playerTwoPoints){
+        //     _challenge.playerTwo.player.call{value: reward}("");
+        //     emit ChallengeCompleted(_challengeId, _challenge.playerTwo.player, reward, 1);
+        // }else if(playerOnePoints > playerTwoPoints){
+        //     _challenge.playerOne.player.call{value: reward}("");
+        //     emit ChallengeCompleted(_challengeId, _challenge.playerOne.player, reward, 0);
+        // }else{
+        //     emit ChallengeCompleted(_challengeId, address(0), reward, 2);
+        // }
 
         emit CrosschainMessageReceived(_challengeId, playerOnePoints, playerTwoPoints);
     }

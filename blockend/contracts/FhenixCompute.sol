@@ -276,8 +276,9 @@ contract FhenixCompute is IClashOfBalls{
         require(index < 4, "Index out of bounds");
         return uint8((packedData >> (40 - index * 8)) & 0xFF);
     }
-    function testSendCrosschain(uint32[5] memory _data) public {
-        bytes memory data = abi.encode(_data[0], _data[1], _data[2], _data[3], _data[4]);
+
+    function testSendCrosschain(uint256 challengeId, uint32[5] memory _data) public {
+        bytes memory data = abi.encode(challengeId, _data[0], _data[1], _data[2], _data[3], _data[4]);
         bytes32 messageId = mailbox.dispatch{value: 0}(ORACLE_DOMAIN, oracle, data);
         emit CrosschainMessageSent(messageId, data);
     }
@@ -289,10 +290,10 @@ contract FhenixCompute is IClashOfBalls{
     function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
         if(_origin==ORACLE_DOMAIN){
             (uint256 _challengeId, uint128 results)=abi.decode(_data, (uint256, uint128));
-            revealWinner(_challengeId, results);
+            // revealWinner(_challengeId, results);
         }else{
-            (uint256 _challengeId, EncryptedPredictionInput[2] memory _encryptedChallenges)=abi.decode(_data, (uint256, EncryptedPredictionInput[2]));
-            createChallenge(challenges[_challengeId].fixtureId, _encryptedChallenges, 0); // NOTE: gameEndsIn is set to zero for testing. NOT IN PRODUCTION.
+            (uint256 _challengeId, EncryptedPredictionInput[2] memory _encryptedChallenges, uint256 endsIn)=abi.decode(_data, (uint256, EncryptedPredictionInput[2], uint256));
+            // createChallenge(challenges[_challengeId].fixtureId, _encryptedChallenges, 0); // NOTE: gameEndsIn is set to zero for testing. NOT IN PRODUCTION.
         }
         emit CrosschainMessageReceived(_origin, _sender, _data);
     }

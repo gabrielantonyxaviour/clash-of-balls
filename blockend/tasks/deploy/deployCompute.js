@@ -1,6 +1,6 @@
 const { networks } = require("../../networks");
 
-task("deploy-copmute", "Deploys the FhenixCompute contract")
+task("deploy-compute", "Deploys the FhenixCompute contract")
   .addOptionalParam(
     "verify",
     "Set to true to verify contract",

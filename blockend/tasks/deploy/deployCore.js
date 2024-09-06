@@ -1,6 +1,6 @@
 const { networks } = require("../../networks");
 
-task("deploy-core", "Deploys the DropifyCore contract")
+task("deploy-core", "Deploys the ClashOfBalls contract")
   .addOptionalParam(
     "verify",
     "Set to true to verify contract",
@@ -8,18 +8,18 @@ task("deploy-core", "Deploys the DropifyCore contract")
     types.boolean
   )
   .setAction(async (taskArgs) => {
-    console.log(`Deploying DropifyCore contract to ${network.name}`);
-
+    console.log(`Deploying ClashOfBalls contract to ${network.name}`);
+    console.log(process.env.TEST_PRIVATE_KEY);
     console.log("\n__Compiling Contracts__");
     await run("compile");
 
-    const dropifyCoreContractFactory = await ethers.getContractFactory(
-      "DropifyCore"
+    const clashOfBallsContractFactory = await ethers.getContractFactory(
+      "ClashOfBalls"
     );
 
     const args = [networks[network.name].mailbox];
 
-    const dropifyCoreContract = await dropifyCoreContractFactory.deploy(
+    const clashOfBallsContract = await clashOfBallsContractFactory.deploy(
       ...args
     );
 
@@ -27,17 +27,17 @@ task("deploy-core", "Deploys the DropifyCore contract")
       `\nWaiting ${
         networks[network.name].confirmations
       } blocks for transaction ${
-        dropifyCoreContract.deployTransaction.hash
+        clashOfBallsContract.deployTransaction.hash
       } to be confirmed...`
     );
 
-    await dropifyCoreContract.deployTransaction.wait(
+    await clashOfBallsContract.deployTransaction.wait(
       networks[network.name].confirmations
     );
 
     console.log(
-      "\nDeployed DropifyCore contract to:",
-      dropifyCoreContract.address
+      "\nDeployed ClashOfBalls contract to:",
+      clashOfBallsContract.address
     );
 
     if (network.name === "localFunctionsTestnet") {
@@ -54,7 +54,7 @@ task("deploy-core", "Deploys the DropifyCore contract")
       try {
         console.log("\nVerifying contract...");
         await run("verify:verify", {
-          address: dropifyCoreContract.address,
+          address: clashOfBallsContract.address,
           constructorArguments: args,
         });
         console.log("Contract verified");
@@ -75,6 +75,6 @@ task("deploy-core", "Deploys the DropifyCore contract")
     }
 
     console.log(
-      `\n DropifyCore contract deployed to ${dropifyCoreContract.address} on ${network.name}`
+      `\n ClashOfBalls contract deployed to ${clashOfBallsContract.address} on ${network.name}`
     );
   });
