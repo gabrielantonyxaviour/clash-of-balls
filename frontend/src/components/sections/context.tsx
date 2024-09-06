@@ -6,6 +6,8 @@ interface BalanceContextType {
   setPredictions: React.Dispatch<React.SetStateAction<PredictionInput[]>>;
   gameId: number;
   setGameId: (gameId: number) => void;
+  steps: number;
+  setSteps: (step: number) => void;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -49,6 +51,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
     },
   ]);
   const [gameId, setGameId] = useState<number>(-1);
+  const [steps, setSteps] = useState<number>(0);
   return (
     <BalanceContext.Provider
       value={{
@@ -56,6 +59,8 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setPredictions,
         gameId,
         setGameId,
+        steps,
+        setSteps,
       }}
     >
       {children}

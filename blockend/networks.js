@@ -31,7 +31,7 @@ const networks = {
     confirmations: 2,
     nativeCurrencySymbol: "tFHE",
     mailbox: "0x1eA99e28e7Be6317977961A0b0Ab65C256285e7D",
-    compute: "",
+    compute: "0x605827Ad62DCA8e6167169fb8cbCFD90e9813180",
   },
   arbitrumSepolia: {
     url:

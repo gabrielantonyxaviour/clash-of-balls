@@ -33,6 +33,7 @@ const makeRequest = async () => {
 
   const args = ["152913", "154", "276", "645", "634"];
 
+  console.log(process.env.RAPID_API_KEY);
   const secrets = { apiKey: process.env.RAPID_API_KEY };
   const slotIdNumber = 0;
   const expirationTimeMinutes = 15;
@@ -143,12 +144,11 @@ const makeRequest = async () => {
 
   // Actual transaction call
   const transaction = await functionsConsumer.sendRequest(
+    1,
     source, // source
     "0x", // user hosted secrets - encryptedSecretsUrls - empty in this example
     slotIdNumber, // slot ID of the encrypted secrets
     donHostedSecretsVersion, // version of the encrypted secrets
-    args,
-    [], // bytesArgs - arguments can be encoded off-chain to bytes.
     subscriptionId,
     gasLimit,
     ethers.utils.formatBytes32String(donId) // jobId is bytes32 representation of donId

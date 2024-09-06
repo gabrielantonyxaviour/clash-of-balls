@@ -6,31 +6,61 @@ interface LayoutProps {
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "./navbar";
-import { useState } from "react";
 import Steps from "./create/Steps";
 
-import SelectGame from "./composer/select-game";
-import ChoosePredictions from "./composer/choose-predictions";
+import { useAccount, useConnect, useSwitchChain } from "wagmi";
+import { chilizSpicy } from "@/lib/config";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import { injected } from "wagmi/connectors";
 import { useEnvironmentContext } from "./context";
-import ConfirmChallenge from "./composer/confirm-challenge";
 
 export default function Layout({ children }: LayoutProps) {
-  const [steps, setSteps] = useState(0);
-  const { gameId, setGameId } = useEnvironmentContext();
+  const { address, chainId } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
+  const { connectAsync } = useConnect();
+  const { steps, setSteps } = useEnvironmentContext();
+
+  if (chainId != chilizSpicy.id)
+    return (
+      <Suspense>
+        <div className="max-w-[800px] mx-auto h-screen bg-card flex flex-col">
+          <Steps step={0} />
+          <div className="flex-1 flex flex-col justify-center items-center">
+            <Image src={"/logo.png"} width={150} height={150} alt="logo" />
+            <p className="text-3xl font-bold text-stone-200 mb-12">
+              cLaSh Of BaLls
+            </p>
+            {address != undefined && (
+              <p className="my-2">You are currently in the wrong chain</p>
+            )}
+            <Button
+              className="w-[200px] mx-auto"
+              onClick={async () => {
+                if (address == undefined) {
+                  connectAsync({
+                    chainId: chilizSpicy.id,
+                    connector: injected(),
+                  });
+                } else {
+                  await switchChainAsync({
+                    chainId: chilizSpicy.id,
+                  });
+                }
+              }}
+            >
+              {address == undefined ? "Connect Wallet" : "Switch Network"}
+            </Button>
+          </div>
+        </div>
+      </Suspense>
+    );
   return (
     <Suspense>
       <div className="max-w-[800px] mx-auto h-screen bg-card flex flex-col">
         <Steps step={steps} />
         <NavbarComponent />
-        {steps === 0 ? (
-          <SelectGame setGameIndex={setGameId} setSteps={setSteps} />
-        ) : steps == 1 ? (
-          <ChoosePredictions setStep={setSteps} />
-        ) : steps == 2 ? (
-          <ConfirmChallenge setStep={setSteps} />
-        ) : (
-          <div></div>
-        )}
+        {children}
       </div>
     </Suspense>
   );

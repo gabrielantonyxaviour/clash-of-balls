@@ -122,6 +122,12 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         }
     }
 
+    function testSendDataCrosschain(uint256 challengeId, uint128 results) public {
+        bytes memory encodedMessage = abi.encode(challengeId,results);
+        bytes32 messageId = mailbox.dispatch{value: 0}(COMPUTE_DOMAIN, fhenixCompute, encodedMessage);
+        emit CrosschainMessageSent(messageId, encodedMessage);
+    }
+
     function handle(uint32 origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, origin)  {
         (uint256 _challengeId, uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId) = abi.decode(_data, (uint256, uint32, uint32, uint32, uint32, uint32));
         challengeRequests[_challengeId] = [Strings.toString(uint256(fixtureId)), Strings.toString(uint256(playerOneGoalsId)), Strings.toString(uint256(playerTwoGoalsId)), Strings.toString(uint256(playerOneYellowCardsId)), Strings.toString(uint256(playerTwoYellowCardsId))];        

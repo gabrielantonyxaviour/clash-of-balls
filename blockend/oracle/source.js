@@ -22,6 +22,7 @@ const rapidApiRequest = Functions.makeHttpRequest({
 
 const rapidApiResponse = await rapidApiRequest;
 if (rapidApiResponse.error) {
+  console.log(rapidApiResponse);
   throw new Error("Sports API Error");
 }
 
