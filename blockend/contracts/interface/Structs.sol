@@ -39,7 +39,7 @@ interface IClashOfBalls{
     struct DecryptedPrediction{
         address player;
         uint8[5] selectedActionIds;
-        uint16[2] predictionKeyPlayers;
+        uint32[2] predictionKeyPlayers;
         bool[3] predictionKeyTeams;
         uint8[8] predictionValues;
     }

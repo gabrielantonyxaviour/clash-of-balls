@@ -8,7 +8,7 @@ contract FhenixCompute is IClashOfBalls{
     struct PlayerPrediction{
         address player;
         euint8[5] selectedActionIds;
-        euint16[2] predictionKeyPlayers;
+        euint32[2] predictionKeyPlayers;
         ebool[3] predictionKeyTeams;
         euint8[8] predictionValues;
     }
@@ -81,7 +81,7 @@ contract FhenixCompute is IClashOfBalls{
     function formatEncryptedPredictions(EncryptedPredictionInput memory encryptedPrediction) public pure returns (PlayerPrediction memory prediction){
         prediction.player = encryptedPrediction.player;
         for(uint8 i=0; i<5; i++) prediction.selectedActionIds[i] = FHE.asEuint8(encryptedPrediction.encryptedActionIds[i]);
-        for(uint8 i=0; i<2; i++) prediction.predictionKeyPlayers[i] = FHE.asEuint16(encryptedPrediction.encryptedPlayerIds[i]);
+        for(uint8 i=0; i<2; i++) prediction.predictionKeyPlayers[i] = FHE.asEuint32(encryptedPrediction.encryptedPlayerIds[i]);
         for(uint8 i=0; i<3; i++) prediction.predictionKeyTeams[i] = FHE.asEbool(encryptedPrediction.encryptedTeams[i]);
         for(uint8 i=0; i<8; i++) prediction.predictionValues[i] = FHE.asEuint8(encryptedPrediction.encryptedPredictionValues[i]);
     }

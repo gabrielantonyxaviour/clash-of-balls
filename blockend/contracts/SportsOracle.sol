@@ -1,9 +1,13 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
-
 
 import {FunctionsClient} from "@chainlink/contracts/src/v0.8/functions/v1_0_0/FunctionsClient.sol";
 import {ConfirmedOwner} from "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 import {FunctionsRequest} from "@chainlink/contracts/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "./interface/IMailbox.sol";
+
+error UnexpectedRequestID(bytes32 requestId);
 
 contract SportsOracle is FunctionsClient, ConfirmedOwner{
     using FunctionsRequest for FunctionsRequest.Request;
@@ -12,22 +16,51 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
     bytes public s_lastResponse;
     bytes public s_lastError;
 
-    error UnexpectedRequestID(bytes32 requestId);
-
+    event OracleError(bytes err);
     event Response(bytes32 indexed requestId, bytes response, bytes err);
-    event RecordedData(uint128 indexed data);
+    event CrosschainMessageReceived(uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId);
+    event CrosschainMessageSent(bytes32 indexed _messageId, bytes _data);
+
+    mapping(uint256 => string[5]) public challengeRequests;
+    IMailbox public mailbox;
+
+    bytes32 public fhenixCompute;
+
+    uint32 public constant ORIGIN = 8008135;
 
     constructor(
-        address router
-    ) FunctionsClient(router) ConfirmedOwner(msg.sender) {}
+        address router, IMailbox _mailbox
+    ) FunctionsClient(router) ConfirmedOwner(msg.sender) {
+        mailbox = _mailbox;
+    }
+
+    modifier onlyMailbox() {
+        require(
+            msg.sender == address(mailbox),
+            "MailboxClient: sender not mailbox"
+        );
+        _;
+    }
+
+    modifier onlyAuthorizedSender(bytes32 _sender, uint32 origin) {
+        require(origin==ORIGIN, "MailboxClient: invalid origin");
+        require(
+            fhenixCompute == _sender || true, // TODO: Remove this line in production
+            "MailboxClient: unauthorized sender"
+        );
+        _;
+    }
+
+    function setFhenixCompute(address _fhenixComptue) public onlyOwner {
+        fhenixCompute = addressToBytes32(_fhenixComptue);
+    }
 
     function sendRequest(
+        uint256 _challengeId,
         string memory source,
         bytes memory encryptedSecretsUrls,
         uint8 donHostedSecretsSlotID,
         uint64 donHostedSecretsVersion,
-        string[] memory args,
-        bytes[] memory bytesArgs,
         uint64 subscriptionId,
         uint32 gasLimit,
         bytes32 donID
@@ -42,8 +75,10 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
                 donHostedSecretsVersion
             );
         }
-        if (args.length > 0) req.setArgs(args);
-        if (bytesArgs.length > 0) req.setBytesArgs(bytesArgs);
+        string[5] memory _args = challengeRequests[_challengeId];
+        string[] memory args;
+        for (uint256 i = 0; i < 5; i++) args[i] = _args[i];
+        req.setArgs(args);
         s_lastRequestId = _sendRequest(
             req.encodeCBOR(),
             subscriptionId,
@@ -76,27 +111,35 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         if (s_lastRequestId != requestId) {
             revert UnexpectedRequestID(requestId);
         }
-
-
-        s_lastResponse = response;
-        s_lastError = err;
-        // uint128 decodedResponse=uint128(bytesToBytes16(response));
-        emit Response(requestId, s_lastResponse, s_lastError);
-        // emit RecordedData(decodedResponse);
-    }
-    
-    // Triggered to compute the metrics of the challenge using Chainlink Functions and send to Fhenix testnet for confidential compute.
-    function computeChallengeMetrics(uint256 _challengeId) public returns (uint256){
-    }
-
-    function bytesToBytes16(bytes memory input) public pure returns (bytes16 output) {
-        // Ensure the input length is 16 bytes
-        require(input.length == 16, "Input length must be exactly 16 bytes");
-
-        // Copy the first 16 bytes from input to output
-        assembly {
-            output := mload(add(input, 32))
+        if(bytes(err).length>0){
+            emit OracleError(err);
+        }else{
+            // uint128 decodedResponse=uint128(bytesToBytes16(response)); TODO: Use this code to decode in fhenix
+            bytes32 messageId = mailbox.dispatch(ORIGIN, fhenixCompute, response);
+            emit CrosschainMessageSent(messageId, response);
         }
+    }
+
+    // TODO: Use this code to decode in fhenix
+    // function bytesToBytes16(bytes memory input) public pure returns (bytes16 output) {
+    //     // Ensure the input length is 16 bytes
+    //     require(input.length == 16, "Input length must be exactly 16 bytes");
+
+    //     // Copy the first 16 bytes from input to output
+    //     assembly {
+    //         output := mload(add(input, 32))
+    //     }
+    // }
+
+    function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
+        (uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId) = abi.decode(_data, (uint32, uint32, uint32, uint32, uint32));
+        
+        challengeRequests[fixtureId] = [Strings.toString(uint256(fixtureId)), Strings.toString(uint256(playerOneGoalsId)), Strings.toString(uint256(playerTwoGoalsId)), Strings.toString(uint256(playerOneYellowCardsId)), Strings.toString(uint256(playerTwoYellowCardsId))];        
+
+    }
+
+    function addressToBytes32(address _addr) internal pure returns (bytes32) {
+        return bytes32(uint256(uint160(_addr)));
     }
 
 }
