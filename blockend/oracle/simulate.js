@@ -24,7 +24,7 @@ const linkTokenAddress = networks.arbitrumSepolia.linkTokenAddress;
 const simulate = async () => {
   const source = fs.readFileSync("./oracle/source.js").toString();
 
-  const args = ["152913"];
+  const args = ["152913", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
   const secrets = { apiKey: process.env.RAPID_API_KEY };
   const gasLimit = 300000;
 

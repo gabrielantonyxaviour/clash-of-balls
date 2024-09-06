@@ -78,8 +78,6 @@ Player goals - uint8 (1 byte each = 4 bytes)
 Player Yellow Cards - uint8 (1 byte each = 4 bytes)
 Empty bytes - (2 bytes)
 
-Max: 14 bytes
-
 ## Create Prediction Param
 
 ## Technology Stack
