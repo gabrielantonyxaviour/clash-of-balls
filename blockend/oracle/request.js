@@ -15,6 +15,7 @@ const {
 const ethers = require("ethers");
 require("@chainlink/env-enc").config();
 const { networks } = require("../networks");
+const { hexToBigInt } = require("viem");
 
 const routerAddress = networks.arbitrumSepolia.functionsRouter;
 const consumerAddress = networks.arbitrumSepolia.sportsOracle;
@@ -30,8 +31,9 @@ const explorerUrl = "https://sepolia.arbiscan.io";
 const makeRequest = async () => {
   const source = fs.readFileSync("./oracle/source.js").toString();
 
-  const args = ["1", "USD"];
-  const secrets = { apiKey: process.env.COINMARKETCAP_API_KEY };
+  const args = ["152913", "154", "276", "645", "634"];
+
+  const secrets = { apiKey: process.env.RAPID_API_KEY };
   const slotIdNumber = 0;
   const expirationTimeMinutes = 15;
   const gasLimit = 300000;
@@ -66,13 +68,10 @@ const makeRequest = async () => {
   if (errorString) {
     console.log(`❌ Error during simulation: `, errorString);
   } else {
-    const returnType = ReturnType.uint256;
+    const returnType = "uint128";
     const responseBytesHexstring = response.responseBytesHexstring;
     if (ethers.utils.arrayify(responseBytesHexstring).length > 0) {
-      const decodedResponse = decodeResult(
-        response.responseBytesHexstring,
-        returnType
-      );
+      const decodedResponse = hexToBigInt(responseBytesHexstring);
       console.log(`✅ Decoded response to ${returnType}: `, decodedResponse);
     }
   }
@@ -216,14 +215,12 @@ const makeRequest = async () => {
       if (errorString) {
         console.log(`\n❌ Error during the execution: `, errorString);
       } else {
+        const returnType = "uint128";
         const responseBytesHexstring = response.responseBytesHexstring;
         if (ethers.utils.arrayify(responseBytesHexstring).length > 0) {
-          const decodedResponse = decodeResult(
-            response.responseBytesHexstring,
-            ReturnType.uint256
-          );
+          const decodedResponse = hexToBigInt(responseBytesHexstring);
           console.log(
-            `\n✅ Decoded response to ${ReturnType.uint256}: `,
+            `✅ Decoded response to ${returnType}: `,
             decodedResponse
           );
         }

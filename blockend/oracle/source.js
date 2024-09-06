@@ -1,15 +1,19 @@
+const { numberToBytes } = await import("npm:viem");
+
 const fixtureId = args[0];
 
-const playerOnePlayerOneGoalsId = args[1];
-const playerOnePlayerTwoGoalsId = args[2];
-const playerTwoPlayerOneGoalsId = args[3];
-const playerTwoPlayerTwoGoalsId = args[4];
+const playerOneGoalsId = args[1];
+const playerTwoGoalsId = args[2];
 
-const playerOnePlayerOneYellowCardsId = args[5];
-const playerOnePlayerTwoYellowCardsId = args[6];
-const playerTwoPlayerOneYellowCardsId = args[7];
-const playerTwoPlayerTwoYellowCardsId = args[8];
+const playerOneYellowCardsId = args[3];
+const playerTwoYellowCardsId = args[4];
 
+console.log(
+  playerOneGoalsId,
+  playerTwoGoalsId,
+  playerOneYellowCardsId,
+  playerTwoYellowCardsId
+);
 if (!secrets.apiKey) {
   throw Error("RAPID_API_KEY environment variable not set for Sports API.");
 }
@@ -28,7 +32,6 @@ if (rapidApiResponse.error) {
 }
 
 const fixture = rapidApiResponse.data.response[0];
-console.log(fixture);
 const halfTimeHomeGoals = fixture.score.halftime.home;
 const halfTimeAwayGoals = fixture.score.halftime.away;
 
@@ -45,71 +48,57 @@ const totalCornerKicks =
 console.log(
   `Fixture ID: ${fixtureId}\nHalf Time Score: ${halfTimeHomeGoals} - ${halfTimeAwayGoals}\nFull Time Score: ${fullTimeHomeGoals} - ${fullTimeAwayGoals}\nTotal Shots on Goal: ${totalShotsOnGoal}\nTotal Corner Kicks: ${totalCornerKicks}`
 );
-let playerOnePlayerOneGoals = 0,
-  playerOnePlayerTwoGoals = 0,
-  playerTwoPlayerOneGoals = 0,
-  playerTwoPlayerTwoGoals = 0,
-  playerOnePlayerOneYellowCards = 0,
-  playerOnePlayerTwoYellowCards = 0,
-  playerTwoPlayerOneYellowCards = 0,
-  playerTwoPlayerTwoYellowCards = 0;
+let playerOneGoals = 0,
+  playerTwoGoals = 0,
+  playerOneYellowCards = 0,
+  playerTwoYellowCards = 0;
 
 const allPlayers = fixture.players[0].players.concat(
   fixture.players[1].players
 );
 
-if (playerOnePlayerOneGoalsId != "0")
-  playerOnePlayerOneGoals =
-    allPlayers.find((player) => player.player.id === playerOnePlayerOneGoalsId)
+if (playerOneGoalsId != "0")
+  playerOneGoals =
+    allPlayers.find((player) => player.player.id === parseInt(playerOneGoalsId))
       .statistics[0].goals.total || 0;
-else if (playerOnePlayerOneYellowCardsId != "0")
-  playerOnePlayerOneYellowCards =
+if (playerOneYellowCardsId != "0")
+  playerOneYellowCards =
     allPlayers.find(
-      (player) => player.player.id === playerOnePlayerOneYellowCardsId
+      (player) => player.player.id === parseInt(playerOneYellowCardsId)
     ).statistics[0].cards.yellow || 0;
-else if (playerOnePlayerTwoGoalsId != "0")
-  playerOnePlayerTwoGoals =
-    allPlayers.find((player) => player.player.id === playerOnePlayerTwoGoalsId)
+if (playerTwoGoalsId != "0")
+  playerTwoGoals =
+    allPlayers.find((player) => player.player.id === parseInt(playerTwoGoalsId))
       .statistics[0].goals.total || 0;
-else if (playerOnePlayerTwoYellowCardsId != "0")
-  playerOnePlayerTwoYellowCards =
+if (playerTwoYellowCardsId != "0")
+  playerTwoYellowCards =
     allPlayers.find(
-      (player) => player.player.id === playerOnePlayerTwoYellowCardsId
+      (player) => player.player.id === parseInt(playerTwoYellowCardsId)
     ).statistics[0].cards.yellow || 0;
-else if (playerTwoPlayerOneGoalsId != "0")
-  playerTwoPlayerOneGoals =
-    allPlayers.find((player) => player.player.id === playerTwoPlayerOneGoalsId)
-      .statistics[0].goals.total || 0;
-else if (playerTwoPlayerOneYellowCardsId != "0")
-  playerTwoPlayerOneYellowCards =
-    allPlayers.find(
-      (player) => player.player.id === playerTwoPlayerOneYellowCardsId
-    ).statistics[0].cards.yellow || 0;
-else if (playerTwoPlayerTwoGoalsId != "0")
-  playerTwoPlayerTwoGoals =
-    allPlayers.find((player) => player.player.id === playerTwoPlayerTwoGoalsId)
-      .statistics[0].goals.total || 0;
-else if (playerTwoPlayerTwoYellowCardsId != "0")
-  playerTwoPlayerTwoYellowCards =
-    allPlayers.find(
-      (player) => player.player.id === playerTwoPlayerTwoYellowCardsId
-    ).statistics[0].cards.yellow || 0;
+
+console.log(
+  `Player One Goals: ${playerOneGoals}\nPlayer Two Goals: ${playerTwoGoals}\nPlayer One Yellow Cards: ${playerOneYellowCards}\nPlayer Two Yellow Cards: ${playerTwoYellowCards}`
+);
 
 const encodedData =
-  (BigInt(halfTimeHomeGoals) << 248n) | // Shift 248 bits
-  (BigInt(halfTimeAwayGoals) << 240n) | // Shift 240 bits
-  (BigInt(fullTimeHomeGoals) << 232n) | // Shift 232 bits
-  (BigInt(fullTimeAwayGoals) << 224n) | // Shift 224 bits
-  (BigInt(totalShotsOnGoal) << 216n) | // Shift 216 bits
-  (BigInt(totalCornerKicks) << 208n) | // Shift 208 bits
-  (BigInt(playerOnePlayerOneGoals) << 200n) | // Shift 200 bits
-  (BigInt(playerOnePlayerTwoGoals) << 192n) | // Shift 192 bits
-  (BigInt(playerTwoPlayerOneGoals) << 184n) | // Shift 184 bits
-  (BigInt(playerTwoPlayerTwoGoals) << 176n) | // Shift 176 bits
-  (BigInt(playerOnePlayerOneYellowCards) << 168n) | // Shift 168 bits
-  (BigInt(playerOnePlayerTwoYellowCards) << 160n) | // Shift 160 bits
-  (BigInt(playerTwoPlayerOneYellowCards) << 152n) | // Shift 152 bits
-  (BigInt(playerTwoPlayerTwoYellowCards) << 144n) | // Shift 144 bits
+  (BigInt(halfTimeHomeGoals) << 120n) | // Shift 120 bits
+  (BigInt(halfTimeAwayGoals) << 112n) | // Shift 112 bits
+  (BigInt(fullTimeHomeGoals) << 104n) | // Shift 104 bits
+  (BigInt(fullTimeAwayGoals) << 96n) | // Shift 96 bits
+  (BigInt(totalShotsOnGoal) << 88n) | // Shift 88 bits
+  (BigInt(totalCornerKicks) << 80n) | // Shift 80 bits
+  (BigInt(playerOneGoals) << 72n) | // Shift 72 bits
+  (BigInt(playerTwoGoals) << 64n) | // Shift 64 bits
+  (BigInt(playerOneYellowCards) << 56n) | // Shift 56 bits
+  (BigInt(playerTwoYellowCards) << 48n) | // Shift 48 bits
   BigInt(0); // Set all remaining bits to 0
 
-return Functions.encodeUint256(encodedData);
+console.log(encodedData);
+console.log(
+  numberToBytes(encodedData, {
+    size: 16,
+  })
+);
+return numberToBytes(encodedData, {
+  size: 16,
+});

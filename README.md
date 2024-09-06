@@ -74,9 +74,9 @@ Team A Full time Goal - uint8 (1 byte)
 Team B Full time Goal - uint8 (1 byte)
 Total Penalties - uint8 (1 byte)
 Total Corners - uint8 (1 byte)
-Player goals - uint8 (1 byte each = 4 bytes)
-Player Yellow Cards - uint8 (1 byte each = 4 bytes)
-Empty bytes - (2 bytes)
+Goals of players - uint8 (1 byte each = 2 bytes)
+Yellow cards of players - uint8 (1 byte each = 2 bytes)
+Empty bytes - (6 bytes)
 
 ## Create Prediction Param
 

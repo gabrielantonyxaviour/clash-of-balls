@@ -47,7 +47,7 @@ const networks = {
     subId: "170",
     donId: "fun-arbitrum-sepolia-1",
     linkTokenAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-    sportsOracle: "0xd5a9B921E90F82b01d75EAeA2dDf7Ad4d7adAf84",
+    sportsOracle: "0x7f2a47616A70E5e489fbF27Eb7734a7049F7124F",
   },
 };
 

@@ -15,6 +15,7 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
     error UnexpectedRequestID(bytes32 requestId);
 
     event Response(bytes32 indexed requestId, bytes response, bytes err);
+    event RecordedData(uint128 indexed data);
 
     constructor(
         address router
@@ -75,13 +76,27 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         if (s_lastRequestId != requestId) {
             revert UnexpectedRequestID(requestId);
         }
+
+
         s_lastResponse = response;
         s_lastError = err;
+        uint128 decodedResponse=uint128(bytesToBytes16(response));
         emit Response(requestId, s_lastResponse, s_lastError);
+        emit RecordedData(decodedResponse);
     }
     
     // Triggered to compute the metrics of the challenge using Chainlink Functions and send to Fhenix testnet for confidential compute.
     function computeChallengeMetrics(uint256 _challengeId) public returns (uint256){
+    }
+
+    function bytesToBytes16(bytes memory input) public pure returns (bytes16 output) {
+        // Ensure the input length is 16 bytes
+        require(input.length == 16, "Input length must be exactly 16 bytes");
+
+        // Copy the first 16 bytes from input to output
+        assembly {
+            output := mload(add(input, 32))
+        }
     }
 
 }

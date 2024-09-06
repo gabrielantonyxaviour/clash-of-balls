@@ -15,6 +15,7 @@ const {
 const ethers = require("ethers");
 require("@chainlink/env-enc").config();
 const { networks } = require("../networks");
+const { hexToBigInt } = require("viem");
 
 const routerAddress = networks.arbitrumSepolia.functionsRouter;
 const subscriptionId = networks.arbitrumSepolia.subId;
@@ -24,7 +25,7 @@ const linkTokenAddress = networks.arbitrumSepolia.linkTokenAddress;
 const simulate = async () => {
   const source = fs.readFileSync("./oracle/source.js").toString();
 
-  const args = ["152913", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
+  const args = ["152913", "154", "276", "645", "634"];
   const secrets = { apiKey: process.env.RAPID_API_KEY };
   const gasLimit = 300000;
 
@@ -58,13 +59,10 @@ const simulate = async () => {
   if (errorString) {
     console.log(`❌ Error during simulation: `, errorString);
   } else {
-    const returnType = ReturnType.uint256;
+    const returnType = "uint128";
     const responseBytesHexstring = response.responseBytesHexstring;
     if (ethers.utils.arrayify(responseBytesHexstring).length > 0) {
-      const decodedResponse = decodeResult(
-        response.responseBytesHexstring,
-        returnType
-      );
+      const decodedResponse = hexToBigInt(responseBytesHexstring);
       console.log(`✅ Decoded response to ${returnType}: `, decodedResponse);
     }
   }
