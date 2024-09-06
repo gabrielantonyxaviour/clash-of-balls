@@ -80,9 +80,9 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
 
         s_lastResponse = response;
         s_lastError = err;
-        uint128 decodedResponse=uint128(bytesToBytes16(response));
+        // uint128 decodedResponse=uint128(bytesToBytes16(response));
         emit Response(requestId, s_lastResponse, s_lastError);
-        emit RecordedData(decodedResponse);
+        // emit RecordedData(decodedResponse);
     }
     
     // Triggered to compute the metrics of the challenge using Chainlink Functions and send to Fhenix testnet for confidential compute.

@@ -8,12 +8,6 @@ const playerTwoGoalsId = args[2];
 const playerOneYellowCardsId = args[3];
 const playerTwoYellowCardsId = args[4];
 
-console.log(
-  playerOneGoalsId,
-  playerTwoGoalsId,
-  playerOneYellowCardsId,
-  playerTwoYellowCardsId
-);
 if (!secrets.apiKey) {
   throw Error("RAPID_API_KEY environment variable not set for Sports API.");
 }
@@ -45,9 +39,6 @@ const totalCornerKicks =
   fixture.statistics[0].statistics[7].value +
   fixture.statistics[1].statistics[7].value;
 
-console.log(
-  `Fixture ID: ${fixtureId}\nHalf Time Score: ${halfTimeHomeGoals} - ${halfTimeAwayGoals}\nFull Time Score: ${fullTimeHomeGoals} - ${fullTimeAwayGoals}\nTotal Shots on Goal: ${totalShotsOnGoal}\nTotal Corner Kicks: ${totalCornerKicks}`
-);
 let playerOneGoals = 0,
   playerTwoGoals = 0,
   playerOneYellowCards = 0,
@@ -76,10 +67,6 @@ if (playerTwoYellowCardsId != "0")
       (player) => player.player.id === parseInt(playerTwoYellowCardsId)
     ).statistics[0].cards.yellow || 0;
 
-console.log(
-  `Player One Goals: ${playerOneGoals}\nPlayer Two Goals: ${playerTwoGoals}\nPlayer One Yellow Cards: ${playerOneYellowCards}\nPlayer Two Yellow Cards: ${playerTwoYellowCards}`
-);
-
 const encodedData =
   (BigInt(halfTimeHomeGoals) << 120n) | // Shift 120 bits
   (BigInt(halfTimeAwayGoals) << 112n) | // Shift 112 bits
@@ -93,12 +80,6 @@ const encodedData =
   (BigInt(playerTwoYellowCards) << 48n) | // Shift 48 bits
   BigInt(0); // Set all remaining bits to 0
 
-console.log(encodedData);
-console.log(
-  numberToBytes(encodedData, {
-    size: 16,
-  })
-);
 return numberToBytes(encodedData, {
   size: 16,
 });
