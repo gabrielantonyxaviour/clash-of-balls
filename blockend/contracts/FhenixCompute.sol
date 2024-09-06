@@ -3,6 +3,7 @@ pragma solidity ^0.8.10;
 
 import "@fhenixprotocol/contracts/FHE.sol";
 import "./interface/Structs.sol";
+import "./interface/IMailbox.sol";
 
 contract FhenixCompute is IClashOfBalls{
     struct PlayerPrediction{
@@ -19,14 +20,12 @@ contract FhenixCompute is IClashOfBalls{
         uint32 fixtureId;
         uint16 playerOnePoints;
         uint16 playerTwoPoints;     
-        uint8 winner;
         uint256 gameEnds;
         bool isCompleted;
     }
 
     address public owner;
-    address public router;
-    address public core;
+    IMailbox public mailbox;
     mapping(uint8 => Action) public actions;
     mapping(uint256 => ComputeChallenge) public challenges;
     mapping(uint256 => DecryptedChallenge) public decryptedChallenges;
@@ -34,22 +33,48 @@ contract FhenixCompute is IClashOfBalls{
     uint256 public challengeId;
     uint16 public constant BASE_MULTIPLIER = 100;
 
-    constructor(address hyperlaneRouter, address _core, uint8[10] memory basePoints, uint16[10] memory multiplierStepsInBps, string[10] memory metadata) {
+    bytes32 public oracle;
+    bytes32 public core;
+
+    uint32 public constant ORACLE_DOMAIN=421614;
+    uint32 public constant CORE_DOMAIN=88882;
+
+    constructor(IMailbox _mailbox, address _core, address _oracle, uint8[10] memory basePoints, uint16[10] memory multiplierStepsInBps, string[10] memory metadata) {
         owner = msg.sender;
-        router=hyperlaneRouter;
-        core=_core;
+        mailbox=_mailbox;
+        core=addressToBytes32(_core);
+        oracle=addressToBytes32(_oracle);
         challengeId=0;
         setActions(basePoints, multiplierStepsInBps, metadata);
     }
 
     event ActionsConfigured(uint8[10] basePoints, uint16[10] multiplierStepsInBps, string[10] metadata);
-    event ChallengeCreated(uint256 indexed challengeId, uint256 indexed fixtureId, address indexed playerOne);
+    event ChallengeCreated(uint256 indexed challengeId, uint256 indexed fixtureId, address[2] players);
     event ChallengeAccepted(uint256 indexed challengeId, address indexed playerTwo);
-    event ChallengeCompleted(uint256 indexed challengeId, address indexed winner, uint16 playerOnePoints, uint16 playerTwoPoints);
+    event ChallengeCompleted(uint256 indexed challengeId, uint16 playerOnePoints, uint16 playerTwoPoints);
     event PredictionsDecrypted(uint256 indexed challengeId, DecryptedChallenge decryptedChallenge);
 
+    event CrosschainMessageSent(bytes32 indexed _messageId, bytes _data);
+    event CrosschainMessageReceived(uint32 indexed _origin, bytes32 indexed _sender, bytes data);
+  
     modifier onlyOwner {
         require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    modifier onlyMailbox() {
+        require(
+            msg.sender == address(mailbox),
+            "MailboxClient: sender not mailbox"
+        );
+        _;
+    }
+
+    modifier onlyAuthorizedSender(bytes32 _sender, uint32 origin) {
+        require(
+            (origin==ORACLE_DOMAIN && _sender==oracle)|| (origin==CORE_DOMAIN && _sender==core),
+            "MailboxClient: unauthorized sender"
+        );
         _;
     }
 
@@ -59,9 +84,8 @@ contract FhenixCompute is IClashOfBalls{
 
     }
 
-
     // Receive cross chain transaction from Chiliz
-    function createChallenge(uint32 fixtureId, address player, EncryptedPredictionInput[2] memory players, uint256 gameEndsIn) public {
+    function createChallenge(uint32 fixtureId, EncryptedPredictionInput[2] memory players, uint256 gameEndsIn) public {
         ComputeChallenge storage challenge = challenges[challengeId];
         PlayerPrediction memory playerOne;
         challenge.isCompleted = false;
@@ -71,9 +95,8 @@ contract FhenixCompute is IClashOfBalls{
 
         challenge.gameEnds = block.timestamp + gameEndsIn;
         challenge.fixtureId = fixtureId;
-        challenge.playerOne = playerOne;
-
-        emit ChallengeCreated(challengeId, fixtureId, player);
+        
+        emit ChallengeCreated(challengeId, fixtureId, [players[0].player, players[1].player]);
         challengeId += 1;
     }
 
@@ -95,8 +118,10 @@ contract FhenixCompute is IClashOfBalls{
         decryptedChallenge.playerOne = playerOne;
         decryptedChallenge.playerTwo = playerTwo;
         // Send cross chain tx to Arbitrum
-
+        bytes memory encodedMessage = abi.encode(_challengeId, decryptedChallenge.fixtureId, decryptedChallenge.playerOne.predictionKeyPlayers[0], decryptedChallenge.playerTwo.predictionKeyPlayers[0], decryptedChallenge.playerOne.predictionKeyPlayers[1], decryptedChallenge.playerTwo.predictionKeyPlayers[1]);
+        bytes32 _messageId=mailbox.dispatch(ORACLE_DOMAIN, oracle, encodedMessage);
         emit PredictionsDecrypted(_challengeId, decryptedChallenge);
+        emit CrosschainMessageSent(_messageId, encodedMessage);
     }
 
     // Internal
@@ -115,26 +140,20 @@ contract FhenixCompute is IClashOfBalls{
         decryptedPrediction.predictionValues = [FHE.decrypt(prediction.predictionValues[0]), FHE.decrypt(prediction.predictionValues[1]), FHE.decrypt(prediction.predictionValues[2]), FHE.decrypt(prediction.predictionValues[3]), FHE.decrypt(prediction.predictionValues[4]), FHE.decrypt(prediction.predictionValues[5]), FHE.decrypt(prediction.predictionValues[6]), FHE.decrypt(prediction.predictionValues[7])];
     }
 
-    // Receive cross chain transaction from Arbitrum
     function revealWinner(uint256 _challengeId, uint128 results) public {
+
         DecryptedChallenge storage decryptedChallenge = decryptedChallenges[_challengeId];
         ComputeChallenge storage challenge = challenges[_challengeId];
-        uint8[14] memory unpackedResults = [getTeamAHalfTimeGoal(results), getTeamBHalfTimeGoal(results), getTeamAFullTimeGoal(results), getTeamBFullTimeGoal(results), getTotalPenalties(results), getTotalCorners(results), getPlayerGoal(results, 0), getPlayerGoal(results, 1), getPlayerGoal(results, 2), getPlayerGoal(results, 3), getPlayerYellowCard(results, 0), getPlayerYellowCard(results, 1), getPlayerYellowCard(results, 2), getPlayerYellowCard(results, 3)];
+        uint8[14] memory unpackedResults = [getTeamAHalfTimeGoal(results), getTeamBHalfTimeGoal(results), getTeamAFullTimeGoal(results), getTeamBFullTimeGoal(results), getTotalShotsOnGoal(results), getTotalCorners(results), getPlayerGoal(results, 0), getPlayerGoal(results, 1), getPlayerGoal(results, 2), getPlayerGoal(results, 3), getPlayerYellowCard(results, 0), getPlayerYellowCard(results, 1), getPlayerYellowCard(results, 2), getPlayerYellowCard(results, 3)];
         (uint16 playerOnePoints, uint16 playerTwoPoints)=resolvePoints(decryptedChallenge.playerOne, decryptedChallenge.playerTwo, unpackedResults);
         challenge.playerOnePoints = playerOnePoints;
         challenge.playerTwoPoints = playerTwoPoints;
-
-        if(playerOnePoints < playerTwoPoints){
-            challenge.winner = 1;
-            emit ChallengeCompleted(_challengeId, challenge.playerTwo.player, playerOnePoints, playerTwoPoints);
-        }else if(playerOnePoints > playerTwoPoints){
-            challenge.winner = 0;
-            emit ChallengeCompleted(_challengeId, challenge.playerOne.player, playerOnePoints, playerTwoPoints);
-        }else{
-            challenge.winner = 2;
-            emit ChallengeCompleted(_challengeId, address(0), playerOnePoints, playerTwoPoints);
-        }
         challenge.isCompleted=true;
+        bytes memory encodedMessage=abi.encode(_challengeId, playerOnePoints, playerTwoPoints);
+        bytes32 _messageId = mailbox.dispatch(CORE_DOMAIN, core, encodedMessage);
+
+        emit CrosschainMessageSent(_messageId, encodedMessage);
+        emit ChallengeCompleted(_challengeId, playerOnePoints, playerTwoPoints);
     }
 
     // Internal
@@ -166,10 +185,10 @@ contract FhenixCompute is IClashOfBalls{
                 uint8 totalGoals = results[2] + results[3];
                 if(predictedScore <= totalGoals) points += action.basePoints * (BASE_MULTIPLIER + (action.multiplierStepsInBps * predictedScore));
             } else if(actionId == 3){
-                // Check if penalties count greater than or equal to predicted N penalties
+                // Check if total shots on goal count greater than or equal to predicted N shots on goal
                 uint8 predictedScore = prediction.predictionValues[predictionValuesIndex++];
-                uint8 totalPenalties = results[4];
-                if(predictedScore <= totalPenalties) points += action.basePoints * (BASE_MULTIPLIER + (action.multiplierStepsInBps * predictedScore));
+                uint8 totalShotsOnGoal = results[4];
+                if(predictedScore <= totalShotsOnGoal) points += action.basePoints * (BASE_MULTIPLIER + (action.multiplierStepsInBps * predictedScore));
 
             } else if(actionId == 4){
                 // Check if corners count greater than or equal to predicted N corners
@@ -240,7 +259,7 @@ contract FhenixCompute is IClashOfBalls{
         return uint8((packedData >> 96) & 0xFF);
     }
 
-    function getTotalPenalties(uint128 packedData) public pure returns (uint8) {
+    function getTotalShotsOnGoal(uint128 packedData) public pure returns (uint8) {
         return uint8((packedData >> 88) & 0xFF);
     }
 
@@ -256,6 +275,26 @@ contract FhenixCompute is IClashOfBalls{
     function getPlayerYellowCard(uint128 packedData, uint8 index) public pure returns (uint8) {
         require(index < 4, "Index out of bounds");
         return uint8((packedData >> (40 - index * 8)) & 0xFF);
+    }
+    function testSendCrosschain(uint32[5] memory _data) public {
+        bytes memory data = abi.encode(_data[0], _data[1], _data[2], _data[3], _data[4]);
+        bytes32 messageId = mailbox.dispatch{value: 0}(ORACLE_DOMAIN, oracle, data);
+        emit CrosschainMessageSent(messageId, data);
+    }
+
+    function addressToBytes32(address _addr) internal pure returns (bytes32) {
+        return bytes32(uint256(uint160(_addr)));
+    }
+
+    function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
+        if(_origin==ORACLE_DOMAIN){
+            (uint256 _challengeId, uint128 results)=abi.decode(_data, (uint256, uint128));
+            revealWinner(_challengeId, results);
+        }else{
+            (uint256 _challengeId, EncryptedPredictionInput[2] memory _encryptedChallenges)=abi.decode(_data, (uint256, EncryptedPredictionInput[2]));
+            createChallenge(challenges[_challengeId].fixtureId, _encryptedChallenges, 0); // NOTE: gameEndsIn is set to zero for testing. NOT IN PRODUCTION.
+        }
+        emit CrosschainMessageReceived(_origin, _sender, _data);
     }
 
 }

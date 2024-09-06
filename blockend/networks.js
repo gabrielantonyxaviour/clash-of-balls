@@ -19,6 +19,7 @@ const networks = {
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "CHZ",
     mailbox: "0xa8ec309E062b0B986284c19a7A14AE2F1f4D4D0F",
+    core: "",
   },
   fhenixTestnet: {
     url: "https://api.helium.fhenix.zone",
@@ -30,6 +31,7 @@ const networks = {
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "tFHE",
     mailbox: "0x1eA99e28e7Be6317977961A0b0Ab65C256285e7D",
+    compute: "",
   },
   arbitrumSepolia: {
     url:
@@ -47,7 +49,7 @@ const networks = {
     subId: "170",
     donId: "fun-arbitrum-sepolia-1",
     linkTokenAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-    sportsOracle: "0x7f2a47616a70e5e489fbf27eb7734a7049f7124f",
+    sportsOracle: "0x206aeedeEb7496413e02DAaC80E24c64aBEd89EE",
   },
 };
 

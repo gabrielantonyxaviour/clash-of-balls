@@ -13,26 +13,25 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
     using FunctionsRequest for FunctionsRequest.Request;
 
     bytes32 public s_lastRequestId;
-    bytes public s_lastResponse;
-    bytes public s_lastError;
 
-    event OracleError(bytes err);
-    event Response(bytes32 indexed requestId, bytes response, bytes err);
-    event CrosschainMessageReceived(uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId);
-    event CrosschainMessageSent(bytes32 indexed _messageId, bytes _data);
-
+    mapping(bytes32=>uint256) public requestIdToChallengeId;
     mapping(uint256 => string[5]) public challengeRequests;
     IMailbox public mailbox;
 
     bytes32 public fhenixCompute;
-
-    uint32 public constant ORIGIN = 8008135;
+    uint32 public constant COMPUTE_DOMAIN = 8008135;
 
     constructor(
         address router, IMailbox _mailbox
     ) FunctionsClient(router) ConfirmedOwner(msg.sender) {
         mailbox = _mailbox;
     }
+
+    event OracleError(bytes err);
+    event Response(bytes32 indexed requestId, bytes response, bytes err);
+    event CrosschainMessageReceived(uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId);
+    event CrosschainMessageSent(bytes32 indexed _messageId, bytes _data);
+    event ChallengeReceived(uint256 _challengeId, uint32 fixtureId, string[5] challengeRequest);
 
     modifier onlyMailbox() {
         require(
@@ -43,16 +42,16 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
     }
 
     modifier onlyAuthorizedSender(bytes32 _sender, uint32 origin) {
-        require(origin==ORIGIN, "MailboxClient: invalid origin");
+        require(COMPUTE_DOMAIN==origin, "MailboxClient: invalid origin");
         require(
-            fhenixCompute == _sender || true, // TODO: Remove this line in production
+            fhenixCompute == _sender , 
             "MailboxClient: unauthorized sender"
         );
         _;
     }
 
-    function setFhenixCompute(address _fhenixComptue) public onlyOwner {
-        fhenixCompute = addressToBytes32(_fhenixComptue);
+    function setFhenixCompute(address _fhenixCompute) public onlyOwner {
+        fhenixCompute = addressToBytes32(_fhenixCompute);
     }
 
     function sendRequest(
@@ -79,13 +78,15 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         string[] memory args;
         for (uint256 i = 0; i < 5; i++) args[i] = _args[i];
         req.setArgs(args);
-        s_lastRequestId = _sendRequest(
+        bytes32 reqId = _sendRequest(
             req.encodeCBOR(),
             subscriptionId,
             gasLimit,
             donID
         );
-        return s_lastRequestId;
+        requestIdToChallengeId[reqId]=_challengeId;
+        
+        return reqId;
     }
 
     function sendRequestCBOR(
@@ -114,32 +115,28 @@ contract SportsOracle is FunctionsClient, ConfirmedOwner{
         if(bytes(err).length>0){
             emit OracleError(err);
         }else{
-            // uint128 decodedResponse=uint128(bytesToBytes16(response)); TODO: Use this code to decode in fhenix
-            bytes32 messageId = mailbox.dispatch(ORIGIN, fhenixCompute, response);
-            emit CrosschainMessageSent(messageId, response);
+            uint128 results = uint128(bytesToBytes16(response));
+            bytes memory encodedMessage = abi.encode(requestIdToChallengeId[requestId],results);
+            bytes32 messageId = mailbox.dispatch{value: 0}(COMPUTE_DOMAIN, fhenixCompute, response);
+            emit CrosschainMessageSent(messageId, encodedMessage);
         }
     }
 
-    // TODO: Use this code to decode in fhenix
-    // function bytesToBytes16(bytes memory input) public pure returns (bytes16 output) {
-    //     // Ensure the input length is 16 bytes
-    //     require(input.length == 16, "Input length must be exactly 16 bytes");
-
-    //     // Copy the first 16 bytes from input to output
-    //     assembly {
-    //         output := mload(add(input, 32))
-    //     }
-    // }
-
-    function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
-        (uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId) = abi.decode(_data, (uint32, uint32, uint32, uint32, uint32));
-        
-        challengeRequests[fixtureId] = [Strings.toString(uint256(fixtureId)), Strings.toString(uint256(playerOneGoalsId)), Strings.toString(uint256(playerTwoGoalsId)), Strings.toString(uint256(playerOneYellowCardsId)), Strings.toString(uint256(playerTwoYellowCardsId))];        
-
+    function handle(uint32 origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, origin)  {
+        (uint256 _challengeId, uint32 fixtureId, uint32 playerOneGoalsId, uint32 playerTwoGoalsId, uint32 playerOneYellowCardsId, uint32 playerTwoYellowCardsId) = abi.decode(_data, (uint256, uint32, uint32, uint32, uint32, uint32));
+        challengeRequests[_challengeId] = [Strings.toString(uint256(fixtureId)), Strings.toString(uint256(playerOneGoalsId)), Strings.toString(uint256(playerTwoGoalsId)), Strings.toString(uint256(playerOneYellowCardsId)), Strings.toString(uint256(playerTwoYellowCardsId))];        
+        emit ChallengeReceived(_challengeId, fixtureId, challengeRequests[_challengeId]);
     }
 
     function addressToBytes32(address _addr) internal pure returns (bytes32) {
         return bytes32(uint256(uint160(_addr)));
     }
+    
+    function bytesToBytes16(bytes memory input) public pure returns (bytes16 output) {
+        require(input.length == 16, "Input length must be exactly 16 bytes");
 
+        assembly {
+            output := mload(add(input, 32))
+        }
+    }
 }

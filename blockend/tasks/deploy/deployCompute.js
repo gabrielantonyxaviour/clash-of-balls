@@ -1,6 +1,6 @@
 const { networks } = require("../../networks");
 
-task("deploy-oracle", "Deploys the SportsOracle contract")
+task("deploy-copmute", "Deploys the FhenixCompute contract")
   .addOptionalParam(
     "verify",
     "Set to true to verify contract",
@@ -8,40 +8,44 @@ task("deploy-oracle", "Deploys the SportsOracle contract")
     types.boolean
   )
   .setAction(async (taskArgs) => {
-    if (network.name != "arbitrumSepolia") {
-      console.log("\nThis task is only for arbitrumSepolia network\n");
-      return;
-    }
-
-    console.log(`Deploying SportsOracle contract to ${network.name}`);
+    console.log(`Deploying FhenixCompute contract to ${network.name}`);
 
     console.log("\n__Compiling Contracts__");
     await run("compile");
 
-    const oracleContractFactory = await ethers.getContractFactory(
-      "SportsOracle"
+    const fhenixComputeContractFactory = await ethers.getContractFactory(
+      "FhenixCompute"
     );
 
     const args = [
-      networks.arbitrumSepolia.functionsRouter,
-      networks.arbitrumSepolia.mailbox,
+      networks.fhenixTestnet.mailbox,
+      networks.chilizSpicy.core,
+      networks.arbitrumSepolia.sportsOracle,
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
     ];
 
-    const oracleContract = await oracleContractFactory.deploy(...args);
+    const fhenixComputeContract = await fhenixComputeContractFactory.deploy(
+      ...args
+    );
 
     console.log(
       `\nWaiting ${
         networks[network.name].confirmations
       } blocks for transaction ${
-        oracleContract.deployTransaction.hash
+        fhenixComputeContract.deployTransaction.hash
       } to be confirmed...`
     );
 
-    await oracleContract.deployTransaction.wait(
+    await fhenixComputeContract.deployTransaction.wait(
       networks[network.name].confirmations
     );
 
-    console.log("\nDeployed SportsOracle contract to:", oracleContract.address);
+    console.log(
+      "\nDeployed FhenixCompute contract to:",
+      fhenixComputeContract.address
+    );
 
     if (network.name === "localFunctionsTestnet") {
       return;
@@ -57,7 +61,7 @@ task("deploy-oracle", "Deploys the SportsOracle contract")
       try {
         console.log("\nVerifying contract...");
         await run("verify:verify", {
-          address: oracleContract.address,
+          address: fhenixComputeContract.address,
           constructorArguments: args,
         });
         console.log("Contract verified");
@@ -78,6 +82,6 @@ task("deploy-oracle", "Deploys the SportsOracle contract")
     }
 
     console.log(
-      `\n SportsOracle contract deployed to ${oracleContract.address} on ${network.name}`
+      `\n FhenixCompute contract deployed to ${fhenixComputeContract.address} on ${network.name}`
     );
   });
