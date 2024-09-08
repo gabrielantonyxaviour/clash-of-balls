@@ -4,7 +4,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Navbar from "./navbar";
 import Steps from "./create/Steps";
 
@@ -22,7 +22,7 @@ export default function Layout({ children }: LayoutProps) {
   const { steps, setSteps } = useEnvironmentContext();
 
   const [isClient, setIsClient] = useState(false);
-
+  const pathName = usePathname();
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -34,8 +34,12 @@ export default function Layout({ children }: LayoutProps) {
   if (chainId != chilizSpicy.id)
     return (
       <Suspense>
-        <div className="max-w-[800px] mx-auto h-screen bg-card flex flex-col">
-          <Steps step={0} />
+        <div
+          className={`${
+            pathName == "/" ? "max-w-[800px]" : "w-screen"
+          } mx-auto h-screen bg-card flex flex-col`}
+        >
+          {pathName == "/" && <Steps step={0} />}
           <div className="flex-1 flex flex-col justify-center items-center">
             <Image src={"/logo.png"} width={150} height={150} alt="logo" />
             <p className="text-3xl font-bold text-stone-200 mb-12">
@@ -67,8 +71,12 @@ export default function Layout({ children }: LayoutProps) {
     );
   return (
     <Suspense>
-      <div className="max-w-[800px] mx-auto h-screen bg-card flex flex-col">
-        <Steps step={steps} />
+      <div
+        className={`${
+          pathName == "/" ? "max-w-[800px]" : "w-screen"
+        } mx-auto h-screen bg-card flex flex-col`}
+      >
+        {pathName == "/" && <Steps step={steps} />}
         <NavbarComponent />
         {children}
       </div>

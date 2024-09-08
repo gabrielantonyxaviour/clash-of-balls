@@ -10,7 +10,7 @@ import { useAccount } from "wagmi";
 import { useEnvironmentContext } from "../context";
 
 export default function Challenge({ id }: { id: string }) {
-  const { setSteps } = useEnvironmentContext();
+  const { setSteps, setOpenChat } = useEnvironmentContext();
 
   useEffect(() => {}, [id]);
   return (
@@ -41,7 +41,14 @@ export default function Challenge({ id }: { id: string }) {
       <FanTokenBalances gameId={0} />
 
       <div className="flex justify-center space-x-3 mt-8">
-        <Button variant={"ghost"}>Negotiate</Button>
+        <Button
+          variant={"ghost"}
+          onClick={() => {
+            setOpenChat(true);
+          }}
+        >
+          Negotiate
+        </Button>
         <Button
           onClick={() => {
             setSteps(1);

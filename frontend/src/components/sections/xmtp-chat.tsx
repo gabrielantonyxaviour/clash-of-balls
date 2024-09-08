@@ -71,12 +71,17 @@ export default function XmtpChat() {
     }
   }, [address, signer, client]);
   return (
-    <Sheet>
-      <SheetContent>
+    <Sheet
+      open={openChat}
+      onOpenChange={(e) => {
+        setOpenChat(e);
+      }}
+    >
+      <SheetContent className="bg-card">
         <SheetHeader>
           <SheetTitle className="relative">
             <ArrowRight
-              className="h-10 w-10 absolute -left-9 bg-background border-[1px]  p-2 text-WHITE cursor-pointer rounded-lg"
+              className="h-10 w-10 absolute -left-9 bg-card border-[1px]  p-2 text-WHITE cursor-pointer rounded-lg"
               onClick={() => {
                 setOpenChat(false);
               }}
@@ -84,7 +89,7 @@ export default function XmtpChat() {
           </SheetTitle>
           <SheetDescription className="h-screen">
             <div
-              className={`h-screen my-auto pt-6 flex flex-col bg-background ${
+              className={`h-screen my-auto pt-6 flex flex-col bg-card ${
                 address == undefined || !isOnNetwork
                   ? "justify-center"
                   : "justify-start"
@@ -136,7 +141,7 @@ export default function XmtpChat() {
                   >
                     Log out
                   </Button>
-                  <ScrollArea className="h-[80%] flex flex-col space-y-2 no-scrollbar -translate-y-2">
+                  <ScrollArea className="h-[75%] flex flex-col space-y-2 no-scrollbar -translate-y-2">
                     {convos.map((convo, id) => (
                       <div
                         key={id}
