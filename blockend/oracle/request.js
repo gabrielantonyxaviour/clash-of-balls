@@ -33,7 +33,6 @@ const makeRequest = async () => {
 
   const args = ["152913", "154", "276", "645", "634"];
 
-  console.log(process.env.RAPID_API_KEY);
   const secrets = { apiKey: process.env.RAPID_API_KEY };
   const slotIdNumber = 0;
   const expirationTimeMinutes = 15;
