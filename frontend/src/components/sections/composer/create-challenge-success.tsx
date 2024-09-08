@@ -11,7 +11,7 @@ export default function CreateChallengeSuccess() {
   const { width, height } = useWindowSize();
   const [link, setLink] = useState("");
   const [copied, setCopied] = useState(false);
-  const { tx, challengeId } = useEnvironmentContext();
+  const { tx, challengeId, setSteps } = useEnvironmentContext();
 
   useEffect(() => {
     if (challengeId) {

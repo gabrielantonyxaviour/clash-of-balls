@@ -122,28 +122,28 @@ export default function ConfirmChallenge({
                 "0x7b8c9d0e1f2a3b4c5d6e7f8a9b0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9ce1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7b0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c",
               ],
             ];
-            if (chilizPublicClient == null) return;
-            const walletClient = createWalletClient({
-              chain: chilizSpicy,
-              transport: custom(window.ethereum!),
-            });
-            const [account] = await walletClient.getAddresses();
+            // if (chilizPublicClient == null) return;
+            // const walletClient = createWalletClient({
+            //   chain: chilizSpicy,
+            //   transport: custom(window.ethereum!),
+            // });
+            // const [account] = await walletClient.getAddresses();
             try {
-              const { request } = await chilizPublicClient.simulateContract({
-                account,
-                address: supportedchains[chilizSpicy.id].core,
-                abi: coreAbi,
-                functionName: "createChallenge",
-                args: [
-                  gameId,
-                  parseEther(betAmount.toString()),
-                  encryptedInput,
-                ],
-                value: parseEther(betAmount.toString()),
-              });
-              const tx = await walletClient.writeContract(request as any);
-              console.log(tx);
-              setTx(tx);
+              //   const { request } = await chilizPublicClient.simulateContract({
+              //     account,
+              //     address: supportedchains[chilizSpicy.id].core,
+              //     abi: coreAbi,
+              //     functionName: "createChallenge",
+              //     args: [
+              //       gameId,
+              //       parseEther(betAmount.toString()),
+              //       encryptedInput,
+              //     ],
+              //     value: parseEther(betAmount.toString()),
+              //   });
+              //   const tx = await walletClient.writeContract(request as any);
+              //   console.log(tx);
+              //   setTx(tx);
               const { response } = await createChallenge({
                 gameId: gameId.toString(),
                 fName,
@@ -161,7 +161,7 @@ export default function ConfirmChallenge({
                   <ToastAction altText="Goto schedule to undo">
                     <Link
                       target="_blank"
-                      href={`https://testnet.chiliscan.com/tx/` + tx}
+                      href={`https://testnet.chiliscan.com/tx/` + "tx"}
                     >
                       View
                     </Link>
