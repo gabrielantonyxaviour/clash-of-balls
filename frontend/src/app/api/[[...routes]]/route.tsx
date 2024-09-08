@@ -1,11 +1,12 @@
 /** @jsxImportSource frog/jsx */
-import { serveStatic } from "@hono/node-server/serve-static";
+import { serveStatic } from "frog/serve-static";
+
 import { createClient } from "@supabase/supabase-js";
 import { Button, Frog } from "frog";
-import { devtools } from "frog/dev";
 import { handle } from "frog/next";
 import { parseUnits, encodeFunctionData, erc20Abi, Abi } from "viem";
 import { baseSepolia } from "viem/chains";
+import { devtools } from "frog/dev";
 
 type State = {
   count: 0;
@@ -19,7 +20,7 @@ const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6Znl0cHFmc2xjYXRuc3R2amt3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNTU4OTI3MywiZXhwIjoyMDMxMTY1MjczfQ.F3oPO1-ex5suwo69cRgzZBuWwxcVAMuO-a2rZrknFZo";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const app = new Frog<{ State: State }>({
+const app = new Frog<{ State: State }>({
   title: "Clash Of Balls",
   assetsPath: "/",
   basePath: "/api",
@@ -60,6 +61,7 @@ app.frame("/challenge/:id", async (c) => {
     response = {
       id: "1",
       game_id: "1",
+      f_name: "gabrielaxy",
       f_image:
         "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/1dc540bc-60b4-40eb-4dde-85e23acd6200/original",
       bet: "10",
@@ -237,5 +239,6 @@ app.frame("/start", (c) => {
 });
 
 devtools(app, { serveStatic });
+
 export const GET = handle(app);
 export const POST = handle(app);

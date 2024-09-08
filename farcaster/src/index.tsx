@@ -43,8 +43,6 @@ const xmtpSupport = async (c: Context, next: Next) => {
   await next();
 };
 
-// app.use(xmtpSupport);
-
 export const app = new Frog<{ State: State }>({
   title: "Clash Of Balls",
   initialState: {
@@ -54,6 +52,7 @@ export const app = new Frog<{ State: State }>({
 });
 
 app.use("/*", serveStatic({ root: "./public" }));
+app.use(xmtpSupport);
 
 app.composerAction(
   "/create",
