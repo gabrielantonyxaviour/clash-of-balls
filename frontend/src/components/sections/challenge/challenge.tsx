@@ -10,22 +10,46 @@ import { useEnvironmentContext } from "../context";
 import getChallenge from "@/lib/helpers/getChallenge";
 
 export default function Challenge({ id }: { id: string }) {
-  const { setSteps, setOpenChat } = useEnvironmentContext();
+  const { setSteps, setOpenChat, setGameId } = useEnvironmentContext();
   const [challenge, setChallege] = useState<any>(null);
   useEffect(() => {
     getChallenge({ id }).then((res) => {
+      console.log(res);
       setChallege(res.response);
+      setGameId(res.response.game_id);
     });
   }, [id]);
+  if (challenge == null)
+    return (
+      <div className="flex justify-center items-center">
+        <div className="spinner"></div>
+      </div>
+    );
   return (
     <div className="">
       <p className="pt-2 text-center text-lg font-semibold">Challenge</p>
 
-      <MatchCard gameId={challenge.gameId} />
+      <MatchCard gameId={challenge.game_id} />
       <div className="flex justify-around my-5">
         <div>
           <p className="text-md font-semibold text-center mb-2">Proposed By</p>
-          <FarcasterButton fid={challenge.f_id} address="0x" />
+          <Button
+            variant="ghost"
+            onClick={() => {
+              window.open(`https://warpcast.com/${challenge.f_name}`, "_blank");
+            }}
+          >
+            <div className="w-[20px] h-[20px] overflow-hidden relative rounded-full">
+              <Image
+                src={challenge.f_image}
+                alt="avatar"
+                width={20}
+                height={20}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <p className="ml-2">{challenge.f_name}</p>
+          </Button>
         </div>
         <div>
           <p className="text-md font-semibold text-center">Proposed Amount</p>
@@ -42,7 +66,7 @@ export default function Challenge({ id }: { id: string }) {
         </div>
       </div>
 
-      <FanTokenBalances gameId={challenge.gameId} />
+      <FanTokenBalances gameId={challenge.game_id} />
 
       <div className="flex justify-center space-x-3 mt-8">
         <Button
