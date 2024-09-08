@@ -290,10 +290,10 @@ contract FhenixCompute is IClashOfBalls{
     function handle(uint32 _origin, bytes32 _sender, bytes calldata _data) external payable onlyMailbox onlyAuthorizedSender(_sender, _origin)  {
         if(_origin==ORACLE_DOMAIN){
             (uint256 _challengeId, uint128 results)=abi.decode(_data, (uint256, uint128));
-            // revealWinner(_challengeId, results);
+            revealWinner(_challengeId, results);
         }else{
             (uint256 _challengeId, EncryptedPredictionInput[2] memory _encryptedChallenges, uint256 endsIn)=abi.decode(_data, (uint256, EncryptedPredictionInput[2], uint256));
-            // createChallenge(challenges[_challengeId].fixtureId, _encryptedChallenges, 0); // NOTE: gameEndsIn is set to zero for testing. NOT IN PRODUCTION.
+            createChallenge(challenges[_challengeId].fixtureId, _encryptedChallenges, 0); // NOTE: gameEndsIn is set to zero for testing. NOT IN PRODUCTION.
         }
         emit CrosschainMessageReceived(_origin, _sender, _data);
     }
