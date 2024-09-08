@@ -42,7 +42,6 @@ const xmtpSupport = async (c: Context, next: Next) => {
       const { verifiedWalletAddress } = await validateFramesPost(requestBody);
       c.set("verifiedWalletAddress", verifiedWalletAddress);
     } else {
-      // Add farcaster check
       c.set("client", "farcaster");
     }
   }
@@ -150,73 +149,6 @@ app.frame("/challenge/:id", async (c) => {
         Accept
       </Button.Link>,
     ],
-  });
-});
-
-app.frame("/submit", (c) => {
-  const { buttonValue, inputText, deriveState } = c;
-  const state = deriveState((previousState) => {
-    previousState.count++;
-  });
-  return c.res({
-    action: "/",
-    image: (
-      <div
-        style={{
-          alignItems: "center",
-          background: "white",
-          backgroundSize: "100% 100%",
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "nowrap",
-          height: "100%",
-          justifyContent: "center",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            color: "black",
-            fontSize: 60,
-            fontStyle: "normal",
-            letterSpacing: "-0.025em",
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: "0 120px",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            Current State: {state.count}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            You typed: {inputText}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            You clicked button: {buttonValue}
-          </div>
-        </div>
-      </div>
-    ),
-    intents: [<Button>Back</Button>],
   });
 });
 
