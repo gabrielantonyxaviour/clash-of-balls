@@ -3,8 +3,9 @@ import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { validateFramesPost } from "@xmtp/frames-validator";
 import { Next, Context } from "hono";
+import { handle } from "frog/next";
 import { createClient } from "@supabase/supabase-js";
-import { parseUnits, encodeFunctionData, erc20Abi, Abi, size } from "viem";
+import { parseUnits, encodeFunctionData, erc20Abi, Abi } from "viem";
 import { baseSepolia } from "viem/chains";
 
 const supabaseUrl =
@@ -50,7 +51,7 @@ const xmtpSupport = async (c: Context, next: Next) => {
   await next();
 };
 
-// app.use(xmtpSupport);
+app.use(xmtpSupport);
 
 app.use("/*", serveStatic({ root: "./public" }));
 
@@ -260,3 +261,5 @@ app.frame("/start", (c) => {
 });
 
 devtools(app, { serveStatic });
+export const GET = handle(app);
+export const POST = handle(app);
