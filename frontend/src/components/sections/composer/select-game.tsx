@@ -30,7 +30,7 @@ export default function SelectGame({
           />
         ))}
       </div>
-      <Button
+      {/* <Button
         onClick={async () => {
           // console.log("TRYING");
           // const provider = new JsonRpcProvider(
@@ -45,7 +45,7 @@ export default function SelectGame({
         }}
       >
         Encrypt
-      </Button>
+      </Button> */}
     </div>
   );
 }

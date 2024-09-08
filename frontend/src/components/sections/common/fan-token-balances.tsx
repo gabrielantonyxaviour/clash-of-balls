@@ -8,10 +8,25 @@ import { games } from "@/lib/constants";
 import { Info } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { useEnvironmentContext } from "../context";
+import getTokenBalances from "@/lib/helpers/getTokenBalances";
 export default function FanTokenBalances({ gameId }: { gameId: number }) {
-  const [homeTokenBalance, setHomeTokenBalance] = useState(12.23);
-  const [awayTokenBalance, setAwayTokenBalance] = useState(44.21);
+  const [homeTokenBalance, setHomeTokenBalance] = useState(0.0);
+  const [awayTokenBalance, setAwayTokenBalance] = useState(0.0);
+  const { address } = useAccount();
+  const { chilizPublicClient } = useEnvironmentContext();
+
+  useEffect(() => {
+    if (chilizPublicClient == null || address == null) return;
+    const home = games[gameId].home.abb.toLowerCase();
+    const away = games[gameId].away.abb.toLowerCase();
+    getTokenBalances(chilizPublicClient, address, home, away).then((res) => {
+      setHomeTokenBalance(parseFloat(res.amount1));
+      setAwayTokenBalance(parseFloat(res.amount2));
+    });
+  }, []);
   const pathName = usePathname();
   return (
     <div

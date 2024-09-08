@@ -1,3 +1,4 @@
+import { chilizSpicy } from "@/lib/config";
 import { ExtendedProvider, PredictionInput } from "@/lib/type";
 import React, {
   createContext,
@@ -6,6 +7,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { createPublicClient, http, PublicClient } from "viem";
 
 interface BalanceContextType {
   predictions: PredictionInput[];
@@ -16,6 +18,7 @@ interface BalanceContextType {
   setSteps: (step: number) => void;
   openChat: boolean;
   setOpenChat: (openChat: boolean) => void;
+  chilizPublicClient: PublicClient | null;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -61,6 +64,16 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const [gameId, setGameId] = useState<number>(-1);
   const [steps, setSteps] = useState<number>(0);
   const [openChat, setOpenChat] = useState<boolean>(false);
+  const [chilizPublicClient, setChilizPublicClient] =
+    useState<PublicClient | null>(null);
+
+  useEffect(() => {
+    const client = createPublicClient({
+      chain: chilizSpicy,
+      transport: http(),
+    });
+    setChilizPublicClient(client);
+  }, []);
 
   return (
     <BalanceContext.Provider
@@ -73,6 +86,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setSteps,
         openChat,
         setOpenChat,
+        chilizPublicClient,
       }}
     >
       {children}
