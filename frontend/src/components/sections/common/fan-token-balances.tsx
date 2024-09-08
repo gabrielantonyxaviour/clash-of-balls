@@ -13,7 +13,7 @@ export default function FanTokenBalances({ gameId }: { gameId: number }) {
   const [awayTokenBalance, setAwayTokenBalance] = useState(44.21);
 
   return (
-    <div className="flex justify-between w-full items-center space-x-4 pt-4 px-4">
+    <div className="flex justify-between w-full items-center space-x-4 pt-4 px-5 ">
       <div className="flex space-x-2">
         <p className=" font-medium text-sm my-auto">Fan Token Balances</p>
         <TooltipProvider>
@@ -32,7 +32,7 @@ export default function FanTokenBalances({ gameId }: { gameId: number }) {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="flex space-x-1">
+      <div className="flex space-x-1 px-6">
         <Image
           src={games[gameId].home.logo}
           width={25}

@@ -47,7 +47,7 @@ export default function ConfirmChallenge({
         </Button>
       </div>
       <MatchCard gameId={gameId} />
-      <div className="flex justify-between w-full items-center space-x-4 pt-2">
+      <div className="flex justify-around w-full items-center space-x-4 pt-2 mx-auto">
         <p className="px-4 font-medium text-sm  my-auto">Amount</p>
         <Slider
           defaultValue={[betAmount]}
@@ -59,10 +59,10 @@ export default function ConfirmChallenge({
             setBetAmount(value);
           }}
         />
-        <div className="flex w-[25%] items-center space-x-2">
+        <div className="flex max-w-[25%] items-center space-x-2">
           <Input
             value={betAmount}
-            className="w-[50%] bg-accent"
+            className="w-[40%] bg-accent"
             onChange={(e) => {
               let value = parseFloat(e.target.value);
               if (isNaN(value) || value < 0) {
