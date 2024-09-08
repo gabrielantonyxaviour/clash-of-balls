@@ -39,7 +39,7 @@ export default function SelectGame({
           const provider = new JsonRpcProvider(
             "https://api.helium.fhenix.zone"
           );
-          const client = new FhenixClient({ provider: provider });
+          const client = new FhenixClient({ provider: provider as any });
 
           const { data } = await client.encrypt_uint8(10);
           const res = `0x${Array.from(data)
