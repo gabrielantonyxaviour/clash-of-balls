@@ -15,6 +15,6 @@ export default function ChallengePage({ id }: { id: string }) {
   ) : steps == 2 ? (
     <Confirm id={id} />
   ) : (
-    <ChallengeAcceptedSuccess />
+    <ChallengeAcceptedSuccess id={id} />
   );
 }
