@@ -29,14 +29,6 @@ type State = {
   count: number;
 };
 
-export const app = new Frog<{ State: State }>({
-  title: "Clash Of Balls",
-  initialState: {
-    count: 0,
-  },
-  ...addMetaTags("xmtp"),
-});
-
 const xmtpSupport = async (c: Context, next: Next) => {
   if (c.req.method === "POST") {
     const requestBody = (await c.req.json().catch(() => {})) || {};
@@ -52,6 +44,14 @@ const xmtpSupport = async (c: Context, next: Next) => {
 };
 
 // app.use(xmtpSupport);
+
+export const app = new Frog<{ State: State }>({
+  title: "Clash Of Balls",
+  initialState: {
+    count: 0,
+  },
+  ...addMetaTags("xmtp"),
+});
 
 app.use("/*", serveStatic({ root: "./public" }));
 
