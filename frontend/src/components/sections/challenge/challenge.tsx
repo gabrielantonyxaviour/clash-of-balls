@@ -6,8 +6,9 @@ import FanTokenBalances from "../common/fan-token-balances";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import FarcasterButton from "@/components/ui/custom/farcaster-button";
-import { useAccount } from "wagmi";
 import { useEnvironmentContext } from "../context";
+import { ethers } from "ethers";
+import { FhenixClient } from "fhenixjs";
 
 export default function Challenge({ id }: { id: string }) {
   const { setSteps, setOpenChat } = useEnvironmentContext();
@@ -43,8 +44,18 @@ export default function Challenge({ id }: { id: string }) {
       <div className="flex justify-center space-x-3 mt-8">
         <Button
           variant={"ghost"}
-          onClick={() => {
-            setOpenChat(true);
+          onClick={async () => {
+            const provider = new ethers.providers.JsonRpcProvider(
+              "https://api.helium.fhenix.zone"
+            );
+            const client = new FhenixClient({ provider: provider as any });
+
+            const { data } = await client.encrypt_uint16(10);
+            const res = `0x${Array.from(data)
+              .map((b) => b.toString(16).padStart(2, "0"))
+              .join("")}`;
+            console.log(res);
+            // setOpenChat(true);
           }}
         >
           Negotiate

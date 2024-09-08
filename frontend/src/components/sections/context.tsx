@@ -18,7 +18,6 @@ interface BalanceContextType {
   setSteps: (step: number) => void;
   openChat: boolean;
   setOpenChat: (openChat: boolean) => void;
-  fhenixClient: FhenixClient | null;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -64,14 +63,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const [gameId, setGameId] = useState<number>(-1);
   const [steps, setSteps] = useState<number>(0);
   const [openChat, setOpenChat] = useState<boolean>(false);
-  const [fhenixClient, setFhenixClient] = useState<FhenixClient | null>(null);
 
-  useEffect(() => {
-    const provider = new ethers.BrowserProvider(
-      window.ethereum
-    ) as ExtendedProvider;
-    const client = new FhenixClient({ provider: provider });
-  }, []);
   return (
     <BalanceContext.Provider
       value={{
@@ -83,7 +75,6 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setSteps,
         openChat,
         setOpenChat,
-        fhenixClient,
       }}
     >
       {children}

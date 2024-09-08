@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import GameCard from "../../ui/custom/game-card";
 import { games } from "@/lib/constants";
 import { useEnvironmentContext } from "../context";
+import { ethers } from "ethers";
+import { FhenixClient } from "fhenixjs";
 export default function SelectGame({
   setGameIndex,
   setSteps,
@@ -10,7 +12,6 @@ export default function SelectGame({
   setGameIndex: (index: number) => void;
   setSteps: (index: number) => void;
 }) {
-  const { fhenixClient } = useEnvironmentContext();
   return (
     <div className="flex-1 flex flex-col pt-4">
       <p className="text-center text-xl font-semibold text-foreground">
@@ -33,8 +34,12 @@ export default function SelectGame({
       </div>
       <Button
         onClick={async () => {
-          if (fhenixClient === null) return;
-          const { data } = await fhenixClient.encrypt_uint16(10);
+          const provider = new ethers.providers.JsonRpcProvider(
+            "https://api.helium.fhenix.zone"
+          );
+          const client = new FhenixClient({ provider: provider as any });
+
+          const { data } = await client.encrypt_uint16(10);
           const res = `0x${Array.from(data)
             .map((b) => b.toString(16).padStart(2, "0"))
             .join("")}`;
