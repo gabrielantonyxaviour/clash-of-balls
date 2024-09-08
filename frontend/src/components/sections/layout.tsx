@@ -3,7 +3,7 @@
 interface LayoutProps {
   children: React.ReactNode;
 }
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "./navbar";
 import Steps from "./create/Steps";
@@ -20,6 +20,16 @@ export default function Layout({ children }: LayoutProps) {
   const { switchChainAsync } = useSwitchChain();
   const { connectAsync } = useConnect();
   const { steps, setSteps } = useEnvironmentContext();
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Prevents rendering on the server
+  }
 
   if (chainId != chilizSpicy.id)
     return (

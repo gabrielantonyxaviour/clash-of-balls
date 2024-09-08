@@ -4,6 +4,7 @@ import ChoosePredictions from "@/components/sections/composer/choose-predictions
 import { useEnvironmentContext } from "@/components/sections/context";
 import ConfirmChallenge from "@/components/sections/composer/confirm-challenge";
 import { useState } from "react";
+import CreateChallengeSuccess from "@/components/sections/composer/create-challenge-success";
 export default function Page() {
   const { gameId, setGameId, setPredictions, steps, setSteps } =
     useEnvironmentContext();
@@ -14,6 +15,6 @@ export default function Page() {
   ) : steps == 2 ? (
     <ConfirmChallenge setStep={setSteps} />
   ) : (
-    <div></div>
+    <CreateChallengeSuccess />
   );
 }
