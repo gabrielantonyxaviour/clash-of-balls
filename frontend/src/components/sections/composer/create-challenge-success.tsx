@@ -16,7 +16,9 @@ export default function CreateChallengeSuccess() {
   useEffect(() => {
     if (challengeId) {
       setLink(
-        `https://kaido-protocol-frames.vercel.app/challenge/${challengeId}`
+        `https://warpcast.com/~/compose?text=${encodeURIComponent(
+          `https://clash-of-balls-frames.vercel.app/challenge/${challengeId}`
+        )}`
       );
     }
   }, [challengeId]);
