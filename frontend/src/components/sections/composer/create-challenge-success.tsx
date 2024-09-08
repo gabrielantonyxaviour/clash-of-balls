@@ -17,7 +17,7 @@ export default function CreateChallengeSuccess() {
     if (challengeId) {
       setLink(
         `https://warpcast.com/~/compose?text=${encodeURIComponent(
-          `https://clash-of-balls-frames.vercel.app/challenge/${challengeId}`
+          `https://clash-of-balls.vercel.app/api/challenge/${challengeId}`
         )}`
       );
     }
