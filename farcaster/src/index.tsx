@@ -51,7 +51,7 @@ const xmtpSupport = async (c: Context, next: Next) => {
   await next();
 };
 
-app.use(xmtpSupport);
+// app.use(xmtpSupport);
 
 app.use("/*", serveStatic({ root: "./public" }));
 
