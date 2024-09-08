@@ -71,7 +71,7 @@ export default function ConfirmChallenge({
           variant={"ghost"}
           size={"sm"}
           onClick={() => {
-            setStep(0);
+            setStep(1);
           }}
         >
           <ArrowLeft height={15} className="pr-1" /> Back
