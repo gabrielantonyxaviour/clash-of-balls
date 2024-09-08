@@ -16,7 +16,7 @@ export default function CreateChallengeSuccess() {
   useEffect(() => {
     if (challengeId) {
       setLink(
-        `https://kaido-protocol-frames.vercel.app/api/challenge/${challengeId}`
+        `https://kaido-protocol-frames.vercel.app/challenge/${challengeId}`
       );
     }
   }, [challengeId]);

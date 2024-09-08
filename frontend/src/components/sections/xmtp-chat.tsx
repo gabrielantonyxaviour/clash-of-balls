@@ -210,7 +210,7 @@ export default function XmtpChat() {
                               chatMessage
                             );
                           } else {
-                            await sendMessage("");
+                            // await sendMessage("");
                           }
 
                           // const response = await axios.post("/api/classify", {

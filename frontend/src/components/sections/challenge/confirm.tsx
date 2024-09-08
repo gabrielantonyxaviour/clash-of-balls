@@ -9,7 +9,7 @@ import FarcasterButton from "@/components/ui/custom/farcaster-button";
 import { useEnvironmentContext } from "../context";
 import getChallenge from "@/lib/helpers/getChallenge";
 
-export default function Challenge({ id }: { id: string }) {
+export default function Confirm({ id }: { id: string }) {
   const { setSteps, setOpenChat } = useEnvironmentContext();
   const [challenge, setChallege] = useState<any>(null);
   useEffect(() => {
@@ -45,21 +45,7 @@ export default function Challenge({ id }: { id: string }) {
       <FanTokenBalances gameId={challenge.gameId} />
 
       <div className="flex justify-center space-x-3 mt-8">
-        <Button
-          variant={"ghost"}
-          onClick={async () => {
-            setOpenChat(true);
-          }}
-        >
-          Negotiate
-        </Button>
-        <Button
-          onClick={() => {
-            setSteps(1);
-          }}
-        >
-          Choose Predictions
-        </Button>
+        <Button onClick={() => {}}>Accept</Button>
       </div>
     </div>
   );
