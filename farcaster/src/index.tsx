@@ -86,7 +86,7 @@ app.frame("/", (c) => {
           width: "100%",
         }}
       >
-        <img key={2} src="/home.png" />
+        <img key={2} src="https://clash-of-balls-frames.vercel.app/home.png" />
       </div>
     ),
     intents: [
@@ -98,21 +98,27 @@ app.frame("/", (c) => {
 });
 
 app.frame("/challenge/:id", async (c) => {
-  const params = c.req.param();
-  const { data: fetchedChallenge } = await supabase
-    .from("clash")
-    .select("*")
-    .eq("id", params["id"]);
-  let response;
-  if (fetchedChallenge == null)
-    response = {
-      gameId: "1",
-      f_id: "0x",
-      bet: "100",
-    };
-  else {
-    response = fetchedChallenge[0];
-  }
+  // const params = c.req.param();
+  // const { data: fetchedChallenge } = await supabase
+  //   .from("clash")
+  //   .select("*")
+  //   .eq("id", params["id"]);
+  // let response;
+  // if (fetchedChallenge == null)
+  //   response = {
+  //     gameId: "1",
+  //     f_id: "0x",
+  //     bet: "100",
+  //   };
+  // else {
+  //   response = fetchedChallenge[0];
+  // }
+  const response = {
+    id: "1",
+    gameId: "1",
+    f_id: "10",
+    bet: "100",
+  };
   return c.res({
     image: (
       <div
@@ -132,7 +138,7 @@ app.frame("/challenge/:id", async (c) => {
         <div style={{ display: "flex" }}>
           <img
             style={{ zIndex: 1, width: "102%" }}
-            src={`/games/${response.gameId}.png`}
+            src={`https://clash-of-balls-frames.vercel.app/games/${response.gameId}.png`}
           />
         </div>
       </div>
