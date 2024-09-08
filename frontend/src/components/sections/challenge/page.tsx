@@ -1,47 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-import MatchCard from "../common/match-card";
-import FanTokenBalances from "../common/fan-token-balances";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import FarcasterButton from "@/components/ui/custom/farcaster-button";
-import { useAccount } from "wagmi";
+import ChallengeAcceptedSuccess from "@/components/sections/challenge/challenge-accepted";
+import Challenge from "@/components/sections/challenge/challenge";
+import { useEnvironmentContext } from "@/components/sections/context";
 
-export default function Challenge({ id }: { id: string }) {
-  const { address } = useAccount();
-  useEffect(() => {}, [id]);
-  return (
-    <div className="">
-      <p className="pt-2 text-center text-lg font-semibold">Challenge</p>
-
-      <MatchCard gameId={0} />
-      <div className="flex justify-around my-5">
-        <div>
-          <p className="text-md font-semibold text-center mb-2">Proposed By</p>
-          <FarcasterButton fid={"249577"} address="0x" />
-        </div>
-        <div>
-          <p className="text-md font-semibold text-center">Proposed Amount</p>
-          <div className="flex justify-center items-center mt-2 space-x-3 p-[6px] w-full">
-            <p className="font-medium text-lg">10</p>
-            <Image
-              src={"/coins/chiliz.png"}
-              height={25}
-              width={25}
-              alt="chiliz"
-              className="rounded-full"
-            />
-          </div>
-        </div>
-      </div>
-
-      <FanTokenBalances gameId={0} />
-
-      <div className="flex justify-center space-x-3 mt-8">
-        <Button variant={"ghost"}>Negotiate</Button>
-        <Button>Accept</Button>
-      </div>
-    </div>
-  );
+export default function ChallengePage({ id }: { id: string }) {
+  const { steps } = useEnvironmentContext();
+  return steps == 0 ? <Challenge id={id} /> : <ChallengeAcceptedSuccess />;
 }

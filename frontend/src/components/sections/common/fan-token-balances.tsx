@@ -32,7 +32,7 @@ export default function FanTokenBalances({ gameId }: { gameId: number }) {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="flex space-x-1 px-6">
+      <div className="flex space-x-1">
         <Image
           src={games[gameId].home.logo}
           width={25}
