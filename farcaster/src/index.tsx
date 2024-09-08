@@ -216,7 +216,10 @@ app.transaction("/tx", (c) => {
   });
 });
 
-app.frame("/", (c) => {
+app.frame("/start", (c) => {
+  const url = "https://clash-of-balls-frames.vercel.app/home.png";
+  console.log(url);
+
   return c.res({
     image: (
       <div
@@ -233,7 +236,19 @@ app.frame("/", (c) => {
           width: "100%",
         }}
       >
-        <img key={0} src="https://clash-of-balls-frames.vercel.app/home.png" />
+        <img
+          style={{
+            position: "absolute",
+            display: "flex",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 4,
+          }}
+          src={url}
+          alt="Game Frame"
+        />
       </div>
     ),
     intents: [
