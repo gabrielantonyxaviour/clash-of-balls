@@ -25,7 +25,7 @@ export default function SelectGame({
             game={game}
             onClick={() => {
               setGameIndex(index);
-              setSteps(1);
+              setSteps(2);
             }}
           />
         ))}

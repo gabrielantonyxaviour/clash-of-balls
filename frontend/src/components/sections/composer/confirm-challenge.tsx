@@ -3,18 +3,28 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useEnvironmentContext } from "../context";
 import { Slider } from "@/components/ui/slider";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-
+import { Label } from "@/components/ui/label";
 import { useAccount, useBalance } from "wagmi";
 import MatchCard from "../common/match-card";
 import FanTokenBalances from "../common/fan-token-balances";
 import { createWalletClient, custom, parseEther } from "viem";
 import { chilizSpicy } from "@/lib/config";
-import { coreAbi, supportedchains } from "@/lib/constants";
+import { coreAbi, encryptedInput, supportedchains } from "@/lib/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import Link from "next/link";
 import createChallenge from "@/lib/helpers/createChallenge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 export default function ConfirmChallenge({
   setStep,
 }: {
@@ -28,9 +38,37 @@ export default function ConfirmChallenge({
     address,
   });
   const { toast } = useToast();
-
+  const [encrypted, setEncrypted] = useState(false);
+  const [isEncryptedLoading, setIsEncryptedLoading] = useState(false);
+  const [isTxLoading, setIsTxLoading] = useState(false);
+  const [openEncryptedDataModal, setOpenEncryptedDataModal] = useState(false);
   return (
     <div>
+      <Dialog
+        open={openEncryptedDataModal}
+        onOpenChange={(p) => {
+          setOpenEncryptedDataModal(p);
+        }}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Encrypted Prediction</DialogTitle>
+            <DialogDescription className="text-xs">
+              Your challenge is encrypted and stored on chain and will be
+              decrypted to compute results once the match is over.
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4 text-sm break-all">
+            {encryptedInput[0] +
+              ", " +
+              encryptedInput[1][0] +
+              ", " +
+              encryptedInput[1][1] +
+              ", " +
+              encryptedInput[1][2]}
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
       <div className="flex justify-between  pt-6 px-4">
         <Button
           variant={"ghost"}
@@ -87,63 +125,64 @@ export default function ConfirmChallenge({
         </div>
       </div>
       <FanTokenBalances gameId={gameId} />
-      <div className="flex justify-center pt-8">
-        <Button>Encrypt</Button>
-      </div>
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-8 items-center">
         <Button
+          disabled={encrypted || isEncryptedLoading}
+          className="my-2 bg-accent"
+          variant={"outline"}
+          onClick={() => {
+            setIsEncryptedLoading(true);
+            setTimeout(() => {
+              setEncrypted(true);
+              setIsEncryptedLoading(false);
+            }, 8000);
+          }}
+        >
+          {isEncryptedLoading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>Encrypt</p>
+          )}
+        </Button>
+        {encrypted && (
+          <Button
+            variant={"ghost"}
+            className="hover:bg-transparent"
+            onClick={() => {
+              setOpenEncryptedDataModal(true);
+            }}
+          >
+            View
+          </Button>
+        )}
+      </div>
+      <div className="flex justify-center">
+        <Button
+          disabled={!encrypted || isEncryptedLoading}
           onClick={async () => {
-            const encryptedInput = [
-              "0xabcdef1234567890abcdef1234567890abcdef12",
-              [
-                "0x4a3b2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3f4a5b6c7d8e",
-                "0x9c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3ca5b6c7d8e9f0a",
-                "0x1a2b3c4d5e6f7a8b9c0d1e2f3d4e5f60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fa7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e",
-                "0x3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fe7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9ce3c2c1d5e6f7a8b9c0d1e2f2f3d4e",
-                "0x7b8c9d0e1f2a3b4c5d6e7f8a9b0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9ce1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7b0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c",
-              ],
-              [
-                "0x7b8c9d0e1f28b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3f4a5b6c7d8e",
-                "0x3c4d5e6f7a80e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3ca5b6c7d8e9f0a",
-              ],
-              [
-                "0x4a3b2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3f4a5b6c7d8e",
-                "0x9c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3ca5b6c7d8e9f0a",
-                "0x1a2b3c4d5e6f7a8b9c0d1e2f3d4e5f60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fa7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e",
-              ],
-              [
-                "0x4a3b2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3f4a5b6c7d8e",
-                "0x9c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3ca5b6c7d8e9f0a",
-                "0x1a2b3c4d5e6f7a8b9c0d1e2f3d4e5f60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fa7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e",
-                "0x4a3b2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3f4a5b6c7d8e",
-                "0x9c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c2c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0c1d2e3ca5b6c7d8e9f0a",
-                "0x1a2b3c4d5e6f7a8b9c0d1e2f3d4e5f60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fa7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e",
-                "0x3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d60d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2fe7f8a9b0c1d2e3f42c1d5e6f7a8b9c0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9ce3c2c1d5e6f7a8b9c0d1e2f2f3d4e",
-                "0x7b8c9d0e1f2a3b4c5d6e7f8a9b0d1e2f3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f42c1d5e6f7a8b9ce1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7be1f2a3b4c5d60d1e2f3d4e5f6a7b0d1e2f3d4e5f6a7b8c9d0e7f8a9b0ce3c2c1d5e6f7a8b9c0d1e2f0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c",
-              ],
-            ];
-            // if (chilizPublicClient == null) return;
-            // const walletClient = createWalletClient({
-            //   chain: chilizSpicy,
-            //   transport: custom(window.ethereum!),
-            // });
-            // const [account] = await walletClient.getAddresses();
+            if (chilizPublicClient == null) return;
+            setIsTxLoading(true);
+            const walletClient = createWalletClient({
+              chain: chilizSpicy,
+              transport: custom(window.ethereum!),
+            });
+            const [account] = await walletClient.getAddresses();
             try {
-              //   const { request } = await chilizPublicClient.simulateContract({
-              //     account,
-              //     address: supportedchains[chilizSpicy.id].core,
-              //     abi: coreAbi,
-              //     functionName: "createChallenge",
-              //     args: [
-              //       gameId,
-              //       parseEther(betAmount.toString()),
-              //       encryptedInput,
-              //     ],
-              //     value: parseEther(betAmount.toString()),
-              //   });
-              //   const tx = await walletClient.writeContract(request as any);
-              //   console.log(tx);
-              //   setTx(tx);
+              const { request } = await chilizPublicClient.simulateContract({
+                account,
+                address: supportedchains[chilizSpicy.id].core,
+                abi: coreAbi,
+                functionName: "createChallenge",
+                args: [
+                  gameId,
+                  parseEther(betAmount.toString()),
+                  encryptedInput,
+                ],
+                value: parseEther(betAmount.toString()),
+              });
+              const tx = await walletClient.writeContract(request as any);
+              console.log(tx);
+              setTx(tx);
               const { response } = await createChallenge({
                 gameId: gameId.toString(),
                 fName,
@@ -161,7 +200,7 @@ export default function ConfirmChallenge({
                   <ToastAction altText="Goto schedule to undo">
                     <Link
                       target="_blank"
-                      href={`https://testnet.chiliscan.com/tx/` + "tx"}
+                      href={`https://testnet.chiliscan.com/tx/` + tx}
                     >
                       View
                     </Link>
@@ -176,9 +215,10 @@ export default function ConfirmChallenge({
                 description: "Transaction Failed",
               });
             }
+            setIsTxLoading(false);
           }}
         >
-          Submit
+          {isTxLoading ? <div className="spinner"></div> : <p>Submit</p>}
         </Button>
       </div>
     </div>
