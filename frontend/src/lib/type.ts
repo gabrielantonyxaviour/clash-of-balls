@@ -1,3 +1,5 @@
+import type { SupportedProvider } from "fhenixjs";
+import type { ethers } from "ethers";
 export interface Team {
   name: string;
   abb: string;
@@ -40,3 +42,10 @@ export interface PredictionInput {
   resultantDesc: string;
   params: string[];
 }
+
+export type ExtendedProvider = SupportedProvider & {
+  getTransactionReceipt(txHash: string): Promise<ethers.TransactionReceipt>;
+  send(method: string, params: any[] | Record<string, any>): Promise<any>;
+  getSigner(): Promise<any>;
+  getBalance(address: string): Promise<any>;
+};

@@ -14,7 +14,7 @@ export default function ConfirmChallenge({
   setStep: (step: number) => void;
 }) {
   const [betAmount, setBetAmount] = useState(10);
-  const { gameId } = useEnvironmentContext();
+  const { gameId, fhenixClient } = useEnvironmentContext();
   const { address } = useAccount();
   const { data } = useBalance({
     address,
@@ -78,6 +78,20 @@ export default function ConfirmChallenge({
         </div>
       </div>
       <FanTokenBalances gameId={gameId} />
+      <div className="flex justify-center pt-8">
+        <Button
+          onClick={async () => {
+            if (fhenixClient === null) return;
+            const { data } = await fhenixClient.encrypt_uint16(10);
+            const res = `0x${Array.from(data)
+              .map((b) => b.toString(16).padStart(2, "0"))
+              .join("")}`;
+            console.log(res);
+          }}
+        >
+          Encrypt
+        </Button>
+      </div>{" "}
       <div className="flex justify-center pt-8">
         <Button
           onClick={() => {
