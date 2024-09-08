@@ -55,7 +55,7 @@ app.use(xmtpSupport);
 app.use("/*", serveStatic({ root: "./public" }));
 
 app.composerAction(
-  "/",
+  "/create",
   (c) => {
     return c.res({
       title: "Clash Of Balls",
