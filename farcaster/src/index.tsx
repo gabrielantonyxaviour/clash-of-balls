@@ -131,7 +131,14 @@ app.frame("/challenge/:id", (c) => {
         </div>
       </div>
     ),
-    intents: [<Button action="/">Back</Button>],
+    intents: [
+      <Button.Link href="https://clash-of-balls.vercel.app">
+        Negotiate
+      </Button.Link>,
+      <Button.Transaction target="/tx" action="/tx-success">
+        Accept
+      </Button.Transaction>,
+    ],
   });
 });
 
@@ -223,16 +230,9 @@ app.frame("/", (c) => {
       </div>
     ),
     intents: [
-      // <TextInput placeholder="Type something here" />,
       <Button.Link href="https://clash-of-balls.vercel.app/">
         Try now
       </Button.Link>,
-      // <Button action="/submit" value="post-button">
-      //   Post
-      // </Button>,
-      // <Button.Transaction target="/tx" action="/tx-success">
-      //   Tx
-      // </Button.Transaction>,
     ],
   });
 });
