@@ -6,8 +6,6 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { FhenixClient } from "fhenixjs";
-import { ethers } from "ethers";
 
 interface BalanceContextType {
   predictions: PredictionInput[];
