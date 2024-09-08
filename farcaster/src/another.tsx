@@ -4,7 +4,7 @@ import { devtools } from "frog/dev";
 import { validateFramesPost } from "@xmtp/frames-validator";
 import { Next, Context } from "hono";
 import { createClient } from "@supabase/supabase-js";
-import { parseUnits, encodeFunctionData, erc20Abi, Abi, size } from "viem";
+import { parseUnits, encodeFunctionData, erc20Abi, Abi } from "viem";
 import { baseSepolia } from "viem/chains";
 
 const supabaseUrl =
@@ -71,98 +71,49 @@ app.composerAction(
   }
 );
 
-app.frame("/challenge/:id", async (c) => {
-  const params = c.req.param();
-  const { data: fetchedChallenge } = await supabase
-    .from("clash")
-    .select("*")
-    .eq("id", params["id"]);
-  let response;
-  console.log(fetchedChallenge);
-  if (fetchedChallenge == null)
-    response = {
-      id: "1",
-      game_id: "1",
-      f_image:
-        "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/1dc540bc-60b4-40eb-4dde-85e23acd6200/original",
-      bet: "10",
-    };
-  else {
-    response = fetchedChallenge[0];
-  }
-
+app.frame("/challenge", (c) => {
+  // const params = c.req.param();
+  // const { data: fetchedChallenge } = await supabase
+  //   .from("clash")
+  //   .select("*")
+  //   .eq("id", params["id"]);
+  // let response;
+  // if (fetchedChallenge == null)
+  //   response = {
+  //     gameId: "1",
+  //     f_id: "0x",
+  //     bet: "100",
+  //   };
+  // else {
+  //   response = fetchedChallenge[0];
+  // }
+  const response = {
+    id: "1",
+    gameId: "1",
+    f_id: "10",
+    bet: "100",
+  };
   return c.res({
     image: (
       <div
         style={{
-          position: "relative",
+          alignItems: "center",
           background: "white",
+          backgroundSize: "100% 100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          flexWrap: "nowrap",
           height: "100%",
-          width: "100%",
+          justifyContent: "center",
           textAlign: "center",
+          width: "100%",
         }}
       >
-        <img
-          style={{
-            position: "absolute",
-            display: "flex",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 4,
-          }}
-          src={`https://clash-of-balls-frames.vercel.app/games/${response.game_id}.png`}
-          alt="Game Frame"
-        />
-
-        <div
-          style={{
-            display: "flex",
-            position: "relative", // Text should be on top of the image
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            zIndex: 2, // Ensure text is above the image
-          }}
-        >
+        <div style={{ display: "flex" }}>
           <img
-            style={{
-              position: "absolute",
-              display: "flex",
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              top: "95%",
-              right: "25%",
-              zIndex: 3,
-            }}
-            src={`${response.f_image}`}
-            alt="Game Frame"
+            style={{ zIndex: 1, width: "102%" }}
+            src={`https://clash-of-balls-frames.vercel.app/games/${response.gameId}.png`}
           />
-          <h1
-            style={{
-              fontSize: "30px",
-              top: "80%",
-              right: "4%",
-              fontWeight: "bold",
-            }}
-          >
-            {response.f_name}
-          </h1>
-          <p
-            style={{
-              fontSize: "26px",
-              top: "90%",
-              left: "14%",
-              fontWeight: "normal",
-            }}
-          >
-            {response.bet} CHZ
-          </p>
         </div>
       </div>
     ),
