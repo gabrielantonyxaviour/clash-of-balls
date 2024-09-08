@@ -1,19 +1,19 @@
 import { serveStatic } from "@hono/node-server/serve-static";
-import { Button, Frog, TextInput } from "frog";
+import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { validateFramesPost } from "@xmtp/frames-validator";
 import { Next, Context } from "hono";
-import { parseUnits, encodeFunctionData, erc20Abi, Abi } from "viem";
-import { baseSepolia } from "viem/chains";
-import getChallenge from "./lib/getChallenge";
-import dotenv from "dotenv";
+import { createClient } from "@supabase/supabase-js";
 
-// Load environment variables from .env file
-dotenv.config();
-// import { neynar } from 'frog/hubs'
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ??
+  "https://tzfytpqfslcatnstvjkw.supabase.co/";
+const supabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_KEY ??
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6Znl0cHFmc2xjYXRuc3R2amt3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNTU4OTI3MywiZXhwIjoyMDMxMTY1MjczfQ.F3oPO1-ex5suwo69cRgzZBuWwxcVAMuO-a2rZrknFZo";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const addMetaTags = (client: string, version?: string) => {
-  // Follow the OpenFrames meta tags spec
   return {
     unstable_metaTags: [
       { property: `of:accepts`, content: version || "vNext" },
@@ -28,7 +28,6 @@ type State = {
 
 export const app = new Frog<{ State: State }>({
   title: "Clash Of Balls",
-  assetsPath: "/",
   initialState: {
     count: 0,
   },
@@ -36,7 +35,6 @@ export const app = new Frog<{ State: State }>({
 });
 
 const xmtpSupport = async (c: Context, next: Next) => {
-  // Check if the request is a POST and relevant for XMTP processing
   if (c.req.method === "POST") {
     const requestBody = (await c.req.json().catch(() => {})) || {};
     if (requestBody?.clientProtocol?.includes("xmtp")) {
@@ -72,42 +70,6 @@ app.composerAction(
   }
 );
 
-app.transaction("/tx", (c) => {
-  let address: `0x${string}`;
-
-  // XMTP verified address
-  const { verifiedWalletAddress } = (c?.var as any) || {};
-
-  if (verifiedWalletAddress) {
-    address = verifiedWalletAddress as `0x${string}`;
-  } else {
-    address = c.address as `0x${string}`;
-  }
-
-  // Prepare the amount to transfer
-  const amount = BigInt(parseUnits("1", 6));
-
-  // Transfering 1 USDC to yourself
-  const calldata = encodeFunctionData({
-    abi: erc20Abi,
-    functionName: "transfer",
-    args: [address as `0x${string}`, amount] as const,
-  });
-
-  const BASE_SEPOLIA_USDC_ADDRESS =
-    "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
-  return c.res({
-    chainId: `eip155:${baseSepolia.id}`,
-    method: "eth_sendTransaction",
-    params: {
-      abi: erc20Abi as Abi,
-      to: BASE_SEPOLIA_USDC_ADDRESS,
-      data: calldata,
-      value: BigInt(0),
-    },
-  });
-});
-
 app.frame("/", (c) => {
   return c.res({
     image: (
@@ -136,10 +98,22 @@ app.frame("/", (c) => {
   });
 });
 
-app.frame("/challenge/:[id]", async (c) => {
+app.frame("/challenge/:id", async (c) => {
   const params = c.req.param();
-  const { response } = await getChallenge({ id: params["[id]"] });
-
+  const { data: fetchedChallenge } = await supabase
+    .from("clash")
+    .select("*")
+    .eq("id", params["id"]);
+  let response;
+  if (fetchedChallenge == null)
+    response = {
+      gameId: "1",
+      f_id: "0x",
+      bet: "100",
+    };
+  else {
+    response = fetchedChallenge[0];
+  }
   return c.res({
     image: (
       <div
@@ -165,12 +139,16 @@ app.frame("/challenge/:[id]", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Link href="https://clash-of-balls.vercel.app">
+      <Button.Link
+        href={`https://clash-of-balls.vercel.app/challenge/${response.id}`}
+      >
         Negotiate
       </Button.Link>,
-      <Button.Transaction target="/tx" action="/tx-success">
+      <Button.Link
+        href={`https://clash-of-balls.vercel.app/challenge/${response.id}`}
+      >
         Accept
-      </Button.Transaction>,
+      </Button.Link>,
     ],
   });
 });

@@ -13,6 +13,7 @@ import { handleLogout, initXmtpWithKeys } from "@/lib/helpers/xmtp";
 import {
   useCanMessage,
   useClient,
+  useSendMessage,
   useStartConversation,
 } from "@xmtp/react-sdk";
 import {
@@ -42,13 +43,13 @@ export default function XmtpChat() {
   } = useClient();
   const { canMessage } = useCanMessage();
   const { startConversation } = useStartConversation();
-
+  const { sendMessage } = useSendMessage();
   useEffect(() => {
     if (address == undefined) return;
-    const provider = new ethers.providers.Web3Provider(
-      (window as any).ethereum
-    );
-    setSigner(provider.getSigner());
+    const provider = new ethers.BrowserProvider((window as any).ethereum);
+    provider.getSigner().then((s) => {
+      setSigner(s);
+    });
   }, [address]);
   useEffect(() => {
     const initialIsOnNetwork =
@@ -122,7 +123,7 @@ export default function XmtpChat() {
                         height={25}
                         alt="xmtp"
                       />
-                      <p>Connect with XMTP</p>{" "}
+                      <p>Connect with XMTP</p>
                     </>
                   )}
                 </Button>
@@ -203,10 +204,15 @@ export default function XmtpChat() {
                         };
                         try {
                           setConvos([...convos, currentConvo]);
-                          await startConversation(
-                            "0xbE9044946343fDBf311C96Fb77b2933E2AdA8B5D",
-                            chatMessage
-                          );
+                          if (convos.length == 0) {
+                            await startConversation(
+                              "0xbE9044946343fDBf311C96Fb77b2933E2AdA8B5D",
+                              chatMessage
+                            );
+                          } else {
+                            await sendMessage("");
+                          }
+
                           // const response = await axios.post("/api/classify", {
                           //   message: prompt,
                           // });
