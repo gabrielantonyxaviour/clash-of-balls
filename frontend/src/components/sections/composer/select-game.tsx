@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import GameCard from "../../ui/custom/game-card";
 import { games } from "@/lib/constants";
 import { useEnvironmentContext } from "../context";
-import { ethers } from "ethers";
+import { JsonRpcProvider } from "ethers";
 import { FhenixClient } from "fhenixjs";
+import { sign } from "crypto";
 export default function SelectGame({
   setGameIndex,
   setSteps,
@@ -34,12 +35,13 @@ export default function SelectGame({
       </div>
       <Button
         onClick={async () => {
-          const provider = new ethers.providers.JsonRpcProvider(
+          console.log("TRYING");
+          const provider = new JsonRpcProvider(
             "https://api.helium.fhenix.zone"
           );
-          const client = new FhenixClient({ provider: provider as any });
+          const client = new FhenixClient({ provider: provider });
 
-          const { data } = await client.encrypt_uint16(10);
+          const { data } = await client.encrypt_uint8(10);
           const res = `0x${Array.from(data)
             .map((b) => b.toString(16).padStart(2, "0"))
             .join("")}`;

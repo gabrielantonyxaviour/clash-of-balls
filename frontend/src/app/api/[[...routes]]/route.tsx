@@ -4,6 +4,19 @@ import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
+import { Next, Context } from "hono";
+import { validateFramesPost } from "@xmtp/frames-validator";
+
+const addMetaTags = (client: string, version?: string) => {
+  // Follow the OpenFrames meta tags spec
+  return {
+    unstable_metaTags: [
+      { property: `of:accepts`, content: version || "vNext" },
+      { property: `of:accepts:${client}`, content: version || "vNext" },
+    ],
+  };
+};
+
 type State = {
   question: string;
   options: {
@@ -22,7 +35,7 @@ type State = {
 };
 
 const app = new Frog<{ State: State }>({
-  title: "Private Poll",
+  title: "Clash Of Balls",
   assetsPath: "/",
   basePath: "/api",
   initialState: {
@@ -44,7 +57,24 @@ const app = new Frog<{ State: State }>({
   imageOptions: {
     fonts: [{ name: "Krona One", source: "google" }],
   },
+  ...addMetaTags("xmtp"),
 });
+const xmtpSupport = async (c: Context, next: Next) => {
+  // Check if the request is a POST and relevant for XMTP processing
+  if (c.req.method === "POST") {
+    const requestBody = (await c.req.json().catch(() => {})) || {};
+    if (requestBody?.clientProtocol?.includes("xmtp")) {
+      c.set("client", "xmtp");
+      const { verifiedWalletAddress } = await validateFramesPost(requestBody);
+      c.set("verifiedWalletAddress", verifiedWalletAddress);
+    } else {
+      // Add farcaster check
+      c.set("client", "farcaster");
+    }
+  }
+  await next();
+};
+app.use(xmtpSupport);
 app.composerAction(
   "/create",
   (c) => {
