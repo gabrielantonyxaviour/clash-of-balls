@@ -5,6 +5,11 @@ import { validateFramesPost } from "@xmtp/frames-validator";
 import { Next, Context } from "hono";
 import { parseUnits, encodeFunctionData, erc20Abi, Abi } from "viem";
 import { baseSepolia } from "viem/chains";
+import getChallenge from "./lib/getChallenge";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 // import { neynar } from 'frog/hubs'
 
 const addMetaTags = (client: string, version?: string) => {
@@ -28,8 +33,6 @@ export const app = new Frog<{ State: State }>({
     count: 0,
   },
   ...addMetaTags("xmtp"),
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
 
 const xmtpSupport = async (c: Context, next: Next) => {
@@ -105,11 +108,38 @@ app.transaction("/tx", (c) => {
   });
 });
 
-app.frame("/challenge/:id", (c) => {
-  const { id } = c.req.param();
-  const amount = 10;
-  const fname = "";
-  const image = "";
+app.frame("/", (c) => {
+  return c.res({
+    image: (
+      <div
+        style={{
+          alignItems: "center",
+          background: "white",
+          backgroundSize: "100% 100%",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "nowrap",
+          height: "100%",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        <img key={2} src="/home.png" />
+      </div>
+    ),
+    intents: [
+      <Button.Link href="https://clash-of-balls.vercel.app/">
+        Try now
+      </Button.Link>,
+    ],
+  });
+});
+
+app.frame("/challenge/:[id]", async (c) => {
+  const params = c.req.param();
+  const { response } = await getChallenge({ id: params["[id]"] });
+
   return c.res({
     image: (
       <div
@@ -127,7 +157,10 @@ app.frame("/challenge/:id", (c) => {
         }}
       >
         <div style={{ display: "flex" }}>
-          <img style={{ zIndex: 1, width: "102%" }} src={`/barvsmci.png`} />
+          <img
+            style={{ zIndex: 1, width: "102%" }}
+            src={`/games/${response.gameId}.png`}
+          />
         </div>
       </div>
     ),
@@ -206,34 +239,6 @@ app.frame("/submit", (c) => {
       </div>
     ),
     intents: [<Button>Back</Button>],
-  });
-});
-
-app.frame("/", (c) => {
-  return c.res({
-    image: (
-      <div
-        style={{
-          alignItems: "center",
-          background: "white",
-          backgroundSize: "100% 100%",
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "nowrap",
-          height: "100%",
-          justifyContent: "center",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
-        <img key={2} src="/home.png" />
-      </div>
-    ),
-    intents: [
-      <Button.Link href="https://clash-of-balls.vercel.app/">
-        Try now
-      </Button.Link>,
-    ],
   });
 });
 

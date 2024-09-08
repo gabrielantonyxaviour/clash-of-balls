@@ -2,7 +2,9 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl =
   process.env.NEXT_PUBLIC_SUPABASE_URL ??
   "https://tzfytpqfslcatnstvjkw.supabase.co/";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY ?? "";
+const supabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_KEY ??
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6Znl0cHFmc2xjYXRuc3R2amt3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNTU4OTI3MywiZXhwIjoyMDMxMTY1MjczfQ.F3oPO1-ex5suwo69cRgzZBuWwxcVAMuO-a2rZrknFZo";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function getChallenge(req: {
