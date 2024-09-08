@@ -86,7 +86,7 @@ app.frame("/", (c) => {
           width: "100%",
         }}
       >
-        <img key={2} src="https://clash-of-balls-frames.vercel.app/home.png" />
+        <img key={0} src="https://clash-of-balls-frames.vercel.app/home.png" />
       </div>
     ),
     intents: [
@@ -97,7 +97,7 @@ app.frame("/", (c) => {
   });
 });
 
-app.frame("/challenge/:id", async (c) => {
+app.frame("/challenge", (c) => {
   // const params = c.req.param();
   // const { data: fetchedChallenge } = await supabase
   //   .from("clash")
