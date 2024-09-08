@@ -19,6 +19,14 @@ interface BalanceContextType {
   openChat: boolean;
   setOpenChat: (openChat: boolean) => void;
   chilizPublicClient: PublicClient | null;
+  tx: string;
+  setTx: (tx: string) => void;
+  fName: string;
+  setFName: (fName: string) => void;
+  fImage: string;
+  setFImage: (fImage: string) => void;
+  challengeId: string;
+  setChallengeId: (challengeId: string) => void;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -66,7 +74,10 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const [openChat, setOpenChat] = useState<boolean>(false);
   const [chilizPublicClient, setChilizPublicClient] =
     useState<PublicClient | null>(null);
-
+  const [tx, setTx] = useState<string>("");
+  const [fName, setFName] = useState<string>("");
+  const [fImage, setFImage] = useState<string>("");
+  const [challengeId, setChallengeId] = useState<string>("");
   useEffect(() => {
     const client = createPublicClient({
       chain: chilizSpicy,
@@ -87,6 +98,14 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         openChat,
         setOpenChat,
         chilizPublicClient,
+        tx,
+        setTx,
+        fName,
+        setFName,
+        fImage,
+        setFImage,
+        challengeId,
+        setChallengeId,
       }}
     >
       {children}

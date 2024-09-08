@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
 import Image from "next/image";
+import { useEnvironmentContext } from "@/components/sections/context";
 
 export default function FarcasterButton({
   fid,
@@ -12,8 +13,7 @@ export default function FarcasterButton({
   fid: string;
   address: string;
 }) {
-  const [profileImage, setProfileImage] = useState("");
-  const [fName, setFName] = useState("");
+  const { fName, setFName, setFImage, fImage } = useEnvironmentContext();
   const [localFid, setLocalFid] = useState("-1");
   const [fetched, setFetched] = useState(false);
   const query =
@@ -54,7 +54,7 @@ export default function FarcasterButton({
       (data as any).Socials.Social != null &&
       (data as any).Socials.Social.length > 0
     ) {
-      setProfileImage((data as any).Socials.Social[0].profileImage);
+      setFImage((data as any).Socials.Social[0].profileImage);
       setFName((data as any).Socials.Social[0].profileHandle);
       console.log(data);
       setLocalFid(fid);
@@ -74,7 +74,7 @@ export default function FarcasterButton({
       >
         <div className="w-[20px] h-[20px] overflow-hidden relative rounded-full">
           <Image
-            src={profileImage}
+            src={fImage}
             alt="avatar"
             width={20}
             height={20}

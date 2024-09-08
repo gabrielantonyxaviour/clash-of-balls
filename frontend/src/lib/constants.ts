@@ -1640,3 +1640,1853 @@ export const supportedchains: Record<string, any> = {
     sportsOracle: "0xe1E99CB95683Cf44403ee53864e5336294898de0",
   },
 };
+
+export const coreAbi = [
+  {
+    inputs: [
+      {
+        internalType: "contract IMailbox",
+        name: "_mailbox",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "challenger",
+        type: "address",
+      },
+    ],
+    name: "ChallengeAccepted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "winner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "winnerIndex",
+        type: "uint8",
+      },
+    ],
+    name: "ChallengeCompleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "gameId",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "challenger",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "ChallengeCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "playerOnePoints",
+        type: "uint16",
+      },
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "playerTwoPoints",
+        type: "uint16",
+      },
+    ],
+    name: "CrosschainMessageReceived",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "messageId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "encodedMessage",
+        type: "bytes",
+      },
+    ],
+    name: "CrosschainMessageSent",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "player",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "fanToken",
+        type: "address",
+      },
+    ],
+    name: "DiscountAvailed",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "COMPUTE_DOMAIN",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_challengeId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput",
+        name: "_encryptedPredictions",
+        type: "tuple",
+      },
+    ],
+    name: "acceptChallenge",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "challengeId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "challenges",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput",
+        name: "playerOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput",
+        name: "playerTwo",
+        type: "tuple",
+      },
+      {
+        internalType: "uint32",
+        name: "fixtureId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint16",
+        name: "playerOnePoints",
+        type: "uint16",
+      },
+      {
+        internalType: "uint16",
+        name: "playerTwoPoints",
+        type: "uint16",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "winner",
+        type: "uint8",
+      },
+      {
+        internalType: "bool",
+        name: "challengeAccepted",
+        type: "bool",
+      },
+      {
+        internalType: "bool",
+        name: "isCompleted",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "gameId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput",
+        name: "_encryptedPredictions",
+        type: "tuple",
+      },
+    ],
+    name: "createChallenge",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32[]",
+        name: "fixtureIds",
+        type: "uint32[]",
+      },
+      {
+        internalType: "address[]",
+        name: "home",
+        type: "address[]",
+      },
+      {
+        internalType: "address[]",
+        name: "away",
+        type: "address[]",
+      },
+      {
+        internalType: "string[]",
+        name: "metadata",
+        type: "string[]",
+      },
+    ],
+    name: "createGames",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fhenixCompute",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    name: "games",
+    outputs: [
+      {
+        internalType: "address",
+        name: "homeFanToken",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "awayFanToken",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "_origin",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "_sender",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "handle",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mailbox",
+    outputs: [
+      {
+        internalType: "contract IMailbox",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_fhenixCompute",
+        type: "address",
+      },
+    ],
+    name: "setFhenixCompute",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+const computeAbi = [
+  {
+    inputs: [
+      {
+        internalType: "contract IMailbox",
+        name: "_mailbox",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_core",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_oracle",
+        type: "address",
+      },
+      {
+        internalType: "uint8[10]",
+        name: "basePoints",
+        type: "uint8[10]",
+      },
+      {
+        internalType: "uint16[10]",
+        name: "multiplierStepsInBps",
+        type: "uint16[10]",
+      },
+      {
+        internalType: "string[10]",
+        name: "metadata",
+        type: "string[10]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8[10]",
+        name: "basePoints",
+        type: "uint8[10]",
+      },
+      {
+        indexed: false,
+        internalType: "uint16[10]",
+        name: "multiplierStepsInBps",
+        type: "uint16[10]",
+      },
+      {
+        indexed: false,
+        internalType: "string[10]",
+        name: "metadata",
+        type: "string[10]",
+      },
+    ],
+    name: "ActionsConfigured",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "playerTwo",
+        type: "address",
+      },
+    ],
+    name: "ChallengeAccepted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "playerOnePoints",
+        type: "uint16",
+      },
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "playerTwoPoints",
+        type: "uint16",
+      },
+    ],
+    name: "ChallengeCompleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "fixtureId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address[2]",
+        name: "players",
+        type: "address[2]",
+      },
+    ],
+    name: "ChallengeCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint32",
+        name: "_origin",
+        type: "uint32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "_sender",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "CrosschainMessageReceived",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "_messageId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "CrosschainMessageSent",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint32",
+            name: "fixtureId",
+            type: "uint32",
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "player",
+                type: "address",
+              },
+              {
+                internalType: "uint8[5]",
+                name: "selectedActionIds",
+                type: "uint8[5]",
+              },
+              {
+                internalType: "uint32[2]",
+                name: "predictionKeyPlayers",
+                type: "uint32[2]",
+              },
+              {
+                internalType: "bool[3]",
+                name: "predictionKeyTeams",
+                type: "bool[3]",
+              },
+              {
+                internalType: "uint8[8]",
+                name: "predictionValues",
+                type: "uint8[8]",
+              },
+            ],
+            internalType: "struct IClashOfBalls.DecryptedPrediction",
+            name: "playerOne",
+            type: "tuple",
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "player",
+                type: "address",
+              },
+              {
+                internalType: "uint8[5]",
+                name: "selectedActionIds",
+                type: "uint8[5]",
+              },
+              {
+                internalType: "uint32[2]",
+                name: "predictionKeyPlayers",
+                type: "uint32[2]",
+              },
+              {
+                internalType: "bool[3]",
+                name: "predictionKeyTeams",
+                type: "bool[3]",
+              },
+              {
+                internalType: "uint8[8]",
+                name: "predictionValues",
+                type: "uint8[8]",
+              },
+            ],
+            internalType: "struct IClashOfBalls.DecryptedPrediction",
+            name: "playerTwo",
+            type: "tuple",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IClashOfBalls.DecryptedChallenge",
+        name: "decryptedChallenge",
+        type: "tuple",
+      },
+    ],
+    name: "PredictionsDecrypted",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "BASE_MULTIPLIER",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "CORE_DOMAIN",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "ORACLE_DOMAIN",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    name: "actions",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "basePoints",
+        type: "uint8",
+      },
+      {
+        internalType: "uint16",
+        name: "multiplierStepsInBps",
+        type: "uint16",
+      },
+      {
+        internalType: "string",
+        name: "metadata",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "prediction",
+        type: "tuple",
+      },
+      {
+        internalType: "uint8[14]",
+        name: "results",
+        type: "uint8[14]",
+      },
+      {
+        internalType: "bool",
+        name: "isPlayerOne",
+        type: "bool",
+      },
+    ],
+    name: "calculatePoints",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "points",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "challengeId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "challenges",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "playerOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "playerTwo",
+        type: "tuple",
+      },
+      {
+        internalType: "uint32",
+        name: "fixtureId",
+        type: "uint32",
+      },
+      {
+        internalType: "uint16",
+        name: "playerOnePoints",
+        type: "uint16",
+      },
+      {
+        internalType: "uint16",
+        name: "playerTwoPoints",
+        type: "uint16",
+      },
+      {
+        internalType: "uint256",
+        name: "gameEnds",
+        type: "uint256",
+      },
+      {
+        internalType: "bool",
+        name: "isCompleted",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "core",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "fixtureId",
+        type: "uint32",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput[2]",
+        name: "players",
+        type: "tuple[2]",
+      },
+      {
+        internalType: "uint256",
+        name: "gameEndsIn",
+        type: "uint256",
+      },
+    ],
+    name: "createChallenge",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "prediction",
+        type: "tuple",
+      },
+    ],
+    name: "decryptPrediction",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "decryptedPrediction",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "decryptedChallenges",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "fixtureId",
+        type: "uint32",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "playerOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "playerTwo",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "bytes[5]",
+            name: "encryptedActionIds",
+            type: "bytes[5]",
+          },
+          {
+            internalType: "bytes[2]",
+            name: "encryptedPlayerIds",
+            type: "bytes[2]",
+          },
+          {
+            internalType: "bytes[3]",
+            name: "encryptedTeams",
+            type: "bytes[3]",
+          },
+          {
+            internalType: "bytes[8]",
+            name: "encryptedPredictionValues",
+            type: "bytes[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.EncryptedPredictionInput",
+        name: "encryptedPrediction",
+        type: "tuple",
+      },
+    ],
+    name: "formatEncryptedPredictions",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "prediction",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+      {
+        internalType: "uint8",
+        name: "index",
+        type: "uint8",
+      },
+    ],
+    name: "getPlayerGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+      {
+        internalType: "uint8",
+        name: "index",
+        type: "uint8",
+      },
+    ],
+    name: "getPlayerYellowCard",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTeamAFullTimeGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTeamAHalfTimeGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTeamBFullTimeGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTeamBHalfTimeGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTotalCorners",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint128",
+        name: "packedData",
+        type: "uint128",
+      },
+    ],
+    name: "getTotalShotsOnGoal",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "_origin",
+        type: "uint32",
+      },
+      {
+        internalType: "bytes32",
+        name: "_sender",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+    ],
+    name: "handle",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mailbox",
+    outputs: [
+      {
+        internalType: "contract IMailbox",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "oracle",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "predictionOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "predictionTwo",
+        type: "tuple",
+      },
+      {
+        internalType: "uint8[14]",
+        name: "results",
+        type: "uint8[14]",
+      },
+    ],
+    name: "resolvePoints",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "playerOnePoints",
+        type: "uint16",
+      },
+      {
+        internalType: "uint16",
+        name: "playerTwoPoints",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "predictionOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "euint8[5]",
+            name: "selectedActionIds",
+            type: "uint256[5]",
+          },
+          {
+            internalType: "euint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint256[2]",
+          },
+          {
+            internalType: "ebool[3]",
+            name: "predictionKeyTeams",
+            type: "uint256[3]",
+          },
+          {
+            internalType: "euint8[8]",
+            name: "predictionValues",
+            type: "uint256[8]",
+          },
+        ],
+        internalType: "struct FhenixCompute.PlayerPrediction",
+        name: "predictionTwo",
+        type: "tuple",
+      },
+    ],
+    name: "resolvePredictions",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "playerOne",
+        type: "tuple",
+      },
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "player",
+            type: "address",
+          },
+          {
+            internalType: "uint8[5]",
+            name: "selectedActionIds",
+            type: "uint8[5]",
+          },
+          {
+            internalType: "uint32[2]",
+            name: "predictionKeyPlayers",
+            type: "uint32[2]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "predictionKeyTeams",
+            type: "bool[3]",
+          },
+          {
+            internalType: "uint8[8]",
+            name: "predictionValues",
+            type: "uint8[8]",
+          },
+        ],
+        internalType: "struct IClashOfBalls.DecryptedPrediction",
+        name: "playerTwo",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_challengeId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint128",
+        name: "results",
+        type: "uint128",
+      },
+    ],
+    name: "revealWinner",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8[10]",
+        name: "basePoints",
+        type: "uint8[10]",
+      },
+      {
+        internalType: "uint16[10]",
+        name: "multiplierStepsInBps",
+        type: "uint16[10]",
+      },
+      {
+        internalType: "string[10]",
+        name: "metadata",
+        type: "string[10]",
+      },
+    ],
+    name: "setActions",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "challengeId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint32[5]",
+        name: "_data",
+        type: "uint32[5]",
+      },
+    ],
+    name: "testSendCrosschain",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_challengeId",
+        type: "uint256",
+      },
+    ],
+    name: "triggerResults",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
