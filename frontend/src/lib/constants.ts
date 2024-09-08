@@ -1609,6 +1609,17 @@ export const supportedchains: Record<string, any> = {
     chainId: chilizSpicy.id,
     symbol: chilizSpicy.nativeCurrency.symbol,
     explorer: chilizSpicy.blockExplorers.default.url,
+    core: "0x2F83c19193D54eDC003BC9f99D09634Ba5d3Ac47",
+    tokens: {
+      acm: "0x87dd08be032a03d937F2A8003dfa9C52821cbaB9",
+      bar: "0x45E50677f8DECa7CC582Ad573b525409d1233592",
+      inter: "0x34c00007cf1Ca7a3D9DccE8cF1D3f75B4db4d37e",
+      juv: "0x634c9b919A484913C46362e2E0E700576920c994",
+      mci: "0x660e2D9f26542957C7E819f91944d72Cfca32058",
+      nap: "0x2452a4eEC9359Ff93C084ed5eD3E21eaC197586D",
+      psg: "0xD82ee61aA30d018239350f9843cB8A4967B8b3da",
+      spurs: "0xD0b9383c34297bD7A9d01c2FA8Da22124dfE1Ec5",
+    },
   },
   [fhenixHelium.id]: {
     id: 2,
@@ -1617,6 +1628,7 @@ export const supportedchains: Record<string, any> = {
     symbol: fhenixHelium.nativeCurrency.symbol,
     image: "/coins/fhenix.jpeg",
     explorer: fhenixHelium.blockExplorers.default.url,
+    compute: "0x103E9467CF92707E5240b18C51B04cbE805433eb",
   },
   [arbitrumSepolia.id]: {
     id: 3,
@@ -1625,5 +1637,6 @@ export const supportedchains: Record<string, any> = {
     symbol: "ETH",
     image: "/coins/arbitrum.png",
     explorer: "https://sepolia.arbiscan.io/",
+    sportsOracle: "0xe1E99CB95683Cf44403ee53864e5336294898de0",
   },
 };
