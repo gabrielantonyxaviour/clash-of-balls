@@ -8,6 +8,8 @@ interface BalanceContextType {
   setGameId: (gameId: number) => void;
   steps: number;
   setSteps: (step: number) => void;
+  openChat: boolean;
+  setOpenChat: (openChat: boolean) => void;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -52,6 +54,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   ]);
   const [gameId, setGameId] = useState<number>(-1);
   const [steps, setSteps] = useState<number>(0);
+  const [openChat, setOpenChat] = useState<boolean>(false);
   return (
     <BalanceContext.Provider
       value={{
@@ -61,6 +64,8 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setGameId,
         steps,
         setSteps,
+        openChat,
+        setOpenChat,
       }}
     >
       {children}
