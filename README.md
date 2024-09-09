@@ -83,39 +83,49 @@ Empty bytes - (6 bytes)
 # Chiliz
 
 Core contract in Chiliz
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/contracts/ClashOfBalls.sol`
 
 Fan tokens in Chiliz
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/tree/main/blockend/contracts/fan-tokens`
 
 Deployed contracts in Chiliz
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/networks.js#L22`
 
 Contract call integration in Frontend
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/frontend/src/components/sections/composer/confirm-challenge.tsx#L160`
 
 # Fhenix
 
 Private Compute in Fhenix
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/contracts/FhenixCompute.sol`
 
 Deployed contracts in Fhenix
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/networks.js#L44`
 
 # Chainlink
 
 Chainlink Functions Source Script
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/oracle/source.js`
 
 Sports Oracle contract
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/contracts/SportsOracle.sol`
 
 Contract deployment in Arbitrum Sepolia
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/blockend/networks.js#L62`
 
 # XMTP
 
 1 to 1 in app chat messaging 
+
 `https://github.com/gabrielantonyxaviour/clash-of-balls/blob/main/frontend/src/components/sections/xmtp-chat.tsx`
 
 ## Technology Stack
