@@ -56,8 +56,8 @@ polygonamoy:
     reorgPeriod: 10
   chainId: 80002
   deployer:
-    name: Abacus Works
-    url: https://www.hyperlane.xyz
+    name: Gabriel Antony Xaviour
+    url: https://twitter.com/gabrielaxyeth
   displayName: Polygon Amoy
   domainId: 80002
   gasCurrencyCoinGeckoId: polygon-ecosystem-token
@@ -85,8 +85,8 @@ worldchainsepolia:
     reorgPeriod: 10
   chainId: 4801
   deployer:
-    name: Abacus Works
-    url: https://www.hyperlane.xyz
+    name: Gabriel Antony Xaviour
+    url: https://twitter.com/gabrielaxyeth
   displayName: World Chain Sepolia
   domainId: 4801
   isTestnet: true
@@ -133,8 +133,8 @@ mantlesepolia:
       url: https://sepolia.mantlescan.xyz/
   chainId: 5003
   deployer:
-    name: guy93354
-    url: https://github.com/guy93354
+    name: gabrielantonyxaviour
+    url: https://github.com/gabrielantonyxaviour
   displayName: Mantle Sepolia
   domainId: 5003
   isTestnet: true
@@ -158,8 +158,8 @@ scrollsepolia:
     reorgPeriod: 1
   chainId: 534351
   deployer:
-    name: Abacus Works
-    url: https://www.hyperlane.xyz
+    name: Gabriel Antony Xaviour
+    url: https://twitter.com/gabrielaxyeth
   displayName: Scroll Sepolia
   domainId: 534351
   gasCurrencyCoinGeckoId: ethereum
