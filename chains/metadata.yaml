@@ -194,8 +194,12 @@ kinto:
     symbol: ETH
   protocol: ethereum
   rpcUrls:
-    - http: https://rpc.kinto.xyz/http
     - http: https://kinto-mainnet.calderachain.xyz/http
+      retry:
+        maxRequests: 10
+    - http: https://rpc.kinto.xyz/http
+      retry:
+        maxRequests: 10
 gnosischiado:
   blockExplorers:
     - apiKey: anything
