@@ -240,3 +240,56 @@ incotestnet:
   protocol: ethereum
   rpcUrls:
     - http: https://validator.rivest.inco.org
+arbitrumsepolia:
+  blockExplorers:
+    - apiUrl: https://api-sepolia.arbiscan.io/api
+      family: etherscan
+      name: Arbiscan
+      url: https://sepolia.arbiscan.io
+  blocks:
+    confirmations: 1
+    estimateBlockTime: 3
+    reorgPeriod: 0
+  chainId: 421614
+  deployer:
+    name: Abacus Works
+    url: https://www.hyperlane.xyz
+  displayName: Arbitrum Sepolia
+  domainId: 421614
+  index:
+    from: 49690504
+  isTestnet: true
+  name: arbitrumsepolia
+  nativeToken:
+    decimals: 18
+    name: Ether
+    symbol: ETH
+  protocol: ethereum
+  rpcUrls:
+    - http: https://arbitrum-sepolia.blockpi.network/v1/rpc/public
+    - http: https://sepolia-rollup.arbitrum.io/rpc
+  technicalStack: arbitrumnitro
+fhenixtestnet:
+  blockExplorers:
+    - apiUrl: https://api.helium.fhenix.zone
+      family: blockscout
+      name: Fhenix Helium Testnet Explorer
+      url: https://explorer.helium.fhenix.zone
+  chainId: 8008135
+  deployer:
+    name: d0x471b
+    url: https://t.me/d0x471b
+  displayName: Fhenix Helium Testnet
+  domainId: 8008135
+  index:
+    from: 140556
+  isTestnet: true
+  name: fhenixtestnet
+  nativeToken:
+    decimals: 18
+    name: Testnet Fhenix
+    symbol: tFHE
+  protocol: ethereum
+  rpcUrls:
+    - http: https://api.helium.fhenix.zone
+  technicalStack: arbitrumnitro
