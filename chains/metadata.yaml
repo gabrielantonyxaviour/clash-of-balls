@@ -221,3 +221,22 @@ gnosischiado:
     - http: https://endpoints.omniatech.io/v1/gnosis/chiado/public
     - http: https://gnosis-chiado-rpc.publicnode.com
     - http: https://rpc.chiadochain.net
+incotestnet:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://explorer.testnet.inco.org/api
+      family: blockscout
+      name: Inco Rivest Explorer
+      url: https://explorer.testnet.inco.org
+  chainId: 21097
+  displayName: Inco Rivest Testnet
+  domainId: 21097
+  isTestnet: true
+  name: incotestnet
+  nativeToken:
+    decimals: 18
+    name: INCO
+    symbol: INCO
+  protocol: ethereum
+  rpcUrls:
+    - http: https://validator.rivest.inco.org
