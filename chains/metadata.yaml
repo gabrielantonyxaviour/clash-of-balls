@@ -293,3 +293,117 @@ fhenixtestnet:
   rpcUrls:
     - http: https://api.helium.fhenix.zone
   technicalStack: arbitrumnitro
+zircuitsepolia:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://explorer.testnet.zircuit.com/api
+      family: blockscout
+      name: Zircuit Sepolia Explorer
+      url: https://explorer.testnet.zircuit.com
+  chainId: 48899
+  displayName: Zircuit Sepolia Testnet
+  domainId: 48899
+  isTestnet: true
+  name: zircuitsepolia
+  nativeToken:
+    decimals: 18
+    name: Ethereum
+    symbol: ETH
+  protocol: ethereum
+  rpcUrls:
+    - http: https://zircuit1-testnet.p2pify.com
+lineasepolia:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://explorer.sepolia.linea.build/api
+      family: blockscout
+      name: Linea Sepolia Explorer
+      url: https://explorer.sepolia.linea.build
+  chainId: 59141
+  displayName: Linea Sepolia Testnet
+  domainId: 59141
+  isTestnet: true
+  name: lineasepolia
+  nativeToken:
+    decimals: 18
+    name: Ethereum
+    symbol: ETH
+  protocol: ethereum
+  rpcUrls:
+    - http: https://linea-sepolia.blockpi.network/v1/rpc/public
+flowtestnet:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://evm-testnet.flowscan.io/api
+      family: blockscout
+      name: Linea Sepolia Explorer
+      url: https://evm-testnet.flowscan.io
+  chainId: 545
+  displayName: Flow EVM Testnet
+  domainId: 545
+  isTestnet: true
+  name: flowtestnet
+  nativeToken:
+    decimals: 18
+    name: Flow Token
+    symbol: FLOW
+  protocol: ethereum
+  rpcUrls:
+    - http: https://testnet.evm.nodes.onflow.org
+sepolia:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://eth-sepolia.blockscout.com/api
+      family: blockscout
+      name: Eth Sepolia Explorer
+      url: https://eth-sepolia.blockscout.com
+  chainId: 11155111
+  displayName: Ethereum Sepolia
+  domainId: 11155111
+  isTestnet: true
+  name: sepolia
+  nativeToken:
+    decimals: 18
+    name: Ether
+    symbol: ETH
+  protocol: ethereum
+  rpcUrls:
+    - http: https://sepolia.drpc.org
+oasissaphire:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://explorer.oasis.io/testnet/sapphire/api
+      family: blockscout
+      name: Oasis Saphire Explorer
+      url: https://explorer.oasis.io/testnet/sapphire/
+  chainId: 23295
+  displayName: Oasis Saphire Testnet
+  domainId: 23295
+  isTestnet: true
+  name: oasissaphire
+  nativeToken:
+    decimals: 18
+    name: Test Oasis
+    symbol: TEST
+  protocol: ethereum
+  rpcUrls:
+    - http: https://testnet.sapphire.oasis.io
+filcalibration:
+  blockExplorers:
+    - apiKey: anything
+      apiUrl: https://filecoin-testnet.blockscout.com/api
+      family: blockscout
+      name: Oasis Saphire Explorer
+      url: https://filecoin-testnet.blockscout.com/
+  chainId: 314159
+  displayName: Filecoin Calibration Testnet
+  domainId: 314159
+  isTestnet: true
+  name: fil-calibration
+  nativeToken:
+    decimals: 18
+    name: Test Filecoin
+    symbol: tFIL
+  protocol: ethereum
+  rpcUrls:
+    - http: https://rpc.ankr.com/filecoin_testnet
